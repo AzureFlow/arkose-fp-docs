@@ -1,0 +1,145 @@
+<html lang="en">
+<head>
+	<title>Arkose Mouse Test</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+
+	<link rel="icon" type="image/png" href="https://www.arkoselabs.com/favicon.ico"/>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/nord.min.css" integrity="sha512-U/cZqAAOThvb4J9UCt/DWkkjoJWHXvutFDS/nZmZlirci2ZMuH6qFokOQDuuKgE7pXD+FmhDNH2jT43x0GreCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<style>
+        code {
+            white-space: pre-wrap;
+
+            overflow-y: scroll;
+            min-height: 70vh;
+            max-height: 70vh;
+        }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>Arkose Mouse Collector</h1>
+		</header>
+
+		<section>
+			<p>Used in the bio parameter. A maximum of 150 events will be collected for answer submission.</p>
+			<label>
+				<input id="enabled" name="enabled" type="checkbox" role="switch" checked/>
+				Collect
+			</label>
+			<button type="button" id="resetBtn">Reset</button>
+		</section>
+
+		<hr>
+
+		<div class="grid">
+			<code id="output"></code>
+			<code id="outputFormatted"></code>
+		</div>
+	</div>
+
+	<script>
+		const outputElement = document.getElementById("output");
+		const outputFormattedElement = document.getElementById("outputFormatted");
+		const enabledElement = document.getElementById("enabled");
+
+		const MouseEvents = {
+			Move: 0,
+			Down: 1,
+			Up: 2,
+		};
+
+		let mouseEvents;
+		let touchEvents;
+		let keyPressEvents;
+		let timestamp;
+		let _lastMouseMove;
+
+		function reset() {
+			mouseEvents = [];
+			touchEvents = [];
+			keyPressEvents = [];
+			timestamp = Date.now();
+			_lastMouseMove = undefined;
+			outputElement.textContent = "";
+			outputFormattedElement.textContent = "";
+		}
+
+		reset();
+
+		document.getElementById("resetBtn").addEventListener("click", (evt) => {
+			evt.preventDefault();
+			reset();
+		});
+
+		document.addEventListener("mousemove", recordMouseEventFactory(MouseEvents.Move));
+		document.addEventListener("mousedown", recordMouseEventFactory(MouseEvents.Down));
+		document.addEventListener("mouseup", recordMouseEventFactory(MouseEvents.Up));
+
+		function recordMouseEventFactory(mouseEventType) {
+			return function(mouseEvent) {
+				if(!enabledElement.checked) {
+					return;
+				}
+
+				function insertEvent() {
+					let eventObject = {
+						timestamp: Date.now() - timestamp,
+						type: mouseEventType,
+						x: mouseEvent.pageX,
+						y: mouseEvent.pageY,
+					};
+					mouseEvents.push(eventObject);
+					_lastMouseMove = eventObject;
+
+					outputElement.innerHTML = hljs.highlight(
+						JSON.stringify(mouseEvents, null, 4),
+						{language: "json"},
+					).value;
+					outputElement.scrollTop = 900000;
+
+					outputFormattedElement.textContent += `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};\n`;
+					outputFormattedElement.scrollTop = 900000;
+				}
+
+				const MOUSE_THRESHOLD = 5;
+				const MAX_EVENTS = 150;
+
+				if(mouseEvents.length <= MAX_EVENTS) {
+					if(mouseEventType === MouseEvents.Move) {
+						if(_lastMouseMove) {
+							// magnitude = sqrt(x*x + y*y)
+							// if magnitude > MOUSE_THRESHOLD (5)
+							const magnitude = Math.sqrt((mouseEvent.pageX - _lastMouseMove.x) * (mouseEvent.pageX - _lastMouseMove.x) + (mouseEvent.pageY - _lastMouseMove.y) * (mouseEvent.pageY - _lastMouseMove.y));
+							if(magnitude > MOUSE_THRESHOLD) {
+								insertEvent();
+							}
+
+							return;
+						}
+						else {
+							insertEvent();
+							return;
+						}
+					}
+
+					mouseEvents.push({
+						timestamp: Date.now() - timestamp,
+						type: mouseEventType,
+						x: mouseEvent.pageX,
+						y: mouseEvent.pageY,
+					});
+				}
+			};
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Arkose FP Docs</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+
+	<link rel="icon" type="image/png" href="https://www.arkoselabs.com/favicon.ico"/>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/nord.min.css" integrity="sha512-U/cZqAAOThvb4J9UCt/DWkkjoJWHXvutFDS/nZmZlirci2ZMuH6qFokOQDuuKgE7pXD+FmhDNH2jT43x0GreCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js" integrity="sha512-H69VMoQ814lKjFuFwLImb4OwoK8Rm8fcvsqZexaxjp/VkJfEnrt5TO7oaOdNlMf/j51QUctfLTe8+rgozW7l2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        code {
+            white-space: pre-wrap;
+
+            overflow-y: auto;
+            min-width: 100%;
+            max-width: 100%;
+            max-height: 50vh;
+        }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>Arkose <abbr data-tooltip="fingerprint">FP</abbr> Docs</h1>
+		</header>
+
+		<div class="grid">
+			<div>
+				<p>
+					This document contains some of my research on ArkoseLabs' FunCaptcha fingerprinting.
+					This is missing a bunch of signals that I haven't got around to documenting since they're boring or self-explanatory. For example, hashes.
+				</p>
+				<p>Hover over text with ⋯ below it to see more details.</p>
+				<p>View the DevTools console for more details (Ctrl+Shift+I).</p>
+				<p>See also:</p>
+				<ul>
+					<li><a href="mouse.html">Mouse data</a></li>
+					<li><a href="breaker.html">Breaker v2 (tguess)</a></li>
+					<li><a href="https://gist.github.com/AzureFlow/38788d6ee3eb5b2b811f88415bfa8d78">Arkose Mobile SDK fingerprint docs</a></li>
+				</ul>
+				<p>This page was lasted updated <span id="updateTime">[loading...]</span>.</p>
+			</div>
+
+			<div>
+				<h3>Table of Contents</h3>
+				<ul id="toc" class="collapsible"></ul>
+			</div>
+		</div>
+
+		<hr>
+
+		<main>
+			<section>
+				<h3><abbr data-tooltip="Canvas Fingerprint">cfp</abbr></h3>
+				<p>Canvas fingerprint that's hashed using Java's hashCode method.</p>
+				<code id="getCFP"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Canvas Fingerprint">WebGL</abbr></h3>
+				<p>
+					Collects supported operations by your GPU via the WebGL API. This could, in theory, be used to correlate your
+					<a href="#h_cfp">canvas fingerprint</a> as seen in this
+					<a href="https://research.google/pubs/picasso-lightweight-device-class-fingerprinting-for-web-clients/">Google paper</a>.
+				</p>
+				<code id="collectWebGL"></code>
+			</section>
+
+			<section>
+				<h3>audio_fingerprint</h3>
+				<p>See:</p>
+				<ol>
+					<li>
+						<a href="https://fingerprint.com/blog/audio-fingerprinting/">How the Web Audio API is used for audio fingerprinting</a>
+					</li>
+					<li>
+						<a href="https://fingerprint.com/blog/bypassing-safari-17-audio-fingerprinting-protection/">How We Bypassed Safari 17's Advanced Audio Fingerprinting Protection</a>
+					</li>
+				</ol>
+				<code id="audio_fingerprint"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Window Hash">wh</abbr></h3>
+				<p>Window hash:</p>
+				<ol>
+					<li>Gets all the objects on the current window and sorts them.</li>
+					<li>TODO: Prototype stuff.</li>
+					<li>murmurHash3 both with a seed of 420.</li>
+					<li>Join with "|".</li>
+				</ol>
+				<code id="collectWh"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Timestamp">n</abbr></h3>
+				<p>Base64 encoded timestamp.</p>
+				<code id="getN"></code>
+			</section>
+
+			<section>
+				<h3>window__tree_index</h3>
+				<p>These don't work in this environment.</p>
+				<code id="window__tree_index"></code>
+			</section>
+
+			<section>
+				<h3>window__tree_structure</h3>
+				<p>TODO</p>
+				<code id="window__tree_structure"></code>
+			</section>
+
+			<section>
+				<h3>window__ancestor_origins</h3>
+				<p>TODO</p>
+				<code id="window__ancestor_origins"></code>
+			</section>
+
+			<section>
+				<h3>browser_object_checks</h3>
+				<ul>
+					<li>Checks for global objects belonging to different browsers.</li>
+					<li>Sorts them.</li>
+					<li>Joins them with ",".</li>
+					<li>md5 hashes them.</li>
+				</ul>
+				<p>See the console for more details.</p>
+				<code id="browser_object_checks"></code>
+			</section>
+
+			<section>
+				<h3>browser_detection_brave</h3>
+				<p>Detects the Brave browser via the brave global object.</p>
+				<code id="browser_detection_brave"></code>
+			</section>
+
+			<section>
+				<h3>browser_detection_firefox</h3>
+				<p>Checks the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</a> for "Firefox".</p>
+				<code id="browser_detection_firefox"></code>
+			</section>
+
+			<section>
+				<h3>navigator_pdf_viewer_enabled</h3>
+				Checks:
+				<pre>navigator.pdfViewerEnabled</pre>
+				<code id="navigator_pdf_viewer_enabled"></code>
+			</section>
+
+			<section>
+				<h3>user_agent_data_brands</h3>
+				Checks:
+				<pre>navigator.userAgentData.brands</pre>
+				<code id="user_agent_data_brands"></code>
+			</section>
+
+			<section>
+				<h3>user_agent_data_mobile</h3>
+				Checks:
+				<pre>navigator.userAgentData.mobile</pre>
+				<code id="user_agent_data_mobile"></code>
+			</section>
+
+			<section>
+				<h3>screen_orientation</h3>
+				<p>Gets the current device screen orientation.</p>
+				<code id="screen_orientation"></code>
+			</section>
+
+			<section>
+				<h3>fake_browser</h3>
+				<p>Checks for inconsistencies between the User-Agent and the behavior of the browser state.</p>
+				<code id="fake_browser"></code>
+			</section>
+
+			<section>
+				<h3>headless_browser_generic</h3>
+				<p>Checks the various objects on the document and window related to browser automation frameworks. Including:</p>
+				<ul>
+					<li><a href="https://www.selenium.dev/">Selenium</a></li>
+					<li><a href="https://pypi.org/project/spynner/">Spynner</a></li>
+					<li>Awesomium</li>
+					<li>...and more.</li>
+				</ul>
+				<code id="headless_browser_generic"></code>
+			</section>
+
+			<section>
+				<h3>hasFakeOS</h3>
+				<p>Checks for inconsistencies with userAgent and platform.</p>
+				<code id="hasFakeOS"></code>
+			</section>
+
+			<section>
+				<h3>browser_api_checks</h3>
+				<p>Supported browser features</p>
+				<code id="browser_api_checks"></code>
+			</section>
+
+			<section>
+				<h3>navigator_permissions_hash</h3>
+				<ul>
+					<li>Checks which permissions the current page has.</li>
+					<li>Joins them with "|".</li>
+					<li>md5 hashes them.</li>
+				</ul>
+				<code id="navigator_permissions_hash"></code>
+			</section>
+
+			<section>
+				<h3>getPlugins</h3>
+				<p>Browser <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/plugins">plugins</a>.</p>
+				<code id="getPlugins"></code>
+			</section>
+
+			<section>
+				<h3>speech_default</h3>
+				<p>Text to speach information.</p>
+				<p>For the hash:</p>
+				<ul>
+					<li>Checks voices you have installed.</li>
+					<li>Joins them with ",".</li>
+					<li>md5 hashes them.</li>
+				</ul>
+				<code id="speech_default"></code>
+			</section>
+
+			<section>
+				<h3>navigator_battery_charging</h3>
+				Checks:
+				<pre>(await navigator.getBattery()).charging</pre>
+				<code id="navigator_battery_charging"></code>
+			</section>
+
+			<section>
+				<h3>media_devices</h3>
+				<p>Checks which media devices are available.</p>
+				<code id="media_devices"></code>
+			</section>
+
+			<section>
+				<h3>getAudio</h3>
+				<p>Checks which audio codecs are available. This can be used to detect browser environments that don't support DRM.</p>
+				<code id="getAudio"></code>
+			</section>
+
+			<section>
+				<h3>getVideo</h3>
+				<p>Checks which video codecs are available. This can be used to detect browser environments that don't support DRM.</p>
+				<code id="getVideo"></code>
+			</section>
+
+			<section>
+				<h3>supported_math_functions</h3>
+				<p>Checks what Math functions are supported in the current browser.</p>
+				<code id="supported_math_functions"></code>
+			</section>
+
+			<section>
+				<h3>math_fingerprint</h3>
+				<ul>
+					<li>Runs a bunch of math calculations.</li>
+					<li></li>
+					<li></li>
+				</ul>
+				<p>This can be used to detect if the enforcement script is being run in a different environment than is claimed by the client. For example, calculating the math like V8 (Chrome) but claiming to be JavaScriptCore (Safari).</p>
+				<code id="math_fingerprint"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="1l2l5234ar2">CDP Check</abbr></h3>
+				<p>Checks if you have DevTools open or are using Puppeteer.</p>
+				<code id="cdpCheck"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="29s83ih9">Sandbox Checks</abbr></h3>
+				<p>Checks for different sandbox environments such as JSDom.</p>
+				<code id="sandboxCheck"></code>
+			</section>
+
+			<section>
+				<h3>media_query_dark_mode</h3>
+				<p>Queries for dark mode.</p>
+				<pre>window.matchMedia("(prefers-color-scheme: dark)").matches</pre>
+				<code id="media_query_dark_mode"></code>
+			</section>
+
+			<section>
+				<h3>css_media_queries</h3>
+				<ul>
+					<li>
+						<pre>matchMedia("(prefers-color-scheme:light)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(prefers-color-scheme:dark)")</pre>
+					</li>
+				</ul>
+				<code id="css_media_queries"></code>
+			</section>
+
+			<section>
+				<h3>css_color_gamut</h3>
+				<p>Checks what color gamuts are supported.</p>
+				<ul>
+					<li>
+						<pre>matchMedia("(color-gamut:rec2020)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(color-gamut:p3)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(color-gamut:srgb)")</pre>
+					</li>
+				</ul>
+				<code id="css_color_gamut"></code>
+			</section>
+
+			<section>
+				<h3>css_contrast</h3>
+				<p>Checks user's contrast preference.</p>
+				<ul>
+					<li>
+						<pre>matchMedia("(prefers-contrast:low)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(prefers-contrast:less)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(prefers-contrast:no-preference)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(prefers-contrast:more)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(prefers-contrast:high)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(prefers-contrast:forced)")</pre>
+					</li>
+				</ul>
+				<code id="css_contrast"></code>
+			</section>
+
+			<section>
+				<h3>css_monochrome</h3>
+				<p>Checks user's monochrome preference.</p>
+				<code id="css_monochrome"></code>
+			</section>
+
+			<section>
+				<h3>css_pointer</h3>
+				<ul>
+					<li>
+						<pre>matchMedia("(any-pointer:1)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(any-pointer:coarse)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(any-pointer:none")")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(any-pointer:fine)")</pre>
+					</li>
+				</ul>
+				<code id="css_pointer"></code>
+			</section>
+
+			<section>
+				<h3>css_grid_support</h3>
+				<ul>
+					<li>
+						<pre>matchMedia("(grid:1)")</pre>
+					</li>
+					<li>
+						<pre>matchMedia("(grid:0)")</pre>
+					</li>
+				</ul>
+				<code id="css_grid_support"></code>
+			</section>
+
+			<section>
+				<h3>getFonts</h3>
+				<p>Checks for the presence of 65 different fonts from a predetermined list. This could be used to detect your platform. For example, Wingdings is only on Windows.</p>
+				<code id="getFonts"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Timezone Offset">TO</abbr></h3>
+				<p>Checks your timezone. This can be correlated with the approximate location of your IP address.</p>
+				<code id="getTimezone"></code>
+			</section>
+
+			<section>
+				<h3>rtc_peer_connection</h3>
+				<p>Checks the existence of:</p>
+				<ul>
+					<li>
+						<pre>window.RTCPeerConnection</pre>
+					</li>
+					<li>
+						<pre>window.mozRTCPeerConnection</pre>
+					</li>
+					<li>
+						<pre>window.webkitRTCPeerConnection</pre>
+					</li>
+				</ul>
+				<p>And then stores the result in a number using bit shifting.</p>
+				<code id="rtc_peer_connection"></code>
+			</section>
+
+			<section>
+				<h3>jsbd</h3>
+				<ul>
+					<li>HL:
+						<pre>window.history.length</pre>
+					</li>
+					<li>NCE:
+						<pre>navigator.cookieEnabled</pre>
+					</li>
+					<li>DT:
+						<pre>document.title</pre>
+					</li>
+					<li>NWD:
+						<pre>JSON.stringify(navigator.webdriver)</pre>
+					</li>
+				</ul>
+				<code id="getJsbd"></code>
+			</section>
+
+			<section>
+				<h3>6a62b2a558</h3>
+				<p>Script version hash:</p>
+				<code>enforcement.<strong>6c9d6e9be9aa044cc5ce9548b4abe1b0</strong>.js</code>
+			</section>
+
+			<section>
+				<h3>4b4b269e68</h3>
+				<p>Random UUID</p>
+				<code class="language-javascript">crypto.randomUUID();</code>
+			</section>
+		</main>
+
+		<hr>
+
+		<footer style="margin: 25px">
+			Made by <a href="https://github.com/AzureFlow">AzureFlow</a>.
+		</footer>
+	</div>
+
+	<script>
+		const tocItem = document.getElementById("toc");
+		document.querySelectorAll("code").forEach(item => {
+			const currentTitle = item.parentElement.querySelector("h3");
+			const titleId = `h_${currentTitle.textContent.replaceAll(" ", "_")}`;
+			currentTitle.id = titleId;
+
+			const listItem = document.createElement("li");
+			listItem.innerHTML = `<a href="#${titleId}">${currentTitle.textContent}</a>`;
+			tocItem.appendChild(listItem);
+		});
+	</script>
+
+	<script>hljs.highlightAll();</script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js" integrity="sha512-8pbzenDolL1l5OPSsoURCx9TEdMFTaeFipASVrMYKhuYtly+k3tcsQYliOEKTmuB1t7yuzAiVo+yd7SJz+ijFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/murmurhash3js/3.0.1/murmurhash3js.min.js" integrity="sha512-HCmS85fXMOkBrVzhJwv5ULIWC6ajmqSJ/JRNJEnD8blyvlSLjcAdlERQR5fazd3Iey5QfftJaFfUW5JiXTDhbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script type="module">
+		const UPDATE_TIME = 1716095301732;
+
+		document.getElementById("updateTime").textContent = new Date(UPDATE_TIME).toLocaleString();
+
+		/**
+		 * @param {string} id
+		 * @param {string} contents
+		 */
+		function setOutputBox(id, contents) {
+			try {
+				document.getElementById(id).innerHTML = hljs.highlight(
+					JSON.stringify(contents, null, 4),
+					{language: "json"},
+				).value;
+			}
+			catch(err) {
+				console.error(err);
+				debugger;
+			}
+		}
+
+		/**
+		 * @param {Function} func
+		 * @param {Function} [callback]
+		 */
+		async function runTest(func, callback) {
+			let results = await func();
+			results = callback ? await callback(results) : results;
+			console.log(`${func.name}:`, results);
+			setOutputBox(func.name, results);
+		}
+
+		document.addEventListener("DOMContentLoaded", async() => {
+			console.group("Items");
+			{
+				await Promise.all([
+					runTest(getCFP),
+					runTest(collectWebGL),
+					runTest(audio_fingerprint),
+					runTest(collectWh),
+					runTest(getN),
+					runTest(window__tree_index),
+					runTest(window__tree_structure),
+					runTest(window__ancestor_origins),
+					runTest(browser_object_checks),
+					runTest(browser_detection_brave),
+					runTest(browser_detection_firefox),
+					runTest(navigator_pdf_viewer_enabled),
+					runTest(user_agent_data_brands),
+					runTest(user_agent_data_mobile),
+					runTest(screen_orientation),
+					runTest(fake_browser),
+					runTest(headless_browser_generic),
+					runTest(hasFakeOS),
+					runTest(navigator_permissions_hash),
+					runTest(browser_api_checks),
+					runTest(getPlugins),
+					runTest(speech_default),
+					runTest(navigator_battery_charging),
+					runTest(media_devices),
+					runTest(getAudio),
+					runTest(getVideo),
+					runTest(supported_math_functions),
+					runTest(math_fingerprint),
+					// 1l2l5234ar2
+					runTest(cdpCheck, (results) => {
+						return unicodeEscape(results);
+					}),
+					// 29s83ih9
+					runTest(sandboxCheck, (results) => {
+						return unicodeEscape(results);
+					}),
+					runTest(media_query_dark_mode),
+					runTest(css_media_queries),
+					runTest(css_color_gamut),
+					runTest(css_contrast),
+					runTest(css_monochrome),
+					runTest(css_pointer),
+					runTest(css_grid_support),
+					runTest(getFonts),
+					runTest(getTimezone),
+					runTest(rtc_peer_connection),
+					runTest(getJsbd),
+				]);
+
+				// 6a62b2a558 = "6c9d6e9be9aa044cc5ce9548b4abe1b0" (script version hash)
+				// e.g. enforcement.6c9d6e9be9aa044cc5ce9548b4abe1b0.js
+
+				// 4b4b269e68
+				// enforcement url id
+			}
+			console.groupEnd();
+		});
+
+		function getCFP() {
+			const canvasElement = document.createElement("canvas");
+			if(!canvasElement.getContext) {
+				return false;
+			}
+
+			// document.body.appendChild(canvasElement); // Added by me
+			// document.getElementById("h_cfp").parentElement.appendChild(canvasElement); // Added by me
+
+			try {
+				const results = [];
+				canvasElement.width = 2000;
+				canvasElement.height = 200;
+				canvasElement.style.display = "inline";
+				const context = canvasElement.getContext("2d");
+				if(!context) {
+					return false;
+				}
+
+				context.rect(0, 0, 10, 10);
+				context.rect(2, 2, 6, 6);
+				results.push(`canvas winding:${context.isPointInPath(5, 5, "evenodd") === false ? "yes" : "no"}`);
+				context.textBaseline = "alphabetic";
+				context.fillStyle = "#f60";
+				context.fillRect(125, 1, 62, 20);
+				context.fillStyle = "#069";
+				context.font = "11pt no-real-font-123";
+				context.fillText("Cwm fjordbank glyphs vext quiz, \u{1F603}", 2, 15);
+				context.fillStyle = "rgba(102, 204, 0, 0.2)";
+				context.font = "18pt Arial";
+				context.fillText("Cwm fjordbank glyphs vext quiz, \u{1F603}", 4, 45);
+				context.globalCompositeOperation = "multiply";
+				context.fillStyle = "rgb(255,0,255)";
+				context.beginPath();
+				context.arc(50, 50, 50, 0, Math.PI * 2, true);
+				context.closePath();
+				context.fill();
+				context.fillStyle = "rgb(0,255,255)";
+				context.beginPath();
+				context.arc(100, 50, 50, 0, Math.PI * 2, true);
+				context.closePath();
+				context.fill();
+				context.fillStyle = "rgb(255,255,0)";
+				context.beginPath();
+				context.arc(75, 100, 50, 0, Math.PI * 2, true);
+				context.closePath();
+				context.fill();
+				context.fillStyle = "rgb(255,0,255)";
+				context.arc(75, 75, 75, 0, Math.PI * 2, true);
+				context.arc(75, 75, 25, 0, Math.PI * 2, true);
+				context.fill("evenodd");
+				results.push(`canvas fp:${canvasElement.toDataURL()}`);
+
+				return function() {
+					const resultsString = results.join("~");
+					console.log("resultsString (raw):", resultsString);
+					if(!resultsString) {
+						return "";
+					}
+
+					// if(Array.prototype.reduce) {
+					// 	return resultsString.split("").reduce(function(previousValue, currentValue) {
+					// 		return (previousValue = (previousValue << 5) - previousValue + currentValue.charCodeAt(0)) & previousValue;
+					// 	}, 0);
+					//
+					// 	// return resultsString.split("").reduce(function(previousValue, currentValue) {
+					// 	// 	previousValue = (previousValue << 5) - previousValue + currentValue.charCodeAt(0);
+					// 	// 	return previousValue & previousValue;
+					// 	// }, 0);
+					// }
+
+					// hashCode: https://stackoverflow.com/a/8831937/1190086
+
+					return hashCode(resultsString);
+
+					// let hashed = 0;
+					// if(resultsString.length === 0) {
+					// 	return hashed;
+					// }
+					//
+					// for(let i = 0; i < resultsString.length; i++) {
+					// 	hashed = (hashed << 5) - hashed + resultsString.charCodeAt(i);
+					// 	hashed &= hashed;
+					// }
+					//
+					// return hashed;
+				}();
+			}
+			catch(err) {
+				console.error(err);
+				return false;
+			}
+		}
+
+		function audio_fingerprint() {
+			return new Promise(function(resolve) {
+				try {
+					if(!window.OfflineAudioContext) {
+						if(!window.webkitOfflineAudioContext) {
+							resolve(null);
+							return;
+						}
+
+						window.OfflineAudioContext = window.webkitOfflineAudioContext;
+					}
+
+					const offlineAudioContext = new window.OfflineAudioContext(1, 44100, 44100);
+					const oscillator = offlineAudioContext.createOscillator();
+					oscillator.type = "triangle";
+					oscillator.frequency.value = 10000;
+					const compressor = offlineAudioContext.createDynamicsCompressor();
+
+					if(compressor.threshold) {
+						compressor.threshold.value = -50;
+					}
+
+					if(compressor.knee) {
+						compressor.knee.value = 40;
+					}
+
+					if(compressor.ratio) {
+						compressor.ratio.value = 12;
+					}
+
+					if(compressor.attack) {
+						compressor.attack.value = 0;
+					}
+
+					if(compressor.release) {
+						compressor.release.value = 0.25;
+					}
+
+					oscillator.connect(compressor);
+					compressor.connect(offlineAudioContext.destination);
+					oscillator.start(0);
+					offlineAudioContext.startRendering();
+					offlineAudioContext.oncomplete = function(completionEvent) {
+						let resultFp = 0;
+						for(let i = 4500; i < 5000; i++) {
+							resultFp += Math.abs(completionEvent.renderedBuffer.getChannelData(0)[i]);
+						}
+
+						compressor.disconnect();
+						resolve({
+							key: "audio_fingerprint",
+							value: resultFp.toString(),
+						});
+					};
+				}
+				catch(err) {
+					resolve(null);
+				}
+			});
+		}
+
+		function collectWh() {
+			// TODO: Why doesn't this part match?
+			function getWindowHash() {
+				if(!Object.getOwnPropertyNames) {
+					return "LEGACY_ENV";
+				}
+
+				// Find all window props that aren't the webpack object
+				const props = Object.getOwnPropertyNames(window).filter(function(x) {
+					return !x.match(/^(f_|arkoseLabsClientApi|webpack).*/);
+				});
+
+				const sortedProps = props.sort();
+				console.log("getWindowHash:", sortedProps);
+				return murmurHash3.x64.hash128(sortedProps.join("|"), 420);
+			}
+
+			function getWindowProtoChainHash() {
+				if(!Object.getOwnPropertyNames) {
+					return "LEGACY_ENV";
+				}
+
+				let v = window;
+				let results = [];
+				for(; Object.getPrototypeOf(v);) {
+					v = Object.getPrototypeOf(v);
+					results = results.concat(Object.getOwnPropertyNames(v));
+				}
+
+				console.log("getWindowProtoChainHash:", results);
+				return murmurHash3.x64.hash128(results.join("|"), 420);
+			}
+
+			return `${getWindowHash()}|${getWindowProtoChainHash()}`;
+		}
+
+		function getN() {
+			return btoa(Math.floor(Date.now() / 1000).toString());
+		}
+
+		// These don't work in this environment
+		function window__tree_index(windowCheck = window) {
+			const parent = windowCheck.parent;
+			if(windowCheck === parent) {
+				return [];
+			}
+
+			const results = window__tree_index(parent);
+			let c = -1;
+			for(let i = 0; i < parent.length; i++) {
+				if(windowCheck === parent[i]) {
+					c = i;
+					break;
+				}
+			}
+			results.push(c);
+
+			return results;
+		}
+
+		function window__tree_structure() {
+			let result = "";
+			try {
+				result = JSON.stringify(function t(e) {
+					const r = [];
+					for(let i = 0; i < e.length; i++) {
+						r.push(t(e[i]));
+					}
+
+					return r;
+				}(top));
+			}
+			catch(err) {
+			}
+
+			return result;
+		}
+
+		function window__ancestor_origins() {
+			if(window.location.ancestorOrigins) {
+				const result = [];
+				for(let i = 0; i < window.location.ancestorOrigins.length; i++) {
+					result.push(window.location.ancestorOrigins[i]);
+				}
+				return result;
+			}
+
+			return null;
+		}
+
+		function getPlugins() {
+			if((navigator.appName === "Microsoft Internet Explorer" || navigator.appName === "Netscape" && /Trident/.test(navigator.userAgent)) && (Object.getOwnPropertyDescriptor && Object.getOwnPropertyDescriptor(window, "ActiveXObject") || "ActiveXObject" in window)) {
+				return ["AcroPDF.PDF", "Adodb.Stream", "AgControl.AgControl", "DevalVRXCtrl.DevalVRXCtrl.1", "MacromediaFlashPaper.MacromediaFlashPaper", "Msxml2.DOMDocument", "Msxml2.XMLHTTP", "PDF.PdfCtrl", "QuickTime.QuickTime", "QuickTimeCheckObject.QuickTimeCheck.1", "RealPlayer", "RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)", "RealVideo.RealVideo(tm) ActiveX Control (32-bit)", "Scripting.Dictionary", "SWCtl.SWCtl", "Shell.UIHelper", "ShockwaveFlash.ShockwaveFlash", "Skype.Detection", "TDCCtl.TDCCtl", "WMPlayer.OCX", "rmocx.RealPlayer G2 Control", "rmocx.RealPlayer G2 Control.1"].reduce(function(previousValue, currentValue) {
+					try {
+						new ActiveXObject(currentValue);
+						return [].concat([...previousValue], [currentValue]);
+					}
+					catch(t) {
+					}
+
+					return previousValue;
+				}, []);
+			}
+
+			const results = [];
+			if(navigator.plugins) {
+				for(let i = 0; i < navigator.plugins.length; i++) {
+					const item = navigator.plugins[i];
+					if(item && item.name) {
+						results.push(item.name);
+					}
+				}
+			}
+
+			return results.sort();
+		}
+
+		// 1l2l5234ar2
+		function cdpCheck() {
+			try {
+				let trapped = false;
+				const thrownError = new Error();
+				Object.defineProperty(thrownError, "stack", {
+					configurable: false,
+					enumerable: false,
+					get: function() {
+						trapped = true;
+						return "";
+					},
+				});
+				console.debug(thrownError);
+
+				const trappedString = trapped ? "⁢" : "⁣";
+				return Date.now() + trappedString;
+			}
+			catch(err) {
+				return null;
+			}
+		}
+
+		function getGlobalContextMaybe() {
+			if(typeof globalThis == "object") {
+				return globalThis;
+			}
+
+			try {
+				return this || new Function("return this")();
+			}
+			catch(t) {
+				if(typeof window == "object") {
+					return window;
+				}
+			}
+		}
+
+		// 29s83ih9
+		function sandboxCheck() {
+			try {
+				const hasProcess = typeof process !== "undefined";
+				const unknownTODO = typeof getGlobalContextMaybe() != "undefined" && {}.toString.call(getGlobalContextMaybe()) === "[object global]";
+				const hasNoSetImmediateAndNoWindow = typeof setImmediate !== "undefined" && typeof window === "undefined";
+
+				let moduleStuffTODO = false;
+				const module = {
+					// TODO:
+					// eh, it's empty anyways in a browser
+				};
+				if("object" !== "undefined" && window.module !== module && (module.path || module.filename || module.paths)) {
+					moduleStuffTODO = true;
+				}
+
+				let hasJsDom = false;
+				if("_virtualConsole" in window) {
+					hasJsDom = true;
+				}
+
+				const rawString = hasProcess || moduleStuffTODO || unknownTODO || hasNoSetImmediateAndNoWindow || hasJsDom;
+				console.log("29s83ih9 (rawString):", rawString);
+				return `${md5(rawString.toString())}${rawString ? "⁢" : "⁣"}`;
+			}
+			catch(err) {
+				console.log("failed", err);
+				return `${md5("FAIL")}⁤`;
+			}
+		}
+
+		async function navigator_battery_charging() {
+			return new Promise(function(resolve) {
+				if(navigator.getBattery) {
+					navigator.getBattery().then(function(battery) {
+						resolve({
+							key: "navigator_battery_charging",
+							value: battery.charging,
+						});
+					}).catch(function() {
+						resolve(null);
+					});
+				}
+				else {
+					resolve(null);
+				}
+			});
+		}
+
+		async function media_devices() {
+			if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+				// const C = navigator.mediaDevices.enumerateDevices();
+
+				const media_device_kinds = [];
+				const media_devices = [];
+
+				for(const mediaDeviceInfo of await navigator.mediaDevices.enumerateDevices()) {
+					console.log(mediaDeviceInfo);
+					media_device_kinds.push(mediaDeviceInfo.kind);
+					media_devices.push({
+						kind: mediaDeviceInfo.kind,
+						id: mediaDeviceInfo.deviceId,
+						group: mediaDeviceInfo.groupId,
+					});
+				}
+
+				console.log("media_devices raw:", media_devices);
+
+				return [
+					{
+						key: "media_device_kinds",
+						value: media_device_kinds,
+					},
+					{
+						key: "media_devices_hash",
+						value: md5(JSON.stringify(media_devices)),
+					},
+				];
+			}
+
+			return [];
+		}
+
+		async function speech_default() {
+			const voices = await new Promise(resolve => {
+				window.speechSynthesis.addEventListener("voiceschanged", function tmp() {
+					window.speechSynthesis.removeEventListener("voiceschanged", tmp);
+					resolve(window.speechSynthesis.getVoices());
+				});
+			});
+
+			let voicesString = null;
+			let voicesHash = null;
+			if(voices && voices.length > 0) {
+				const voicesStringRaw = voices.reduce((previousValue, currentValue) => {
+					if(currentValue.default) {
+						voicesString = `${currentValue.name} || ${currentValue.lang}`;
+					}
+
+					// return [].concat(l(t), [[r.name, r.lang]]);
+					return [].concat([...previousValue], [[currentValue.name, currentValue.lang]]);
+				}, []);
+
+				console.log("voicesStringRaw:", voicesStringRaw);
+
+				if(voicesStringRaw.length) {
+					voicesHash = md5(voicesStringRaw.join(","));
+				}
+			}
+
+			return [
+				{
+					key: "speech_default_voice",
+					value: voicesString,
+				},
+				{
+					key: "speech_voices_hash",
+					value: voicesHash,
+				},
+			];
+		}
+
+		/**
+		 * Generated with claude.ai to unravel generator.
+		 * Likely to be inaccurate for handling errors but the hash is correct.
+		 * @returns {Promise<{value, key: string}|{value: null, key: string}>}
+		 */
+		async function navigator_permissions_hash() {
+			const permissionNames = [
+				"accelerometer",
+				"accessibility-events",
+				"ambient-light-sensor",
+				"background-sync",
+				"bluetooth",
+				"camera",
+				"clipboard",
+				"clipboard-read",
+				"clipboard-write",
+				"device-info",
+				"geolocation",
+				"gyroscope",
+				"magnetometer",
+				"microphone",
+				"midi",
+				"notifications",
+				"payment-handler",
+				"persistent-storage",
+				"push",
+				"speaker",
+			];
+
+			if(!navigator || !navigator.permissions) {
+				return {key: "navigator_permissions_hash", value: null};
+			}
+
+			const grantedPermissions = [];
+			for(const permissionName of permissionNames) {
+				try {
+					const permission = await navigator.permissions.query({name: permissionName});
+					if(permission) {
+						grantedPermissions.push(permissionName);
+					}
+				}
+				catch(error) {
+					// Handle error, if needed
+				}
+			}
+
+			console.log("grantedPermissions (raw):", grantedPermissions);
+			const permissionsHash = md5(grantedPermissions.join("|"));
+			return {key: "navigator_permissions_hash", value: permissionsHash};
+		}
+
+		// function navigator_permissions_hash() {
+		// 	switch(t.prev = t.next) {
+		// 		case 0:
+		// 			const r = ["accelerometer", "accessibility-events", "ambient-light-sensor", "background-sync", "bluetooth", "camera", "clipboard", "clipboard-read", "clipboard-write", "device-info", "geolocation", "gyroscope", "magnetometer", "microphone", "midi", "notifications", "payment-handler", "persistent-storage", "push", "speaker"];
+		// 			if(navigator && navigator.permissions) {
+		// 				const n = [];
+		// 				let o = 0;
+		//
+		// 				if(o >= r.length) {
+		// 					t.next = 21;
+		// 					break;
+		// 				}
+		// 				t.prev = 6;
+		// 				i = r[o];
+		// 				t.next = 10;
+		// 				const h = {
+		// 					name: i,
+		// 				};
+		//
+		// 				return navigator.permissions.query(h);
+		// 			}
+		//
+		// 			return {
+		// 				key: "navigator_permissions_hash",
+		// 				value: null,
+		// 			};
+		// 		case 3:
+		// 			n = [];
+		// 			o = 0;
+		// 		case 5:
+		// 			if(o >= r.length) {
+		// 				t.next = 21;
+		// 				break;
+		// 			}
+		// 			t.prev = 6;
+		// 			i = r[o];
+		// 			t.next = 10;
+		// 			var h = {
+		// 				name: i,
+		// 			};
+		// 			return navigator.permissions.query(h);
+		// 		case 10:
+		// 			if(t.sent) {
+		// 				t.next = 13;
+		// 				break;
+		// 			}
+		// 			return t.abrupt("continue", 18);
+		// 		case 13:
+		// 			n.push(i);
+		// 			t.next = 18;
+		// 			break;
+		// 		case 16:
+		// 			t.prev = 16;
+		// 			t.t0 = t.catch(6);
+		// 		case 18:
+		// 			o++;
+		// 			t.next = 5;
+		// 			break;
+		// 		case 21:
+		// 			a = md5(n.join("|"));
+		// 			var mt = {
+		// 				key: "navigator_permissions_hash",
+		// 				value: a,
+		// 			};
+		// 			return t.abrupt("return", mt);
+		// 	}
+		//
+		// }
+
+		function browser_api_checks() {
+			try {
+				return [
+					`permission_status: ${!!window.PermissionStatus && Object.prototype.hasOwnProperty.call(window.PermissionStatus.prototype, "name")}`,
+					`eye_dropper: ${!!window.EyeDropper}`,
+					`audio_data: ${!!window.AudioData}`,
+					`writable_stream: ${!!window.WritableStreamDefaultController}`,
+					`css_style_rule: ${!!window.CSSCounterStyleRule}`,
+					`navigator_ua: ${!!window.NavigatorUAData}`,
+					`barcode_detector: ${!!window.BarcodeDetector}`,
+					`display_names: ${!!window.Intl && !!window.Intl.DisplayNames}`,
+					`contacts_manager: ${!!navigator && !!navigator.contacts && !!navigator.ContactsManager}`,
+					`svg_discard_element: ${!!window.SVGDiscardElement}`,
+					`usb: ${navigator.usb ? "defined" : "NA"}`,
+					`media_device: ${navigator.mediaDevices ? "defined" : "NA"}`,
+					`playback_quality: ${!!window.HTMLVideoElement && !!window.HTMLVideoElement.prototype && !!window.HTMLVideoElement.prototype.getVideoPlaybackQuality}`,
+				];
+			}
+			catch(err) {
+				return null;
+			}
+		}
+
+		function hasFakeOS() {
+			const Q = navigator.userAgent.toLowerCase();
+			let tt = navigator.oscpu;
+			const et = navigator.platform.toLowerCase();
+			let t = Q.indexOf("android") >= 0 ? "Android" : Q.indexOf("windows phone") >= 0 ? "Windows Phone" : Q.indexOf("win") >= 0 ? "Windows" : Q.indexOf("cros") >= 0 ? "CrOS" : Q.indexOf("linux") >= 0 ? "Linux" : Q.indexOf("iphone") >= 0 || Q.indexOf("ipad") >= 0 || Q.indexOf("ipod") >= 0 ? "iOS" : Q.indexOf("mac") >= 0 ? "Mac" : "Other";
+			if(typeof tt != "undefined") {
+				if((tt = tt.toLowerCase()).indexOf("win") >= 0 && t !== "Windows" && t !== "Windows Phone") {
+					return true;
+				}
+
+				if(tt.indexOf("linux") >= 0 && t !== "Linux" && t !== "Android") {
+					return true;
+				}
+
+				if(tt.indexOf("mac") >= 0 && t !== "Mac" && t !== "iOS") {
+					return true;
+				}
+
+				if(tt.indexOf("win") === 0 && tt.indexOf("linux") === 0 && tt.indexOf("mac") >= 0 && t !== "other") {
+					return true;
+				}
+			}
+
+			if(et.indexOf("win") >= 0 && t !== "Windows" && t !== "Windows Phone") {
+				return Q.indexOf("eawebkit") < 0;
+			}
+			else {
+				return (et.indexOf("linux") >= 0 || et.indexOf("android") >= 0 || et.indexOf("pike") >= 0) && t !== "Linux" && t !== "Android" && t !== "CrOS" || (et.indexOf("mac") >= 0 || et.indexOf("ipad") >= 0 || et.indexOf("ipod") >= 0 || et.indexOf("iphone") >= 0) && t !== "Mac" && t !== "iOS" || et.indexOf("win") === 0 && et.indexOf("linux") === 0 && et.indexOf("mac") >= 0 && t !== "other" || typeof navigator.plugins === "undefined" && t !== "Windows" && t !== "Windows Phone";
+			}
+		}
+
+		function fake_browser() {
+			let t;
+			const C = navigator.userAgent.toLowerCase();
+			const T = navigator.productSub;
+			if(((t = C.indexOf("firefox") >= 0 ? "Firefox" : C.indexOf("opera") >= 0 || C.indexOf("opr") >= 0 ? "Opera" : C.indexOf("chrome") >= 0 ? "Chrome" : C.indexOf("safari") >= 0 ? "Safari" : C.indexOf("trident") >= 0 ? "Internet Explorer" : "Other") === "Chrome" || t === "Safari" || t === "Opera") && T !== "20030107") {
+				return true;
+			}
+
+			let wasSuccessful;
+			const evalStringLength = eval.toString().length;
+			if(evalStringLength === 37 && t !== "Safari" && t !== "Firefox" && t !== "Other") {
+				return true;
+			}
+
+			if(evalStringLength === 39 && t !== "Internet Explorer" && t !== "Other") {
+				return true;
+			}
+
+			if(evalStringLength === 33 && t !== "Chrome" && t !== "Opera" && t !== "Other") {
+				return true;
+			}
+
+			try {
+				throw "a";
+			}
+			catch(err) {
+				try {
+					err.toSource();
+					wasSuccessful = true;
+				}
+				catch(t) {
+					wasSuccessful = false;
+				}
+			}
+
+			return !!wasSuccessful && t !== "Firefox" && t !== "Other";
+		}
+
+		function headless_browser_generic() {
+			const checkDocument = function(item) {
+				return function() {
+					console.log(`Checking window.document.${item} =`, item in window.document);
+					return item in window.document;
+				};
+			};
+			const checkWindow = function(item) {
+				return function() {
+					console.log(`Checking window.${item} =`, item in window);
+					return item in window;
+				};
+			};
+
+			const documentChecks = [
+				checkDocument("$cdc_asdjflasutopfhvcZLmcfl"),
+				checkDocument("$chrome_asyncScriptInfo"),
+				checkDocument("hidden"),
+			];
+			const windowChecks = [
+				checkWindow("cdc_adoQpoasnfa76pfcZLmcfl_Array"),
+				checkWindow("cdc_adoQpoasnfa76pfcZLmcfl_Promise"),
+				checkWindow("cdc_adoQpoasnfa76pfcZLmcfl_Symbol"),
+				checkWindow("OSMJIF"),
+				checkWindow("__$webdriverAsyncExecutor"),
+				checkWindow("__lastWatirAlert"),
+				checkWindow("__lastWatirConfirm"),
+				checkWindow("__lastWatirPrompt"),
+				checkWindow("__webdriverFuncgeb"),
+				checkWindow("__webdriver__chr"),
+				checkWindow("__webdriver_script_function"),
+				checkWindow("awesomium"),
+				checkWindow("watinExpressionError"),
+				checkWindow("watinExpressionResult"),
+				checkWindow("spynner_additional_js_loaded"),
+				checkWindow("fmget_targets"),
+				checkWindow("geb"),
+				checkWindow("blender"),
+			];
+
+			const checkFuncs = [].concat(documentChecks, windowChecks, [
+				function() {
+					return ("domAutomation" in window) || ("domAutomationController" in window);
+				},
+				function() {
+					return window.external && window.external.toString && window.external.toString().indexOf("Sequentum") > -1;
+				},
+				function() {
+					return typeof window.process === "object" && ("type" in window.process) && window.process.type === "renderer" || typeof process !== "undefined" && typeof process.versions === "object" && process.versions.electron || window.close.toString().indexOf("ELECTRON") > -1;
+				},
+			]);
+
+			let result = 0;
+			for(let i = 0; i < checkFuncs.length; i++) {
+				if(checkFuncs[i]()) {
+					result |= 1 << i;
+				}
+			}
+
+			return result;
+		}
+
+		function screen_orientation() {
+			return screen && screen.orientation && screen.orientation.type ? screen.orientation.type : null;
+		}
+
+		function user_agent_data_mobile() {
+			return navigator.userAgentData ? navigator.userAgentData.mobile === undefined ? null : navigator.userAgentData.mobile : null;
+		}
+
+		function user_agent_data_brands() {
+			return navigator.userAgentData && navigator.userAgentData.brands ? navigator.userAgentData.brands.map(function(t) {
+				return t.brand;
+			}).join(",") : null;
+		}
+
+		function browser_detection_brave() {
+			return !!navigator.brave;
+		}
+
+		function browser_detection_firefox() {
+			return navigator.userAgent ? navigator.userAgent.indexOf("Firefox") > 0 : null;
+		}
+
+		function navigator_pdf_viewer_enabled() {
+			return navigator.pdfViewerEnabled === undefined ? null : navigator.pdfViewerEnabled;
+		}
+
+		function browser_object_checks() {
+			const objectsToCheck = ["chrome", "safari", "__crWeb", "__gCrWeb", "yandex", "__yb", "__ybro", "__firefox__", "firefox", "__edgeTrackingPreventionStatistics", "webkit", "oprt", "samsungAr", "ucweb", "UCShellJava", "puffinDevice", "opr"];
+			const foundObjects = objectsToCheck.reduce(function(previousValue, currentValue) {
+				// if(window[r] && t(window[r]) === "object") return [].concat(l(e), [r]);
+
+				if(window[currentValue] && typeof window[currentValue] === "object") {
+					return [].concat([...previousValue], [currentValue]);
+				}
+				else {
+					return previousValue;
+				}
+			}, []);
+
+			console.log("browser_objects (raw):", foundObjects);
+
+			if(foundObjects.length > 0) {
+				return md5(foundObjects.sort().join(","));
+			}
+			else {
+				return null;
+			}
+		}
+
+
+		function getAudio() {
+			const audioCodecsStr = audio_codecs_extended();
+			return {
+				audio_codecs: audio_codecs(),
+				audio_codecs_extended: audioCodecsStr,
+				audio_codecs_extended_hash: md5(audioCodecsStr),
+			};
+
+		}
+
+		function getVideo() {
+			const videoCodecsStr = video_codecs_extended();
+			return {
+				video_codecs: video_codecs(),
+				video_codecs_extended: videoCodecsStr,
+				video_codecs_extended_hash: md5(videoCodecsStr),
+			};
+		}
+
+		function audio_codecs() {
+			const audioElement = document.createElement("audio");
+			if(audioElement.canPlayType) {
+				return JSON.stringify({
+					ogg: audioElement.canPlayType("audio/ogg; codecs=\"vorbis\""),
+					mp3: audioElement.canPlayType("audio/mpeg;"),
+					wav: audioElement.canPlayType("audio/wav; codecs=\"1\""),
+					m4a: audioElement.canPlayType("audio/x-m4a;"),
+					aac: audioElement.canPlayType("audio/aac;"),
+				});
+			}
+
+			return null;
+		}
+
+		function video_codecs() {
+			const videoElement = document.createElement("video");
+			if(videoElement.canPlayType) {
+				return JSON.stringify({
+					ogg: videoElement.canPlayType("video/ogg; codecs=\"theora\""),
+					h264: videoElement.canPlayType("video/mp4; codecs=\"avc1.42E01E\""),
+					webm: videoElement.canPlayType("video/webm; codecs=\"vp8, vorbis\""),
+					mpeg4v: videoElement.canPlayType("video/mp4; codecs=\"mp4v.20.8, mp4a.40.2\""),
+					mpeg4a: videoElement.canPlayType("video/mp4; codecs=\"mp4v.20.240, mp4a.40.2\""),
+					theora: videoElement.canPlayType("video/x-matroska; codecs=\"theora, vorbis\""),
+				});
+			}
+
+			return null;
+		}
+
+		function audio_codecs_extended() {
+			const AUDIO_CODECS = ["audio/mp4; codecs=\"mp4a.40\"", "audio/mp4; codecs=\"mp4a.40.1\"", "audio/mp4; codecs=\"mp4a.40.2\"", "audio/mp4; codecs=\"mp4a.40.3\"", "audio/mp4; codecs=\"mp4a.40.4\"", "audio/mp4; codecs=\"mp4a.40.5\"", "audio/mp4; codecs=\"mp4a.40.6\"", "audio/mp4; codecs=\"mp4a.40.7\"", "audio/mp4; codecs=\"mp4a.40.8\"", "audio/mp4; codecs=\"mp4a.40.9\"", "audio/mp4; codecs=\"mp4a.40.12\"", "audio/mp4; codecs=\"mp4a.40.13\"", "audio/mp4; codecs=\"mp4a.40.14\"", "audio/mp4; codecs=\"mp4a.40.15\"", "audio/mp4; codecs=\"mp4a.40.16\"", "audio/mp4; codecs=\"mp4a.40.17\"", "audio/mp4; codecs=\"mp4a.40.19\"", "audio/mp4; codecs=\"mp4a.40.20\"", "audio/mp4; codecs=\"mp4a.40.21\"", "audio/mp4; codecs=\"mp4a.40.22\"", "audio/mp4; codecs=\"mp4a.40.23\"", "audio/mp4; codecs=\"mp4a.40.24\"", "audio/mp4; codecs=\"mp4a.40.25\"", "audio/mp4; codecs=\"mp4a.40.26\"", "audio/mp4; codecs=\"mp4a.40.27\"", "audio/mp4; codecs=\"mp4a.40.28\"", "audio/mp4; codecs=\"mp4a.40.29\"", "audio/mp4; codecs=\"mp4a.40.32\"", "audio/mp4; codecs=\"mp4a.40.33\"", "audio/mp4; codecs=\"mp4a.40.34\"", "audio/mp4; codecs=\"mp4a.40.35\"", "audio/mp4; codecs=\"mp4a.40.36\"", "audio/mp4; codecs=\"mp4a.66\"", "audio/mp4; codecs=\"mp4a.67\"", "audio/mp4; codecs=\"mp4a.68\"", "audio/mp4; codecs=\"mp4a.69\"", "audio/mp4; codecs=\"mp4a.6B\"", "audio/mp4; codecs=\"mp3\"", "audio/mp4; codecs=\"flac\"", "audio/mp4; codecs=\"bogus\"", "audio/mp4; codecs=\"aac\"", "audio/mp4; codecs=\"ac3\"", "audio/mp4; codecs=\"A52\"", "audio/mpeg; codecs=\"mp3\"", "audio/wav; codecs=\"0\"", "audio/wav; codecs=\"2\"", "audio/wave; codecs=\"0\"", "audio/wave; codecs=\"1\"", "audio/wave; codecs=\"2\"", "audio/x-wav; codecs=\"0\"", "audio/x-wav; codecs=\"1\"", "audio/x-wav; codecs=\"2\"", "audio/x-pn-wav; codecs=\"0\"", "audio/x-pn-wav; codecs=\"1\"", "audio/x-pn-wav; codecs=\"2\""];
+
+			const results = {};
+			const audioElement = document.createElement("audio");
+			AUDIO_CODECS.forEach(function(codec) {
+				let canPlayType = null;
+				if(audioElement.canPlayType) {
+					canPlayType = audioElement.canPlayType(codec);
+				}
+
+				let isTypeSupported = null;
+				if(window.MediaSource && window.MediaSource.isTypeSupported) {
+					isTypeSupported = window.MediaSource.isTypeSupported(codec);
+				}
+
+				results[codec] = {
+					canPlay: canPlayType,
+					mediaSource: isTypeSupported,
+				};
+			});
+
+			return JSON.stringify(results);
+		}
+
+		function video_codecs_extended() {
+			const VIDEO_CODECS = ["video/mp4; codecs=\"hev1.1.6.L93.90\"", "video/mp4; codecs=\"hvc1.1.6.L93.90\"", "video/mp4; codecs=\"hev1.1.6.L93.B0\"", "video/mp4; codecs=\"hvc1.1.6.L93.B0\"", "video/mp4; codecs=\"vp09.00.10.08\"", "video/mp4; codecs=\"vp09.00.50.08\"", "video/mp4; codecs=\"vp09.01.20.08.01\"", "video/mp4; codecs=\"vp09.01.20.08.01.01.01.01.00\"", "video/mp4; codecs=\"vp09.02.10.10.01.09.16.09.01\"", "video/mp4; codecs=\"av01.0.08M.08\"", "video/webm; codecs=\"vorbis\"", "video/webm; codecs=\"vp8\"", "video/webm; codecs=\"vp8.0\"", "video/webm; codecs=\"vp8.0, vorbis\"", "video/webm; codecs=\"vp8, opus\"", "video/webm; codecs=\"vp9\"", "video/webm; codecs=\"vp9, vorbis\"", "video/webm; codecs=\"vp9, opus\"", "video/x-matroska; codecs=\"theora\"", "application/x-mpegURL; codecs=\"avc1.42E01E\"", "video/ogg; codecs=\"dirac, vorbis\"", "video/ogg; codecs=\"theora, speex\"", "video/ogg; codecs=\"theora, vorbis\"", "video/ogg; codecs=\"theora, flac\"", "video/ogg; codecs=\"dirac, flac\"", "video/ogg; codecs=\"flac\"", "video/3gpp; codecs=\"mp4v.20.8, samr\""];
+
+			const results = {};
+			const videoElement = document.createElement("video");
+			VIDEO_CODECS.forEach(function(codec) {
+				let canPlayType = null;
+				if(videoElement.canPlayType) {
+					canPlayType = videoElement.canPlayType(codec);
+				}
+
+				let isTypeSupported = null;
+				if(window.MediaSource && window.MediaSource.isTypeSupported) {
+					isTypeSupported = window.MediaSource.isTypeSupported(codec);
+				}
+
+				results[codec] = {
+					canPlay: canPlayType,
+					mediaSource: isTypeSupported,
+				};
+			});
+
+			return JSON.stringify(results);
+		}
+
+		function supported_math_functions() {
+			const items = Object.getOwnPropertyNames(Math).filter(function(x) {
+				return typeof Math[x] === "function";
+			});
+			console.log("supported_math_functions (raw):", items);
+
+			// return pr().hash(items.join(","));
+			return md5(items.join(","));
+		}
+
+		function math_fingerprint() {
+			function runMathCheck(mathFunc) {
+				let r = arguments.length;
+				let n = new Array(r > 1 ? r - 1 : 0);
+
+				for(let o = 1; o < r; o++) {
+					n[o - 1] = arguments[o];
+				}
+
+				return mathFunc.apply(undefined, n);
+			}
+
+			const mathResults = [
+				runMathCheck(Math.acos, 0.123),
+				runMathCheck(Math.acosh, Math.SQRT2),
+				runMathCheck(Math.atan, 2),
+				runMathCheck(Math.atanh, 0.5),
+				runMathCheck(Math.cbrt, Math.PI),
+				runMathCheck(Math.cos, Math.LN2 * 21),
+				runMathCheck(Math.cos, Math.SQRT1_2 * 21),
+				runMathCheck(Math.cosh, Math.LOG2E * 492),
+				runMathCheck(Math.expm1, 1),
+				runMathCheck(Math.hypot, Math.LOG2E, -100),
+				runMathCheck(Math.log10, Math.LOG10E * 7),
+				runMathCheck(Math.pow, Math.PI, -100),
+				runMathCheck(Math.pow, 0.002, -100),
+				runMathCheck(Math.sin, Math.PI),
+				runMathCheck(Math.sin, Math.E * 39),
+				runMathCheck(Math.sinh, Math.PI),
+				runMathCheck(Math.sinh, Math.LOG2E * 492),
+				runMathCheck(Math.tan, Math.LOG2E * 10),
+				runMathCheck(Math.tanh, 0.123),
+			];
+
+			console.log("math_fingerprint (raw):", mathResults);
+
+			// return pr().hash(S.join(","));
+			return md5(mathResults
+				.map(x => {
+					return x.toString();
+				})
+				.join(","),
+			);
+		}
+
+		function css_media_queries() {
+			return [
+				{
+					attribute: "forced-colors",
+					options: ["none", "active"],
+					bias: "active",
+				},
+				{
+					attribute: "inverted-colors",
+					options: ["inverted", "none"],
+					bias: "inverted",
+				},
+				{
+					attribute: "dynamic-range",
+					options: ["high", "standard"],
+					bias: "high",
+				},
+				{
+					attribute: "prefers-reduced-motion",
+					options: ["reduce", "no-preference"],
+					bias: "reduce",
+				},
+			].reduce(function(previousValue, currentValue) {
+				const attribute = currentValue.attribute;
+				const options = currentValue.options;
+				const bias = currentValue.bias;
+
+				return previousValue + Number(checkProp(attribute, options) === bias);
+			}, 0);
+		}
+
+		function media_query_dark_mode() {
+			return checkProp("prefers-color-scheme", ["light", "dark"]) === "dark";
+		}
+
+		function css_color_gamut() {
+			return checkProp("color-gamut", ["rec2020", "p3", "srgb"]);
+		}
+
+		function css_contrast() {
+			return checkProp("prefers-contrast", ["low", "less", "no-preference", "more", "high", "forced"]);
+		}
+
+		function css_monochrome() {
+			const values = [];
+			for(let i = 0; i <= 10; i += 1) {
+				values.push((i * 10).toString());
+			}
+
+			const result = checkProp("min-monochrome", ["0"]);
+			if(result === "unknown" || result === "unsupported") {
+				return result;
+			}
+			else {
+				return checkProp("max-monochrome", values);
+			}
+		}
+
+		function css_pointer() {
+			return checkProp("any-pointer", ["coarse", "none", "fine"]);
+		}
+
+		function css_grid_support() {
+			return checkProp("grid", ["0", "1"]) === "1";
+		}
+
+		/**
+		 * @param {string} prop
+		 * @param {string[]} values
+		 * @returns {unknown}
+		 */
+		function checkProp(prop, values) {
+			if(typeof matchMedia === "undefined") {
+				return "unsupported";
+			}
+
+			for(let i = 0, l = values.length; i < l; i += 1) {
+				const value = values[i];
+				const checkResult = matchMedia("(" + prop + ":" + value + ")");
+
+				if(checkResult.matches || checkResult.msMatchesSelector) {
+					return value;
+				}
+			}
+
+			return "unknown";
+		}
+
+		function getFonts() {
+			const fontTypes = ["monospace", "sans-serif", "serif"];
+			const fonts = ["Andale Mono", "Arial", "Arial Black", "Arial Hebrew", "Arial MT", "Arial Narrow", "Arial Rounded MT Bold", "Arial Unicode MS", "Bitstream Vera Sans Mono", "Book Antiqua", "Bookman Old Style", "Calibri", "Cambria", "Cambria Math", "Century", "Century Gothic", "Century Schoolbook", "Comic Sans", "Comic Sans MS", "Consolas", "Courier", "Courier New", "Garamond", "Geneva", "Georgia", "Helvetica", "Helvetica Neue", "Impact", "Lucida Bright", "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "LUCIDA GRANDE", "Lucida Handwriting", "Lucida Sans", "Lucida Sans Typewriter", "Lucida Sans Unicode", "Microsoft Sans Serif", "Monaco", "Monotype Corsiva", "MS Gothic", "MS Outlook", "MS PGothic", "MS Reference Sans Serif", "MS Sans Serif", "MS Serif", "MYRIAD", "MYRIAD PRO", "Palatino", "Palatino Linotype", "Segoe Print", "Segoe Script", "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Symbol", "Tahoma", "Times", "Times New Roman", "Times New Roman PS", "Trebuchet MS", "Verdana", "Wingdings", "Wingdings 2", "Wingdings 3"];
+			const testString = "mmmmmmmmmmlli";
+
+			if(!document.getElementsByTagName("body")[0]) {
+				return false;
+			}
+
+			const bodyElement = document.getElementsByTagName("body")[0];
+			const Ge = document.createElement("div");
+			const Ve = document.createElement("div");
+			const We = {};
+			const qe = {};
+
+			function createTestSpan() {
+				const spanEl = document.createElement("span");
+				spanEl.style.position = "absolute";
+				spanEl.style.left = "-9999px";
+				spanEl.style.fontSize = "72px";
+				spanEl.style.lineHeight = "normal";
+				spanEl.innerHTML = testString;
+
+				return spanEl;
+			}
+
+			function Ye(t, e) {
+				const spanEl = createTestSpan();
+				spanEl.style.fontFamily = `'${t}',${e}`;
+
+				return spanEl;
+			}
+
+			function Xe(t) {
+				let r = false;
+				for(let i = 0; i < fontTypes.length; i++) {
+					// noinspection JSAssignmentUsedAsCondition
+					if(r = t[i].offsetWidth !== We[fontTypes[i]] || t[i].offsetHeight !== qe[fontTypes[i]]) {
+						return r;
+					}
+				}
+
+				return r;
+			}
+
+			const Je = function() {
+				const e = [];
+				for(let i = 0, n = fontTypes.length; i < n; i++) {
+					const o = createTestSpan();
+					o.style.fontFamily = fontTypes[i];
+					Ge.appendChild(o);
+					e.push(o);
+				}
+
+				return e;
+			}();
+
+			bodyElement.appendChild(Ge);
+			for(let i = 0, Ze = fontTypes.length; i < Ze; i++) {
+				We[fontTypes[i]] = Je[i].offsetWidth;
+				qe[fontTypes[i]] = Je[i].offsetHeight;
+			}
+
+			const Qe = function() {
+				const results = {};
+				for(let i = 0, n = fonts.length; i < n; i++) {
+					const o = [];
+					for(let j = 0, a = fontTypes.length; j < a; j++) {
+						const c = Ye(fonts[i], fontTypes[j]);
+						Ve.appendChild(c);
+						o.push(c);
+					}
+
+					results[fonts[i]] = o;
+				}
+
+				return results;
+			}();
+
+			bodyElement.appendChild(Ve);
+			const results = [];
+			for(let i = 0; i < fonts.length; i++) {
+				if(Xe(Qe[fonts[i]])) {
+					results.push(fonts[i]);
+				}
+			}
+			bodyElement.removeChild(Ve);
+			bodyElement.removeChild(Ge);
+
+			return results;
+		}
+
+		function getTimezone() {
+			return new Date().getTimezoneOffset();
+		}
+
+		const webGLNames = {
+			webgl_extensions: "webgl_extensions",
+			webgl_extensions_hash: "webgl_extensions_hash",
+			webgl_renderer: "webgl_renderer",
+			webgl_vendor: "webgl_vendor",
+			webgl_version: "webgl_version",
+			webgl_shading_language_version: "webgl_shading_language_version",
+			webgl_aliased_line_width_range: "webgl_aliased_line_width_range",
+			webgl_aliased_point_size_range: "webgl_aliased_point_size_range",
+			webgl_antialiasing: "webgl_antialiasing",
+			webgl_bits: "webgl_bits",
+			webgl_max_params: "webgl_max_params",
+			webgl_max_viewport_dims: "webgl_max_viewport_dims",
+			webgl_unmasked_vendor: "webgl_unmasked_vendor",
+			webgl_unmasked_renderer: "webgl_unmasked_renderer",
+			webgl_vsf_params: "webgl_vsf_params",
+			webgl_vsi_params: "webgl_vsi_params",
+			webgl_fsf_params: "webgl_fsf_params",
+			webgl_fsi_params: "webgl_fsi_params",
+			webgl_hash_webgl: "webgl_hash_webgl",
+		};
+
+		function collectWebGL() {
+			const canvasElement = document.createElement("canvas");
+
+			// document.body.appendChild(canvasElement); // Added by me, empty
+
+			const output = Object.keys(webGLNames).reduce(function(accumulator, currentValue) {
+				accumulator[currentValue] = null;
+				return accumulator;
+			}, {});
+
+			if(!!canvasElement && !!window.WebGLRenderingContext && !!canvasElement.getContext) {
+				const canvasContext = canvasElement.getContext("webgl") || canvasElement.getContext("experimental-webgl");
+				if(canvasContext) {
+					try {
+						Dr(output, canvasContext);
+					}
+					catch(err) {
+						return output;
+					}
+				}
+			}
+
+			return output;
+		}
+
+		/**
+		 * @param {object} output
+		 * @param {WebGLRenderingContext} context
+		 */
+		function Dr(output, context) {
+			function Yt(ctx, e) {
+				ctx.clearColor(0, 0, 0, 1);
+				ctx.enable(ctx.DEPTH_TEST);
+				ctx.depthFunc(ctx.LEQUAL);
+				ctx.clear(ctx.COLOR_BUFFER_BIT | ctx.DEPTH_BUFFER_BIT);
+				return `[${e[0]}, ${e[1]}]`;
+			}
+
+
+			if(context instanceof WebGLRenderingContext) {
+				output[webGLNames.webgl_extensions] = context.getSupportedExtensions().join(";");
+				output[webGLNames.webgl_extensions_hash] = murmurHash3.x64.hash128(output.webgl_extensions);
+				output[webGLNames.webgl_renderer] = context.getParameter(context.RENDERER);
+				output[webGLNames.webgl_vendor] = context.getParameter(context.VENDOR);
+				output[webGLNames.webgl_version] = context.getParameter(context.VERSION);
+				output[webGLNames.webgl_shading_language_version] = context.getParameter(context.SHADING_LANGUAGE_VERSION);
+				output[webGLNames.webgl_aliased_line_width_range] = Yt(context, context.getParameter(context.ALIASED_LINE_WIDTH_RANGE));
+				output[webGLNames.webgl_aliased_point_size_range] = Yt(context, context.getParameter(context.ALIASED_POINT_SIZE_RANGE));
+				output[webGLNames.webgl_antialiasing] = context.getContextAttributes().antialias ? "yes" : "no";
+				output[webGLNames.webgl_bits] = function(ctx) {
+					const results = [];
+					results.push(ctx.getParameter(ctx.ALPHA_BITS));
+					results.push(ctx.getParameter(ctx.BLUE_BITS));
+					results.push(ctx.getParameter(ctx.DEPTH_BITS));
+					results.push(ctx.getParameter(ctx.GREEN_BITS));
+					results.push(ctx.getParameter(ctx.RED_BITS));
+					results.push(ctx.getParameter(ctx.STENCIL_BITS));
+					return results.join(",");
+				}(context);
+
+				output[webGLNames.webgl_max_params] = function(ctx) {
+					const results = [];
+					results.push(function(t) {
+						let e;
+						const n = t.getExtension("EXT_texture_filter_anisotropic") || t.getExtension("WEBKIT_EXT_texture_filter_anisotropic") || t.getExtension("MOZ_EXT_texture_filter_anisotropic");
+						if(n) {
+							if((e = t.getParameter(n.MAX_TEXTURE_MAX_ANISOTROPY_EXT)) === 0) {
+								e = 2;
+							}
+
+							return e;
+						}
+						else {
+							return null;
+						}
+					}(ctx));
+
+					results.push(ctx.getParameter(ctx.MAX_COMBINED_TEXTURE_IMAGE_UNITS));
+					results.push(ctx.getParameter(ctx.MAX_CUBE_MAP_TEXTURE_SIZE));
+					results.push(ctx.getParameter(ctx.MAX_FRAGMENT_UNIFORM_VECTORS));
+					results.push(ctx.getParameter(ctx.MAX_RENDERBUFFER_SIZE));
+					results.push(ctx.getParameter(ctx.MAX_TEXTURE_IMAGE_UNITS));
+					results.push(ctx.getParameter(ctx.MAX_TEXTURE_SIZE));
+					results.push(ctx.getParameter(ctx.MAX_VARYING_VECTORS));
+					results.push(ctx.getParameter(ctx.MAX_VERTEX_ATTRIBS));
+					results.push(ctx.getParameter(ctx.MAX_VERTEX_TEXTURE_IMAGE_UNITS));
+					results.push(ctx.getParameter(ctx.MAX_VERTEX_UNIFORM_VECTORS));
+					return results.join(",");
+				}(context);
+
+				output[webGLNames.webgl_max_viewport_dims] = Yt(context, context.getParameter(context.MAX_VIEWPORT_DIMS));
+
+				const rendererInfo = function(ctx) {
+					try {
+						const y = ctx.getExtension("WEBGL_debug_renderer_info");
+						return !!y && [
+							ctx.getParameter(y.UNMASKED_VENDOR_WEBGL),
+							ctx.getParameter(y.UNMASKED_RENDERER_WEBGL),
+						];
+					}
+					catch(err) {
+						return false;
+					}
+				}(context);
+
+				if(rendererInfo) {
+					output[webGLNames.webgl_unmasked_vendor] = rendererInfo[0];
+					output[webGLNames.webgl_unmasked_renderer] = rendererInfo[1];
+				}
+
+				if(context.getShaderPrecisionFormat) {
+					output[webGLNames.webgl_vsf_params] = function(ctx) {
+						const results = [];
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_FLOAT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_FLOAT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_FLOAT).rangeMax);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.MEDIUM_FLOAT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.MEDIUM_FLOAT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.MEDIUM_FLOAT).rangeMax);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.LOW_FLOAT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.LOW_FLOAT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.LOW_FLOAT).rangeMax);
+						return results.join(",");
+					}(context);
+
+					output[webGLNames.webgl_vsi_params] = function(ctx) {
+						const results = [];
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_INT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_INT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_INT).rangeMax);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.MEDIUM_INT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.MEDIUM_INT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.MEDIUM_INT).rangeMax);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.LOW_INT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.LOW_INT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.LOW_INT).rangeMax);
+						return results.join(",");
+					}(context);
+
+					output[webGLNames.webgl_fsf_params] = function(ctx) {
+						const results = [];
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_FLOAT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_FLOAT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_FLOAT).rangeMax);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.MEDIUM_FLOAT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.MEDIUM_FLOAT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.MEDIUM_FLOAT).rangeMax);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.LOW_FLOAT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.LOW_FLOAT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.LOW_FLOAT).rangeMax);
+						return results.join(",");
+					}(context);
+
+					output[webGLNames.webgl_fsi_params] = function(ctx) {
+						const results = [];
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_INT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_INT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_INT).rangeMax);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.MEDIUM_INT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.MEDIUM_INT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.MEDIUM_INT).rangeMax);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.LOW_INT).precision);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.LOW_INT).rangeMin);
+						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.LOW_INT).rangeMax);
+						return results.join(",");
+					}(context);
+				}
+
+				// const Xt = output;
+				// output[Mr.webgl_hash_webgl] = murmurHash3.x64.hash128((Object.entries ? Object.entries(Xt) : Object.keys(Xt).map(function(t) {
+				// 	return [t, Xt[t]];
+				// })).join(","));
+
+				console.log("webgl_hash_webgl (raw):", Object.entries(output).join(","));
+				output[webGLNames.webgl_hash_webgl] = murmurHash3.x64.hash128(Object.entries(output).join(","));
+			}
+		}
+
+		function rtc_peer_connection() {
+			const s = [
+				window.RTCPeerConnection,
+				window.mozRTCPeerConnection,
+				window.webkitRTCPeerConnection,
+			];
+
+			let result = 0;
+			for(let i = 0; i < s.length; i++) {
+				if(s[i]) {
+					result |= 1 << i;
+				}
+			}
+
+			return result;
+		}
+
+		function getJsbd() {
+			return {
+				HL: window.history.length,
+				NCE: navigator.cookieEnabled,
+				DT: document.title,
+				NWD: JSON.stringify(navigator.webdriver),
+				// Unknown
+				DMTO: 1,
+				// Unknown
+				DOTO: 1,
+			};
+		}
+	</script>
+	<script>
+		/**
+		 * Escapes unicode characters.
+		 * @param {string} str
+		 * @returns {string}
+		 */
+		function unicodeEscape(str) {
+			return str.replace(/[\u00A0-\uffff]/gu, function(c) {
+				return "\\u" + ("000" + c.charCodeAt(0).toString(16)).slice(-4);
+			});
+		}
+
+		/**
+		 * Returns a hash code from a string
+		 * @param {string} str The string to hash.
+		 * @returns {number} A 32bit integer
+		 * @see http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+		 */
+		function hashCode(str) {
+			let hash = 0;
+			for(let i = 0, len = str.length; i < len; i++) {
+				let chr = str.charCodeAt(i);
+				hash = (hash << 5) - hash + chr;
+				hash |= 0; // Convert to 32bit integer
+			}
+
+			return hash;
+		}
+	</script>
+</body>
+</html>

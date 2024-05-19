@@ -1,0 +1,138 @@
+<html lang="en">
+<head>
+	<title>Arkose dapib</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+
+	<link rel="icon" type="image/png" href="https://www.arkoselabs.com/favicon.ico"/>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/nord.min.css" integrity="sha512-U/cZqAAOThvb4J9UCt/DWkkjoJWHXvutFDS/nZmZlirci2ZMuH6qFokOQDuuKgE7pXD+FmhDNH2jT43x0GreCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<style>
+        code {
+            white-space: pre-wrap;
+
+            overflow-y: auto;
+            min-width: 100%;
+            max-width: 100%;
+            max-height: 50vh;
+        }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>Arkose dapib (tguess)</h1>
+		</header>
+
+		<section>
+			<p><strong>Note</strong>: This is a demo of <em><strong>one</strong></em> deobfuscated script.</p>
+			<p> In reality, the embedded script changes for each session. The goal of this script is to make the challenge more dynamic and force solvers to sandbox this and detect it. However, just like everything else they do, they do it poorly. There appears to be about ~1200 challenges per day that rotate. Each script uses an access key to help prevent scraping.</p>
+			<p>View the DevTools console for more details (Ctrl+Shift+I).</p>
+			<code id="output"></code>
+		</section>
+	</div>
+
+	<script>
+		const outputElement = document.getElementById("output");
+
+		window.ae = {
+			dapibReceive: function(e) {
+				const expected = [
+					{
+						"index": "!",
+						"22017c375ff34b179": ")(#!*\"\"(!\"",
+						"_": "22017c375ff34b179",
+					},
+					{
+						"index": "!",
+						"22017c375ff34b179": ")(#!*\"\"(!\"",
+						"_": "22017c375ff34b179",
+					},
+				];
+
+				console.log("dapibReceive:", e, JSON.stringify(e.tanswer) === JSON.stringify(expected));
+
+				outputElement.innerHTML = hljs.highlight(
+					JSON.stringify(e, null, 4),
+					{language: "json"},
+				).value;
+			},
+			answer: [
+				{index: 0, "22017c375ff34b179": "8720911701"},
+				{index: 0, "22017c375ff34b179": "8720911701"},
+			],
+		};
+
+		document.addEventListener("DOMContentLoaded", () => {
+			const iframe = document.createElement("iframe");
+			iframe.setAttribute("height", "0");
+			iframe.setAttribute("width", "0");
+			iframe.setAttribute("frameborder", "0");
+			iframe.setAttribute("style", "display:none;");
+			if(iframe.sandbox && iframe.sandbox.add) {
+				iframe.sandbox.add("allow-same-origin");
+				iframe.sandbox.add("allow-scripts");
+			}
+			else {
+				iframe.setAttribute("sandbox", "allow-same-origin allow-scripts");
+			}
+
+			iframe.onload = function() {
+				let iframeContentDocument = iframe.contentDocument;
+				iframeContentDocument.open();
+
+				const embedSource = "breaker.js";
+
+				iframeContentDocument.write(`
+          <!DOCTYPE html>
+          <html>
+            <head />
+            <body>
+              <scr` + `ipt>
+                // let hasSentOnError = false;
+                const scriptSource = "${embedSource}";
+
+                const script = document.createElement("script");
+                script.setAttribute("src", scriptSource);
+
+                // const scriptIntegrity = "";
+                // if (scriptIntegrity) {
+                //   script.setAttribute("integrity", scriptIntegrity);
+                // }
+                // script.setAttribute("crossOrigin", "anonymous");
+
+                // script.onload = (function () {
+                //   if(hasSentOnError) {
+                //     return;
+                //   }
+                //   window.parent.postMessage({ message: "scriptloaded" }, "*");
+                // }).bind(this);
+
+                // script.onerror = (function (e) {
+                //   if (!script || !window || hasSentOnError) {
+                //     return;
+                //   }
+				//
+                //   hasSentOnError = true;
+                //   window.parent.postMessage({ message: "scripterror", data: e.message }, "*");
+                //   return true;
+                // }).bind(this);
+
+                document.body.appendChild(script);
+              </sc` + `ript>
+			</body>
+			</html>`);
+				iframeContentDocument.close();
+			};
+
+			document.body.appendChild(iframe);
+		});
+	</script>
+</body>
+</html>
