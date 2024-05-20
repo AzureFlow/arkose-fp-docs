@@ -77,6 +77,8 @@
 		const runButtonElement = document.getElementById("runBtn");
 		const demoButtonElement = document.getElementById("demoBtn");
 
+		const iframeTag = "REMOVE_ME";
+
 		runButtonElement.addEventListener("click", async(evt) => {
 			evt.preventDefault();
 			loadBreaker(encodeJavaScriptString(breakerCodeElement.textContent));
@@ -121,6 +123,8 @@
 					demoCompare: JSON.stringify(e.tanswer) === JSON.stringify(expected),
 				});
 
+				document.getElementById(iframeTag).remove();
+
 				outputElement.innerHTML = hljs.highlight(
 					JSON.stringify(e, null, 4),
 					{language: "json"},
@@ -133,6 +137,7 @@
 			window.ae.answer = JSON.parse(answersCodeElement.textContent);
 
 			const iframe = document.createElement("iframe");
+			iframe.id = iframeTag;
 			iframe.setAttribute("height", "0");
 			iframe.setAttribute("width", "0");
 			iframe.setAttribute("frameborder", "0");
