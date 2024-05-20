@@ -14,6 +14,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         code {
             white-space: pre-wrap;
 
@@ -32,17 +36,73 @@
 
 		<section>
 			<p><strong>Note</strong>: This is a demo of <em><strong>one</strong></em> deobfuscated script.</p>
-			<p> In reality, the embedded script changes for each session. The goal of this script is to make the challenge more dynamic and force solvers to sandbox this and detect it. However, just like everything else they do, they do it poorly. There appears to be about ~1200 challenges per day that rotate. Each script uses an access key to help prevent scraping.</p>
+			<p> In reality, the embedded script changes for each session. The goal of dapib is to make the challenge more dynamic and force solvers to sandbox this and detect it. However, just like everything else they do, they do it poorly. There appears to be about ~1200 challenges per day that rotate. Each script uses an access key to help prevent scraping.</p>
+			<p>This tool be used to help sanity check your implementation.</p>
 			<p>View the DevTools console for more details (Ctrl+Shift+I).</p>
-			<code id="output"></code>
+
+			<button type="button" id="runBtn">Run</button>
+			<button type="button" id="demoBtn">Load Demo Breaker</button>
+
+			<div class="">
+				<div class="grid">
+					<label>
+						Breaker Code:
+						<textarea id="breakerCode" rows="10" name="text" placeholder="(function () {..."></textarea>
+					</label>
+					<label>
+						Answers:
+						<textarea id="answersCode" rows="10" name="text" placeholder="[{&quot;index&quot;: 0, &quot;22017c375ff34b179&quot;: &quot;8720911701&quot;}]">
+[
+	{"index": 0, "22017c375ff34b179": "8720911701"},
+	{"index": 0, "22017c375ff34b179": "8720911701"}
+]</textarea>
+					</label>
+				</div>
+
+				<div class="grid">
+					<label>
+						Output:
+						<code style="min-height: 120px" id="output"></code>
+					</label>
+				</div>
+			</div>
+
 		</section>
 	</div>
 
 	<script>
 		const outputElement = document.getElementById("output");
+		const breakerCodeElement = document.getElementById("breakerCode");
+		const answersCodeElement = document.getElementById("answersCode");
+		const runButtonElement = document.getElementById("runBtn");
+		const demoButtonElement = document.getElementById("demoBtn");
+
+		runButtonElement.addEventListener("click", async(evt) => {
+			evt.preventDefault();
+			loadBreaker(encodeJavaScriptString(breakerCodeElement.textContent));
+		});
+
+		demoButtonElement.addEventListener("click", async(evt) => {
+			evt.preventDefault();
+
+			const demoResp = await fetch("breaker.js");
+			const demoContent = await demoResp.text();
+			const src = encodeJavaScriptString(demoContent);
+			breakerCodeElement.textContent = demoContent;
+
+			loadBreaker(src);
+		});
+
+		/**
+		 * @param {string} code
+		 */
+		function encodeJavaScriptString(code) {
+			return `data:application/x-javascript;base64,${btoa(code)}`;
+		}
 
 		window.ae = {
 			dapibReceive: function(e) {
+				// Only for demo breaker
 				const expected = [
 					{
 						"index": "!",
@@ -56,20 +116,22 @@
 					},
 				];
 
-				console.log("dapibReceive:", e, JSON.stringify(e.tanswer) === JSON.stringify(expected));
+				console.log("dapibReceive:", {
+					message: e,
+					demoCompare: JSON.stringify(e.tanswer) === JSON.stringify(expected),
+				});
 
 				outputElement.innerHTML = hljs.highlight(
 					JSON.stringify(e, null, 4),
 					{language: "json"},
 				).value;
 			},
-			answer: [
-				{index: 0, "22017c375ff34b179": "8720911701"},
-				{index: 0, "22017c375ff34b179": "8720911701"},
-			],
+			answer: [],
 		};
 
-		document.addEventListener("DOMContentLoaded", () => {
+		function loadBreaker(embedSource = "breaker.js") {
+			window.ae.answer = JSON.parse(answersCodeElement.textContent);
+
 			const iframe = document.createElement("iframe");
 			iframe.setAttribute("height", "0");
 			iframe.setAttribute("width", "0");
@@ -86,8 +148,6 @@
 			iframe.onload = function() {
 				let iframeContentDocument = iframe.contentDocument;
 				iframeContentDocument.open();
-
-				const embedSource = "breaker.js";
 
 				iframeContentDocument.write(`
           <!DOCTYPE html>
@@ -132,7 +192,7 @@
 			};
 
 			document.body.appendChild(iframe);
-		});
+		}
 	</script>
 </body>
 </html>
