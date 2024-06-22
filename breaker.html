@@ -81,7 +81,7 @@
 
 		runButtonElement.addEventListener("click", async(evt) => {
 			evt.preventDefault();
-			loadBreaker(encodeJavaScriptString(breakerCodeElement.textContent));
+			loadBreaker(encodeJavaScriptString(breakerCodeElement.value));
 		});
 
 		demoButtonElement.addEventListener("click", async(evt) => {
@@ -90,7 +90,7 @@
 			const demoResp = await fetch("breaker.js");
 			const demoContent = await demoResp.text();
 			const src = encodeJavaScriptString(demoContent);
-			breakerCodeElement.textContent = demoContent;
+			breakerCodeElement.value = demoContent;
 
 			loadBreaker(src);
 		});
