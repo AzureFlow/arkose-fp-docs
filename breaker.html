@@ -44,6 +44,10 @@
 			<button type="button" id="demoBtn">Load Demo Breaker</button>
 
 			<div class="">
+				<label>
+					Session Token:
+					<input id="sessionToken" type="text" name="text" placeholder="00000000000000000.0000000000" aria-label="Session Token"/>
+				</label>
 				<div class="grid">
 					<label>
 						Breaker Code:
@@ -51,11 +55,7 @@
 					</label>
 					<label>
 						Answers:
-						<textarea id="answersCode" rows="10" name="text" placeholder="[{&quot;index&quot;: 0, &quot;22017c375ff34b179&quot;: &quot;8720911701&quot;}]">
-[
-	{"index": 0, "22017c375ff34b179": "8720911701"},
-	{"index": 0, "22017c375ff34b179": "8720911701"}
-]</textarea>
+						<textarea id="answersCode" rows="10" name="text" placeholder="[{&quot;index&quot;: 0}]"></textarea>
 					</label>
 				</div>
 
@@ -72,6 +72,7 @@
 
 	<script>
 		const outputElement = document.getElementById("output");
+		const sessionTokenElement = document.getElementById("sessionToken");
 		const breakerCodeElement = document.getElementById("breakerCode");
 		const answersCodeElement = document.getElementById("answersCode");
 		const runButtonElement = document.getElementById("runBtn");
@@ -81,6 +82,9 @@
 
 		runButtonElement.addEventListener("click", async(evt) => {
 			evt.preventDefault();
+
+			runButtonElement.disabled = true;
+
 			loadBreaker(encodeJavaScriptString(breakerCodeElement.value));
 		});
 
@@ -91,6 +95,11 @@
 			const demoContent = await demoResp.text();
 			const src = encodeJavaScriptString(demoContent);
 			breakerCodeElement.value = demoContent;
+			sessionTokenElement.value = "22017c375ff34b179.8720911701";
+			answersCodeElement.value = `[
+	{"index": 0},
+	{"index": 0}
+]`;
 
 			loadBreaker(src);
 		});
@@ -103,7 +112,7 @@
 		}
 
 		window.ae = {
-			dapibReceive: function(e) {
+			dapibReceive: function(msg) {
 				// Only for demo breaker
 				const expected = [
 					{
@@ -119,14 +128,16 @@
 				];
 
 				console.log("dapibReceive:", {
-					message: e,
-					demoCompare: JSON.stringify(e.tanswer) === JSON.stringify(expected),
+					message: msg,
+					demoCompare: JSON.stringify(msg.tanswer) === JSON.stringify(expected),
 				});
 
 				document.getElementById(iframeTag).remove();
 
+				runButtonElement.disabled = false;
+
 				outputElement.innerHTML = hljs.highlight(
-					JSON.stringify(e, null, 4),
+					JSON.stringify(msg, null, 4),
 					{language: "json"},
 				).value;
 			},
@@ -134,7 +145,19 @@
 		};
 
 		function loadBreaker(embedSource = "breaker.js") {
-			window.ae.answer = JSON.parse(answersCodeElement.textContent);
+			const sessionToken = sessionTokenElement.value;
+			if(!sessionToken.includes(".")) {
+				console.error("Invalid session token");
+				return;
+			}
+
+			const guessesClone = JSON.parse(answersCodeElement.value);
+			const [t1, t2] = sessionToken.split(".");
+			for(const guess of guessesClone) {
+				guess[t1] = t2;
+			}
+
+			window.ae.answer = guessesClone;
 
 			const iframe = document.createElement("iframe");
 			iframe.id = iframeTag;
