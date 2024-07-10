@@ -452,6 +452,12 @@
 				<p>Random UUID</p>
 				<code class="language-javascript">crypto.randomUUID();</code>
 			</section>
+
+			<section>
+				<h3>c8480e29a</h3>
+				<p>MD5 hashed surl.</p>
+				<code class="language-javascript">md5(surl) + (surl ? "\u2062" : "\u2063")</code>
+			</section>
 		</main>
 
 		<hr>
@@ -574,6 +580,7 @@
 			console.groupEnd();
 		});
 
+		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L910-L969
 		function getCFP() {
 			const canvasElement = document.createElement("canvas");
 			if(!canvasElement.getContext) {
@@ -644,8 +651,6 @@
 					// 	// 	return previousValue & previousValue;
 					// 	// }, 0);
 					// }
-
-					// hashCode: https://stackoverflow.com/a/8831937/1190086
 
 					return hashCode(resultsString);
 
@@ -769,7 +774,12 @@
 			return btoa(Math.floor(Date.now() / 1000).toString());
 		}
 
-		// These don't work in this environment
+		/**
+		 * These don't work in this environment
+		 * getTreeIndex
+		 * @param {Window} [windowCheck]
+		 * @returns {number[]}
+		 */
 		function window__tree_index(windowCheck = window) {
 			const parent = windowCheck.parent;
 			if(windowCheck === parent) {
@@ -777,36 +787,36 @@
 			}
 
 			const results = window__tree_index(parent);
-			let c = -1;
+			let windowIndex = -1;
 			for(let i = 0; i < parent.length; i++) {
 				if(windowCheck === parent[i]) {
-					c = i;
+					windowIndex = i;
 					break;
 				}
 			}
-			results.push(c);
+			results.push(windowIndex);
 
 			return results;
 		}
 
+		// getTreeStructure
 		function window__tree_structure() {
-			let result = "";
 			try {
-				result = JSON.stringify(function t(e) {
-					const r = [];
-					for(let i = 0; i < e.length; i++) {
-						r.push(t(e[i]));
+				return JSON.stringify(function check(windowProxy) {
+					const results = [];
+					for(let i = 0; i < windowProxy.length; i++) {
+						results.push(check(windowProxy[i]));
 					}
 
-					return r;
+					return results;
 				}(top));
 			}
 			catch(err) {
+				return "";
 			}
-
-			return result;
 		}
 
+		// getAncestorOrigins
 		function window__ancestor_origins() {
 			if(window.location.ancestorOrigins) {
 				const result = [];
@@ -991,6 +1001,7 @@
 
 				if(voicesStringRaw.length) {
 					voicesHash = md5(voicesStringRaw.join(","));
+					// voicesHash = md5(toUtf8(voicesStringRaw.join(",")));
 				}
 			}
 
@@ -1004,6 +1015,14 @@
 					value: voicesHash,
 				},
 			];
+		}
+
+		function toUtf8(str) {
+			if(/[\u0080-\uFFFF]/.test(str)) {
+				str = unescape(encodeURIComponent(str));
+			}
+
+			return str;
 		}
 
 		/**
@@ -1573,9 +1592,113 @@
 			return "unknown";
 		}
 
+		console.log("getFontsNEW:", getFontsNEW());
+
+		function getFontsNEW() {
+			if(!document.body) {
+				return false;
+			}
+
+			const baseFonts = ["monospace", "sans-serif", "serif"];
+			const fontList = ["Andale Mono", "Arial", "Arial Black", "Arial Hebrew", "Arial MT", "Arial Narrow", "Arial Rounded MT Bold", "Arial Unicode MS", "Bitstream Vera Sans Mono", "Book Antiqua", "Bookman Old Style", "Calibri", "Cambria", "Cambria Math", "Century", "Century Gothic", "Century Schoolbook", "Comic Sans", "Comic Sans MS", "Consolas", "Courier", "Courier New", "Garamond", "Geneva", "Georgia", "Helvetica", "Helvetica Neue", "Impact", "Lucida Bright", "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "LUCIDA GRANDE", "Lucida Handwriting", "Lucida Sans", "Lucida Sans Typewriter", "Lucida Sans Unicode", "Microsoft Sans Serif", "Monaco", "Monotype Corsiva", "MS Gothic", "MS Outlook", "MS PGothic", "MS Reference Sans Serif", "MS Sans Serif", "MS Serif", "MYRIAD", "MYRIAD PRO", "Palatino", "Palatino Linotype", "Segoe Print", "Segoe Script", "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Symbol", "Tahoma", "Times", "Times New Roman", "Times New Roman PS", "Trebuchet MS", "Verdana", "Wingdings", "Wingdings 2", "Wingdings 3"];
+			const testString = "mmmmmmmmmmlli";
+
+			function setFontFamily(t) {
+				return function(element) {
+					const l = element.getAttribute("data-width");
+					element.style.fontFamily = `"${t}", ${l}`;
+				};
+			}
+
+			const Nn = function() {
+				const styleEl = document.createElement("style");
+				styleEl.textContent = `
+					.font-parent {
+						position: absolute;
+						top: 0;
+						left: 0;
+						visibility: hidden;
+						/* Test empty JSF cause */
+						/* display: none; */
+					}
+					.font {
+						font-size: 72px;
+						position: absolute;
+						left: -9999px;
+						line-height: normal;
+					}
+					${baseFonts.map(function(t) {
+					return `.font[data-width='${t}'] { font-family: ${t}; }`;
+				}).join("\n")}`;
+				// if(a.nc) {
+				// 	styleEl.setAttribute("nonce", a.nc);
+				// }
+				document.head.insertAdjacentElement("beforeend", styleEl);
+
+				const fontParentDiv = document.createElement("div");
+				fontParentDiv.classList.add("font-parent");
+				// const i = {
+				// 	Z: {
+				// 		// 	???
+				// 	},
+				// };
+				fontParentDiv.innerHTML = [
+					...baseFonts.map(function(x) {
+						return `<span class="font" data-width="${x}">${testString}</span>`;
+					}),
+					...baseFonts.map(function(t, index) {
+						return `<span class="font" data-index="${index}" data-width="${t}">${testString}</span>`;
+					}),
+				].join("\n");
+
+				return {
+					parent: fontParentDiv,
+					cleanup: function() {
+						document.head.removeChild(styleEl);
+						document.body.removeChild(fontParentDiv);
+					},
+				};
+			}();
+
+			document.body.appendChild(Nn.parent);
+
+			const allSpans = Array.from ? Array.from(Nn.parent.children) : [].slice.call(Nn.parent.children);
+			// For some reason these can be all (0, 0) on some websites.
+			// As a result, no fonts are detected for JSF.
+			const defaults = allSpans.slice(0, baseFonts.length).map(function(child) {
+				return {
+					offsetWidth: child.offsetWidth,
+					offsetHeight: child.offsetHeight,
+				};
+			});
+			const fontSpans = allSpans.slice(baseFonts.length);
+
+			const availableFonts = [];
+			for(let i = 0; i < fontList.length; i++) {
+				const font = fontList[i];
+				fontSpans.forEach(setFontFamily(font));
+
+				const detected = baseFonts.some((value, index) => {
+					return fontSpans[index].offsetWidth !== defaults[index].offsetWidth || fontSpans[index].offsetHeight !== defaults[index].offsetHeight;
+				});
+				if(detected) {
+					availableFonts.push(font);
+				}
+			}
+
+			Nn.cleanup();
+
+			return availableFonts;
+		}
+
+		// getJSFonts
+		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L539
 		function getFonts() {
-			const fontTypes = ["monospace", "sans-serif", "serif"];
-			const fonts = ["Andale Mono", "Arial", "Arial Black", "Arial Hebrew", "Arial MT", "Arial Narrow", "Arial Rounded MT Bold", "Arial Unicode MS", "Bitstream Vera Sans Mono", "Book Antiqua", "Bookman Old Style", "Calibri", "Cambria", "Cambria Math", "Century", "Century Gothic", "Century Schoolbook", "Comic Sans", "Comic Sans MS", "Consolas", "Courier", "Courier New", "Garamond", "Geneva", "Georgia", "Helvetica", "Helvetica Neue", "Impact", "Lucida Bright", "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "LUCIDA GRANDE", "Lucida Handwriting", "Lucida Sans", "Lucida Sans Typewriter", "Lucida Sans Unicode", "Microsoft Sans Serif", "Monaco", "Monotype Corsiva", "MS Gothic", "MS Outlook", "MS PGothic", "MS Reference Sans Serif", "MS Sans Serif", "MS Serif", "MYRIAD", "MYRIAD PRO", "Palatino", "Palatino Linotype", "Segoe Print", "Segoe Script", "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Symbol", "Tahoma", "Times", "Times New Roman", "Times New Roman PS", "Trebuchet MS", "Verdana", "Wingdings", "Wingdings 2", "Wingdings 3"];
+			const baseFonts = ["monospace", "sans-serif", "serif"];
+			const fontList = ["Andale Mono", "Arial", "Arial Black", "Arial Hebrew", "Arial MT", "Arial Narrow", "Arial Rounded MT Bold", "Arial Unicode MS", "Bitstream Vera Sans Mono", "Book Antiqua", "Bookman Old Style", "Calibri", "Cambria", "Cambria Math", "Century", "Century Gothic", "Century Schoolbook", "Comic Sans", "Comic Sans MS", "Consolas", "Courier", "Courier New", "Garamond", "Geneva", "Georgia", "Helvetica", "Helvetica Neue", "Impact", "Lucida Bright", "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "LUCIDA GRANDE", "Lucida Handwriting", "Lucida Sans", "Lucida Sans Typewriter", "Lucida Sans Unicode", "Microsoft Sans Serif", "Monaco", "Monotype Corsiva", "MS Gothic", "MS Outlook", "MS PGothic", "MS Reference Sans Serif", "MS Sans Serif", "MS Serif", "MYRIAD", "MYRIAD PRO", "Palatino", "Palatino Linotype", "Segoe Print", "Segoe Script", "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Symbol", "Tahoma", "Times", "Times New Roman", "Times New Roman PS", "Trebuchet MS", "Verdana", "Wingdings", "Wingdings 2", "Wingdings 3"];
+
+			// we use m or w because these two characters take up the maximum width.
+			// And we use a LLi so that the same matching fonts can get separated
 			const testString = "mmmmmmmmmmlli";
 
 			if(!document.getElementsByTagName("body")[0]) {
@@ -1583,11 +1706,16 @@
 			}
 
 			const bodyElement = document.getElementsByTagName("body")[0];
-			const Ge = document.createElement("div");
-			const Ve = document.createElement("div");
-			const We = {};
-			const qe = {};
 
+			// div to load spans for the base fonts
+			const baseFontsDiv = document.createElement("div");
+			// div to load spans for the fonts to detect
+			const fontsDiv = document.createElement("div");
+
+			const defaultWidth = {};
+			const defaultHeight = {};
+
+			// creates a span where the fonts will be loaded
 			function createTestSpan() {
 				const spanEl = document.createElement("span");
 				spanEl.style.position = "absolute";
@@ -1599,70 +1727,84 @@
 				return spanEl;
 			}
 
-			function Ye(t, e) {
+			// creates a span and load the font to detect and a base font for fallback
+			function createSpanWithFonts(fontToDetect, baseFont) {
 				const spanEl = createTestSpan();
-				spanEl.style.fontFamily = `'${t}',${e}`;
+				spanEl.style.fontFamily = `'${fontToDetect}',${baseFont}`;
 
 				return spanEl;
 			}
 
-			function Xe(t) {
-				let r = false;
-				for(let i = 0; i < fontTypes.length; i++) {
-					// noinspection JSAssignmentUsedAsCondition
-					if(r = t[i].offsetWidth !== We[fontTypes[i]] || t[i].offsetHeight !== qe[fontTypes[i]]) {
-						return r;
+			// checks if a font is available
+			function isFontAvailable(fontSpans) {
+				let detected = false;
+				for(let i = 0; i < baseFonts.length; i++) {
+					detected = detected = fontSpans[i].offsetWidth !== defaultWidth[baseFonts[i]] || fontSpans[i].offsetHeight !== defaultHeight[baseFonts[i]];
+					if(detected) {
+						return detected;
 					}
 				}
 
-				return r;
+				return detected;
 			}
 
-			const Je = function() {
-				const e = [];
-				for(let i = 0, n = fontTypes.length; i < n; i++) {
-					const o = createTestSpan();
-					o.style.fontFamily = fontTypes[i];
-					Ge.appendChild(o);
-					e.push(o);
-				}
-
-				return e;
-			}();
-
-			bodyElement.appendChild(Ge);
-			for(let i = 0, Ze = fontTypes.length; i < Ze; i++) {
-				We[fontTypes[i]] = Je[i].offsetWidth;
-				qe[fontTypes[i]] = Je[i].offsetHeight;
-			}
-
-			const Qe = function() {
-				const results = {};
-				for(let i = 0, n = fonts.length; i < n; i++) {
-					const o = [];
-					for(let j = 0, a = fontTypes.length; j < a; j++) {
-						const c = Ye(fonts[i], fontTypes[j]);
-						Ve.appendChild(c);
-						o.push(c);
-					}
-
-					results[fonts[i]] = o;
+			// creates spans for the base fonts and adds them to baseFontsDiv
+			const baseFontsSpans = function() {
+				const results = [];
+				for(let i = 0, n = baseFonts.length; i < n; i++) {
+					const span = createTestSpan();
+					span.style.fontFamily = baseFonts[i];
+					baseFontsDiv.appendChild(span);
+					results.push(span);
 				}
 
 				return results;
 			}();
 
-			bodyElement.appendChild(Ve);
-			const results = [];
-			for(let i = 0; i < fonts.length; i++) {
-				if(Xe(Qe[fonts[i]])) {
-					results.push(fonts[i]);
+			// add the spans to the DOM
+			bodyElement.appendChild(baseFontsDiv);
+
+			// get the default width for the three base fonts
+			for(let i = 0; i < baseFonts.length; i++) {
+				defaultWidth[baseFonts[i]] = baseFontsSpans[i].offsetWidth;
+				defaultHeight[baseFonts[i]] = baseFontsSpans[i].offsetHeight;
+			}
+
+			// create spans for fonts to detect
+			const fontsSpans = function() {
+				const spans = {};
+				for(let i = 0, n = fontList.length; i < n; i++) {
+					const fontSpans = [];
+					for(let j = 0, a = baseFonts.length; j < a; j++) {
+						const s = createSpanWithFonts(fontList[i], baseFonts[j]);
+						fontsDiv.appendChild(s);
+						fontSpans.push(s);
+					}
+
+					// Stores {fontName : [spans for that font]}
+					spans[fontList[i]] = fontSpans;
+				}
+
+				return spans;
+			}();
+
+			// add all the spans to the DOM
+			bodyElement.appendChild(fontsDiv);
+
+			// check available fonts
+			const availableFonts = [];
+			for(let i = 0; i < fontList.length; i++) {
+				const font = fontList[i];
+				if(isFontAvailable(fontsSpans[font])) {
+					availableFonts.push(font);
 				}
 			}
-			bodyElement.removeChild(Ve);
-			bodyElement.removeChild(Ge);
 
-			return results;
+			// remove spans from DOM
+			bodyElement.removeChild(fontsDiv);
+			bodyElement.removeChild(baseFontsDiv);
+
+			return availableFonts;
 		}
 
 		function getTimezone() {
@@ -1728,7 +1870,6 @@
 				ctx.clear(ctx.COLOR_BUFFER_BIT | ctx.DEPTH_BUFFER_BIT);
 				return `[${e[0]}, ${e[1]}]`;
 			}
-
 
 			if(context instanceof WebGLRenderingContext) {
 				output[webGLNames.webgl_extensions] = context.getSupportedExtensions().join(";");
@@ -1916,11 +2057,12 @@
 		 * @param {string} str The string to hash.
 		 * @returns {number} A 32bit integer
 		 * @see http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+		 * @see https://stackoverflow.com/a/8831937/1190086
 		 */
 		function hashCode(str) {
 			let hash = 0;
 			for(let i = 0, len = str.length; i < len; i++) {
-				let chr = str.charCodeAt(i);
+				const chr = str.charCodeAt(i);
 				hash = (hash << 5) - hash + chr;
 				hash |= 0; // Convert to 32bit integer
 			}
