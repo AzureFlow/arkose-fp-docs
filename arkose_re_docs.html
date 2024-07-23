@@ -15,6 +15,13 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js" integrity="sha512-H69VMoQ814lKjFuFwLImb4OwoK8Rm8fcvsqZexaxjp/VkJfEnrt5TO7oaOdNlMf/j51QUctfLTe8+rgozW7l2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+	<script>
+		hljs.configure({
+			cssSelector: "code",
+			// ignoreUnescapedHTML: true,
+		});
+	</script>
+
 	<style>
         html {
             scroll-behavior: smooth;
@@ -27,6 +34,10 @@
             min-width: 100%;
             max-width: 100%;
             max-height: 50vh;
+        }
+
+        code.hljs {
+            padding: 10px 10px;
         }
 	</style>
 </head>
@@ -46,8 +57,8 @@
 				<p>View the DevTools console for more details (Ctrl+Shift+I).</p>
 				<p>See also:</p>
 				<ul>
-					<li><a href="mouse.html">Mouse data</a></li>
-					<li><a href="breaker.html">Breaker v2 (tguess)</a></li>
+					<li><a href="./mouse.html">Mouse data</a></li>
+					<li><a href="./breaker.html">Breaker v2 (tguess)</a></li>
 					<li><a href="https://gist.github.com/AzureFlow/38788d6ee3eb5b2b811f88415bfa8d78">Arkose Mobile SDK fingerprint docs</a></li>
 				</ul>
 				<p>This page was lasted updated <span id="updateTime">[loading...]</span>.</p>
@@ -65,17 +76,17 @@
 			<section>
 				<h3><abbr data-tooltip="Canvas Fingerprint">cfp</abbr></h3>
 				<p>Canvas fingerprint that's hashed using Java's hashCode method.</p>
-				<code id="getCFP"></code>
+				<code class="language-json" id="getCFP"></code>
 			</section>
 
 			<section>
 				<h3><abbr data-tooltip="Canvas Fingerprint">WebGL</abbr></h3>
 				<p>
 					Collects supported operations by your GPU via the WebGL API. This could, in theory, be used to correlate your
-					<a href="#h_cfp">canvas fingerprint</a> as seen in this
-					<a href="https://research.google/pubs/picasso-lightweight-device-class-fingerprinting-for-web-clients/">Google paper</a>.
+					<a href="#h_cfp">canvas fingerprint</a> as described in this
+					<a href="https://research.google/pubs/picasso-lightweight-device-class-fingerprinting-for-web-clients/">paper by Google</a>.
 				</p>
-				<code id="collectWebGL"></code>
+				<code class="language-json" id="collectWebGL"></code>
 			</section>
 
 			<section>
@@ -89,7 +100,7 @@
 						<a href="https://fingerprint.com/blog/bypassing-safari-17-audio-fingerprinting-protection/">How We Bypassed Safari 17's Advanced Audio Fingerprinting Protection</a>
 					</li>
 				</ol>
-				<code id="audio_fingerprint"></code>
+				<code class="language-json" id="audio_fingerprint"></code>
 			</section>
 
 			<section>
@@ -101,31 +112,31 @@
 					<li>murmurHash3 both with a seed of 420.</li>
 					<li>Join with "|".</li>
 				</ol>
-				<code id="collectWh"></code>
+				<code class="language-json" id="collectWh"></code>
 			</section>
 
 			<section>
 				<h3><abbr data-tooltip="Timestamp">n</abbr></h3>
 				<p>Base64 encoded timestamp.</p>
-				<code id="getN"></code>
+				<code class="language-json" id="getN"></code>
 			</section>
 
 			<section>
 				<h3>window__tree_index</h3>
 				<p>These don't work in this environment.</p>
-				<code id="window__tree_index"></code>
+				<code class="language-json" id="window__tree_index"></code>
 			</section>
 
 			<section>
 				<h3>window__tree_structure</h3>
 				<p>TODO</p>
-				<code id="window__tree_structure"></code>
+				<code class="language-json" id="window__tree_structure"></code>
 			</section>
 
 			<section>
 				<h3>window__ancestor_origins</h3>
 				<p>TODO</p>
-				<code id="window__ancestor_origins"></code>
+				<code class="language-json" id="window__ancestor_origins"></code>
 			</section>
 
 			<section>
@@ -137,52 +148,52 @@
 					<li>md5 hashes them.</li>
 				</ul>
 				<p>See the console for more details.</p>
-				<code id="browser_object_checks"></code>
+				<code class="language-json" id="browser_object_checks"></code>
 			</section>
 
 			<section>
 				<h3>browser_detection_brave</h3>
 				<p>Detects the Brave browser via the brave global object.</p>
-				<code id="browser_detection_brave"></code>
+				<code class="language-json" id="browser_detection_brave"></code>
 			</section>
 
 			<section>
 				<h3>browser_detection_firefox</h3>
 				<p>Checks the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</a> for "Firefox".</p>
-				<code id="browser_detection_firefox"></code>
+				<code class="language-json" id="browser_detection_firefox"></code>
 			</section>
 
 			<section>
 				<h3>navigator_pdf_viewer_enabled</h3>
 				Checks:
-				<pre>navigator.pdfViewerEnabled</pre>
-				<code id="navigator_pdf_viewer_enabled"></code>
+				<code class="language-javascript">navigator.pdfViewerEnabled</code>
+				<code class="language-json" id="navigator_pdf_viewer_enabled"></code>
 			</section>
 
 			<section>
 				<h3>user_agent_data_brands</h3>
 				Checks:
-				<pre>navigator.userAgentData.brands</pre>
-				<code id="user_agent_data_brands"></code>
+				<code class="language-javascript">navigator.userAgentData.brands</code>
+				<code class="language-json" id="user_agent_data_brands"></code>
 			</section>
 
 			<section>
 				<h3>user_agent_data_mobile</h3>
 				Checks:
-				<pre>navigator.userAgentData.mobile</pre>
-				<code id="user_agent_data_mobile"></code>
+				<code class="language-javascript">navigator.userAgentData.mobile</code>
+				<code class="language-json" id="user_agent_data_mobile"></code>
 			</section>
 
 			<section>
 				<h3>screen_orientation</h3>
 				<p>Gets the current device screen orientation.</p>
-				<code id="screen_orientation"></code>
+				<code class="language-json" id="screen_orientation"></code>
 			</section>
 
 			<section>
 				<h3>fake_browser</h3>
 				<p>Checks for inconsistencies between the User-Agent and the behavior of the browser state.</p>
-				<code id="fake_browser"></code>
+				<code class="language-json" id="fake_browser"></code>
 			</section>
 
 			<section>
@@ -194,19 +205,19 @@
 					<li>Awesomium</li>
 					<li>...and more.</li>
 				</ul>
-				<code id="headless_browser_generic"></code>
+				<code class="language-json" id="headless_browser_generic"></code>
 			</section>
 
 			<section>
 				<h3>hasFakeOS</h3>
 				<p>Checks for inconsistencies with userAgent and platform.</p>
-				<code id="hasFakeOS"></code>
+				<code class="language-json" id="hasFakeOS"></code>
 			</section>
 
 			<section>
 				<h3>browser_api_checks</h3>
 				<p>Supported browser features</p>
-				<code id="browser_api_checks"></code>
+				<code class="language-json" id="browser_api_checks"></code>
 			</section>
 
 			<section>
@@ -216,13 +227,13 @@
 					<li>Joins them with "|".</li>
 					<li>md5 hashes them.</li>
 				</ul>
-				<code id="navigator_permissions_hash"></code>
+				<code class="language-json" id="navigator_permissions_hash"></code>
 			</section>
 
 			<section>
 				<h3>getPlugins</h3>
 				<p>Browser <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/plugins">plugins</a>.</p>
-				<code id="getPlugins"></code>
+				<code class="language-json" id="getPlugins"></code>
 			</section>
 
 			<section>
@@ -234,81 +245,77 @@
 					<li>Joins them with ",".</li>
 					<li>md5 hashes them.</li>
 				</ul>
-				<code id="speech_default"></code>
+				<code class="language-json" id="speech_default"></code>
 			</section>
 
 			<section>
 				<h3>navigator_battery_charging</h3>
 				Checks:
-				<pre>(await navigator.getBattery()).charging</pre>
-				<code id="navigator_battery_charging"></code>
+				<code class="language-javascript">(await navigator.getBattery()).charging;</code>
+				<code class="language-json" id="navigator_battery_charging"></code>
 			</section>
 
 			<section>
 				<h3>media_devices</h3>
 				<p>Checks which media devices are available.</p>
-				<code id="media_devices"></code>
+				<code class="language-json" id="media_devices"></code>
 			</section>
 
 			<section>
 				<h3>getAudio</h3>
 				<p>Checks which audio codecs are available. This can be used to detect browser environments that don't support DRM.</p>
-				<code id="getAudio"></code>
+				<code class="language-json" id="getAudio"></code>
 			</section>
 
 			<section>
 				<h3>getVideo</h3>
 				<p>Checks which video codecs are available. This can be used to detect browser environments that don't support DRM.</p>
-				<code id="getVideo"></code>
+				<code class="language-json" id="getVideo"></code>
 			</section>
 
 			<section>
 				<h3>supported_math_functions</h3>
 				<p>Checks what Math functions are supported in the current browser.</p>
-				<code id="supported_math_functions"></code>
+				<code class="language-json" id="supported_math_functions"></code>
 			</section>
 
 			<section>
 				<h3>math_fingerprint</h3>
-				<ul>
-					<li>Runs a bunch of math calculations.</li>
-					<li></li>
-					<li></li>
-				</ul>
+				<p>Runs a bunch of math calculations.</p>
 				<p>This can be used to detect if the enforcement script is being run in a different environment than is claimed by the client. For example, calculating the math like V8 (Chrome) but claiming to be JavaScriptCore (Safari).</p>
-				<code id="math_fingerprint"></code>
+				<code class="language-json" id="math_fingerprint"></code>
 			</section>
 
 			<section>
 				<h3><abbr data-tooltip="1l2l5234ar2">CDP Check</abbr></h3>
 				<p>Checks if you have DevTools open or are using Puppeteer.</p>
-				<code id="cdpCheck"></code>
+				<code class="language-json" id="cdpCheck"></code>
 			</section>
 
 			<section>
 				<h3><abbr data-tooltip="29s83ih9">Sandbox Checks</abbr></h3>
 				<p>Checks for different sandbox environments such as JSDom.</p>
-				<code id="sandboxCheck"></code>
+				<code class="language-json" id="sandboxCheck"></code>
 			</section>
 
 			<section>
 				<h3>media_query_dark_mode</h3>
 				<p>Queries for dark mode.</p>
-				<pre>window.matchMedia("(prefers-color-scheme: dark)").matches</pre>
-				<code id="media_query_dark_mode"></code>
+				<code class="language-javascript">matchMedia("(prefers-color-scheme: dark)").matches</code>
+				<code class="language-javascript" id="media_query_dark_mode"></code>
 			</section>
 
 			<section>
 				<h3>css_media_queries</h3>
 				<ul>
 					<li>
-						<pre>matchMedia("(prefers-color-scheme:light)")</pre>
+						<code class="language-javascript">matchMedia("(prefers-color-scheme:light)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(prefers-color-scheme:dark)")</pre>
+						<code class="language-javascript">matchMedia("(prefers-color-scheme:dark)")</code>
 					</li>
 				</ul>
-				<code id="css_media_queries"></code>
+				<code class="language-json" id="css_media_queries"></code>
 			</section>
 
 			<section>
@@ -316,16 +323,16 @@
 				<p>Checks what color gamuts are supported.</p>
 				<ul>
 					<li>
-						<pre>matchMedia("(color-gamut:rec2020)")</pre>
+						<code class="language-javascript">matchMedia("(color-gamut:rec2020)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(color-gamut:p3)")</pre>
+						<code class="language-javascript">matchMedia("(color-gamut:p3)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(color-gamut:srgb)")</pre>
+						<code class="language-javascript">matchMedia("(color-gamut:srgb)")</code>
 					</li>
 				</ul>
-				<code id="css_color_gamut"></code>
+				<code class="language-json" id="css_color_gamut"></code>
 			</section>
 
 			<section>
@@ -333,75 +340,75 @@
 				<p>Checks user's contrast preference.</p>
 				<ul>
 					<li>
-						<pre>matchMedia("(prefers-contrast:low)")</pre>
+						<code class="language-javascript">matchMedia("(prefers-contrast:low)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(prefers-contrast:less)")</pre>
+						<code class="language-javascript">matchMedia("(prefers-contrast:less)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(prefers-contrast:no-preference)")</pre>
+						<code class="language-javascript">matchMedia("(prefers-contrast:no-preference)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(prefers-contrast:more)")</pre>
+						<code class="language-javascript">matchMedia("(prefers-contrast:more)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(prefers-contrast:high)")</pre>
+						<code class="language-javascript">matchMedia("(prefers-contrast:high)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(prefers-contrast:forced)")</pre>
+						<code class="language-javascript">matchMedia("(prefers-contrast:forced)")</code>
 					</li>
 				</ul>
-				<code id="css_contrast"></code>
+				<code class="language-json" id="css_contrast"></code>
 			</section>
 
 			<section>
 				<h3>css_monochrome</h3>
 				<p>Checks user's monochrome preference.</p>
-				<code id="css_monochrome"></code>
+				<code class="language-json" id="css_monochrome"></code>
 			</section>
 
 			<section>
 				<h3>css_pointer</h3>
 				<ul>
 					<li>
-						<pre>matchMedia("(any-pointer:1)")</pre>
+						<code class="language-javascript">matchMedia("(any-pointer:1)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(any-pointer:coarse)")</pre>
+						<code class="language-javascript">matchMedia("(any-pointer:coarse)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(any-pointer:none")")</pre>
+						<code class="language-javascript">matchMedia("(any-pointer:none")")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(any-pointer:fine)")</pre>
+						<code class="language-javascript">matchMedia("(any-pointer:fine)")</code>
 					</li>
 				</ul>
-				<code id="css_pointer"></code>
+				<code class="language-json" id="css_pointer"></code>
 			</section>
 
 			<section>
 				<h3>css_grid_support</h3>
 				<ul>
 					<li>
-						<pre>matchMedia("(grid:1)")</pre>
+						<code class="language-javascript">matchMedia("(grid:1)")</code>
 					</li>
 					<li>
-						<pre>matchMedia("(grid:0)")</pre>
+						<code class="language-javascript">matchMedia("(grid:0)")</code>
 					</li>
 				</ul>
-				<code id="css_grid_support"></code>
+				<code class="language-json" id="css_grid_support"></code>
 			</section>
 
 			<section>
 				<h3>getFonts</h3>
 				<p>Checks for the presence of 65 different fonts from a predetermined list. This could be used to detect your platform. For example, Wingdings is only on Windows.</p>
-				<code id="getFonts"></code>
+				<code class="language-json" id="getFonts"></code>
 			</section>
 
 			<section>
 				<h3><abbr data-tooltip="Timezone Offset">TO</abbr></h3>
 				<p>Checks your timezone. This can be correlated with the approximate location of your IP address.</p>
-				<code id="getTimezone"></code>
+				<code class="language-json" id="getTimezone"></code>
 			</section>
 
 			<section>
@@ -409,47 +416,47 @@
 				<p>Checks the existence of:</p>
 				<ul>
 					<li>
-						<pre>window.RTCPeerConnection</pre>
+						<code class="language-javascript">window.RTCPeerConnection</code>
 					</li>
 					<li>
-						<pre>window.mozRTCPeerConnection</pre>
+						<code class="language-javascript">window.mozRTCPeerConnection</code>
 					</li>
 					<li>
-						<pre>window.webkitRTCPeerConnection</pre>
+						<code class="language-javascript">window.webkitRTCPeerConnection</code>
 					</li>
 				</ul>
 				<p>And then stores the result in a number using bit shifting.</p>
-				<code id="rtc_peer_connection"></code>
+				<code class="language-json" id="rtc_peer_connection"></code>
 			</section>
 
 			<section>
 				<h3>jsbd</h3>
 				<ul>
 					<li>HL:
-						<pre>window.history.length</pre>
+						<code class="language-javascript">window.history.length</code>
 					</li>
 					<li>NCE:
-						<pre>navigator.cookieEnabled</pre>
+						<code class="language-javascript">navigator.cookieEnabled</code>
 					</li>
 					<li>DT:
-						<pre>document.title</pre>
+						<code class="language-javascript">document.title</code>
 					</li>
 					<li>NWD:
-						<pre>JSON.stringify(navigator.webdriver)</pre>
+						<code class="language-javascript">JSON.stringify(navigator.webdriver)</code>
 					</li>
 				</ul>
-				<code id="getJsbd"></code>
+				<code class="language-json" id="getJsbd"></code>
 			</section>
 
 			<section>
 				<h3>6a62b2a558</h3>
 				<p>Script version hash:</p>
-				<code>enforcement.<strong>6c9d6e9be9aa044cc5ce9548b4abe1b0</strong>.js</code>
+				<code>"enforcement.<strong>6c9d6e9be9aa044cc5ce9548b4abe1b0</strong>.js"</code>
 			</section>
 
 			<section>
 				<h3>4b4b269e68</h3>
-				<p>Random UUID</p>
+				<p>Random UUID:</p>
 				<code class="language-javascript">crypto.randomUUID();</code>
 			</section>
 
@@ -457,6 +464,87 @@
 				<h3>c8480e29a</h3>
 				<p>MD5 hashed surl.</p>
 				<code class="language-javascript">md5(surl) + (surl ? "\u2062" : "\u2063")</code>
+			</section>
+
+			<section>
+				<h3>4ca87df3d1</h3>
+				<p>mbio mouse events. See the <a href="./mouse.html">events page</a> for more details.</p>
+				<!-- prettier-ignore -->
+
+				<code class="language-javascript">function insertEvent() {
+	const n = {
+		timestamp: Date.now() - Qt.timestamp,
+		type: e,
+		x: m.pageX,
+		y: m.pageY,
+	};
+	Qt["4ca87df3d1"].push(n);
+	_lastMouseMove = n;
+}
+
+if (Qt["4ca87df3d1"].length < 75) {
+	if (e === 0) {
+		if (_lastMouseMove) {
+			if (Math.sqrt((m.pageX - _lastMouseMove.x) * (m.pageX - _lastMouseMove.x) + (m.pageY - _lastMouseMove.y) * (m.pageY - _lastMouseMove.y)) > 5) {
+				insertEvent();
+			}
+			return;
+		} else {
+			insertEvent();
+			return;
+		}
+	}
+	Qt["4ca87df3d1"].push({
+		timestamp: Date.now() - Qt.timestamp,
+		type: e,
+		x: m.pageX,
+		y: m.pageY,
+	});
+}</code>
+			</section>
+
+			<section>
+				<h3>867e25e5d4</h3>
+				<p>mbio touch events. See the <a href="./mouse.html">events page</a> for more details.</p>
+				<!-- prettier-ignore -->
+				<code class="language-javascript">for (let i = 0; i < v.touches.length; i += 1) {
+if (Qt["867e25e5d4"].length < 75) {
+	Qt["867e25e5d4"].push({
+		timestamp: Date.now() - Qt.timestamp,
+		type: e,
+		x: Math.floor(v.touches[i].pageX),
+		y: Math.floor(v.touches[i].pageY),
+	});
+}
+		}</code>
+			</section>
+
+			<section>
+				<h3>d4a306884c</h3>
+				<p>mbio key events. See the <a href="./mouse.html">events page</a> for more details.</p>
+				<!-- prettier-ignore -->
+				<code class="language-javascript">const keyboardEventTypes = {
+	Tab: 0,
+	Enter: 1,
+	Space: 3,
+	ShiftLeft: 4,
+	ShiftRight: 5,
+	ControlLeft: 6,
+	ControlRight: 7,
+	MetaLeft: 8,
+	MetaRight: 9,
+	AltLeft: 10,
+	AltRight: 11,
+	Backspace: 12,
+	Escape: 13,
+};
+if (Qt.d4a306884c.length < 75) {
+	Qt.d4a306884c.push({
+		timestamp: Date.now() - Qt.timestamp,
+		type: e,
+		code: keyboardEventTypes[A.code] ?? 14,
+	});
+}</code>
 			</section>
 		</main>
 
@@ -469,8 +557,7 @@
 
 	<script>
 		const tocItem = document.getElementById("toc");
-		document.querySelectorAll("code").forEach(item => {
-			const currentTitle = item.parentElement.querySelector("h3");
+		document.querySelectorAll("main h3").forEach(currentTitle => {
 			const titleId = `h_${currentTitle.textContent.replaceAll(" ", "_")}`;
 			currentTitle.id = titleId;
 
@@ -478,15 +565,14 @@
 			listItem.innerHTML = `<a href="#${titleId}">${currentTitle.textContent}</a>`;
 			tocItem.appendChild(listItem);
 		});
+
+
 	</script>
-
-	<script>hljs.highlightAll();</script>
-
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js" integrity="sha512-8pbzenDolL1l5OPSsoURCx9TEdMFTaeFipASVrMYKhuYtly+k3tcsQYliOEKTmuB1t7yuzAiVo+yd7SJz+ijFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/murmurhash3js/3.0.1/murmurhash3js.min.js" integrity="sha512-HCmS85fXMOkBrVzhJwv5ULIWC6ajmqSJ/JRNJEnD8blyvlSLjcAdlERQR5fazd3Iey5QfftJaFfUW5JiXTDhbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script type="module">
-		const UPDATE_TIME = 1716095301732;
+		const UPDATE_TIME = 1721709277870;
 
 		document.getElementById("updateTime").textContent = new Date(UPDATE_TIME).toLocaleString();
 
@@ -496,10 +582,7 @@
 		 */
 		function setOutputBox(id, contents) {
 			try {
-				document.getElementById(id).innerHTML = hljs.highlight(
-					JSON.stringify(contents, null, 4),
-					{language: "json"},
-				).value;
+				document.getElementById(id).textContent = JSON.stringify(contents, null, 4);
 			}
 			catch(err) {
 				console.error(err);
@@ -578,6 +661,8 @@
 				// enforcement url id
 			}
 			console.groupEnd();
+
+			hljs.highlightAll();
 		});
 
 		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L910-L969
