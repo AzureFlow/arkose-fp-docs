@@ -1,11 +1,11 @@
 <html lang="en">
 <head>
-	<title>Arkose Mouse Test</title>
+	<title>Arkose Biometrics Playground</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
 
-	<link rel="icon" type="image/png" href="https://www.arkoselabs.com/favicon.ico"/>
+	<link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/ip3/arkoselabs.com.ico"/>
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
@@ -17,49 +17,119 @@
             min-height: 70vh;
             max-height: 70vh;
         }
+
+        .copyBtn {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            width: 100%;
+        }
 	</style>
 </head>
 <body>
 	<div class="container">
 		<header>
-			<h1>Arkose Mouse Collector</h1>
+			<h1>Arkose Biometrics Collector</h1>
 		</header>
 
 		<section>
 			<ol>
 				<li>75 events will be collected as part of the bda (4ca87df3d1).</li>
-				<li>150 events will be collected for answer submission as part of mbio.</li>
+				<li>150<sup>*</sup> events will be collected for answer submission as part of mbio.</li>
 			</ol>
 
+
 			<div role="group">
-				<input id="maxEvents" name="maxEvents" type="number" placeholder="150" value="75" aria-label="max events">
+				<button class="secondary" type="button" id="bdaBtn">BDA Preset</button>
+				<button class="secondary" type="button" id="mbioBtn">mbio Preset</button>
 				<button type="button" id="resetBtn">Reset</button>
 			</div>
-			<label>
-				<input id="enabled" name="enabled" type="checkbox" role="switch" checked/>
-				Collect
-			</label>
 		</section>
 
 		<hr>
 
-		<fieldset class="grid">
-			<div>
-				<code style="width: 100%" id="output"></code>
-				<button style="border-top-left-radius: 0; border-top-right-radius: 0; width: 100%" type="button" id="copyBtn1">Copy to Clipboard 📋</button>
-			</div>
-			<div>
-				<code style="width: 100%" id="outputFormatted"></code>
-				<button style="border-top-left-radius: 0; border-top-right-radius: 0; width: 100%" type="button" id="copyBtn2">Copy to Clipboard 📋</button>
-			</div>
-		</fieldset>
+		<details open>
+			<summary role="button" class="secondary">Mouse</summary>
+			<label>
+				Max Events:
+				<input id="maxMouseEvents" type="number" placeholder="150" value="75" aria-label="max events">
+			</label>
+			<label>
+				<input id="mouseEnabled" type="checkbox" role="switch" checked/>
+				Collect
+			</label>
+			<fieldset class="grid">
+				<div>
+					<code style="width: 100%" id="outputMouse"></code>
+					<button class="copyBtn" data-target="outputMouse" type="button">Copy to Clipboard 📋</button>
+				</div>
+				<div>
+					<code style="width: 100%" id="outputMouseFormatted"></code>
+					<button class="copyBtn" data-target="outputMouseFormatted" type="button">Copy to Clipboard 📋</button>
+				</div>
+			</fieldset>
+		</details>
+
+		<details>
+			<summary role="button" class="secondary">Keyboard</summary>
+			<label>
+				Max Events:
+				<input id="maxKeyEvents" type="number" placeholder="50" value="75" aria-label="max events">
+			</label>
+			<label>
+				<input id="keyEnabled" type="checkbox" role="switch" checked/>
+				Collect
+			</label>
+			<fieldset class="grid">
+				<div>
+					<code style="width: 100%" id="outputKeyboard"></code>
+					<button class="copyBtn" data-target="outputKeyboard" type="button">Copy to Clipboard 📋</button>
+				</div>
+				<div>
+					<code style="width: 100%" id="outputKeyboardFormatted"></code>
+					<button class="copyBtn" data-target="outputKeyboardFormatted" type="button">Copy to Clipboard 📋</button>
+				</div>
+			</fieldset>
+		</details>
+
+		<details>
+			<summary role="button" class="secondary">Touch</summary>
+			<label>
+				Max Events:
+				<input id="maxTouchEvents" type="number" placeholder="150" value="75" aria-label="max events">
+			</label>
+			<label>
+				<input id="touchEnabled" type="checkbox" role="switch" checked/>
+				Collect
+			</label>
+			<fieldset class="grid">
+				<div>
+					<code style="width: 100%" id="outputTouch"></code>
+					<button class="copyBtn" data-target="outputTouch" type="button">Copy to Clipboard 📋</button>
+				</div>
+				<div>
+					<code style="width: 100%" id="outputTouchFormatted"></code>
+					<button class="copyBtn" data-target="outputTouchFormatted" type="button">Copy to Clipboard 📋</button>
+				</div>
+			</fieldset>
+		</details>
 	</div>
 
 	<script>
-		const outputElement = document.getElementById("output");
-		const outputFormattedElement = document.getElementById("outputFormatted");
-		const enabledElement = document.getElementById("enabled");
-		const maxEventsElement = document.getElementById("maxEvents");
+		const outputMouseElement = document.getElementById("outputMouse");
+		const outputMouseFormattedElement = document.getElementById("outputMouseFormatted");
+		const mouseEnabledElement = document.getElementById("mouseEnabled");
+		const maxMouseEventsElement = document.getElementById("maxMouseEvents");
+
+		const outputKeyElement = document.getElementById("outputKeyboard");
+		const outputKeyFormattedElement = document.getElementById("outputKeyboardFormatted");
+		const keyEnabledElement = document.getElementById("keyEnabled");
+		const maxKeyEventsElement = document.getElementById("maxKeyEvents");
+
+		const outputTouchElement = document.getElementById("outputTouch");
+		const outputTouchFormattedElement = document.getElementById("outputTouchFormatted");
+		const touchEnabledElement = document.getElementById("touchEnabled");
+		const maxTouchEventsElement = document.getElementById("maxTouchEvents");
+
 
 		const MouseEvents = Object.freeze({
 			Move: 0,
@@ -67,21 +137,62 @@
 			Up: 2,
 		});
 
+		const KeyEvents = Object.freeze({
+			Down: 0,
+			Up: 1,
+		});
+
+		const TouchEvents = Object.freeze({
+			Start: 0,
+			End: 1,
+			Move: 2,
+			Cancel: 99,
+		});
+
+		const AllowedKeys = Object.freeze({
+			Tab: 0,
+			Enter: 1,
+			Space: 3,
+			ShiftLeft: 4,
+			ShiftRight: 5,
+			ControlLeft: 6,
+			ControlRight: 7,
+			MetaLeft: 8,
+			MetaRight: 9,
+			AltLeft: 10,
+			AltRight: 11,
+			Backspace: 12,
+			Escape: 13,
+			Default: 14,
+		});
+
 		let mouseEvents;
 		let touchEvents;
 		let keyPressEvents;
-		let timestamp;
+		let startTimestamp;
 		let _lastMouseMove;
 
 		function reset() {
+			startTimestamp = Date.now();
+
 			mouseEvents = [];
-			touchEvents = [];
-			keyPressEvents = [];
-			timestamp = Date.now();
 			_lastMouseMove = undefined;
-			outputElement.textContent = "";
-			outputFormattedElement.textContent = "";
-			enabledElement.checked = true;
+			outputMouseElement.textContent = "";
+			outputMouseFormattedElement.textContent = "";
+			mouseEnabledElement.checked = true;
+			mouseEnabledElement.disabled = false;
+
+			keyPressEvents = [];
+			outputKeyElement.textContent = "";
+			outputKeyFormattedElement.textContent = "";
+			keyEnabledElement.checked = true;
+			keyEnabledElement.disabled = false;
+
+			touchEvents = [];
+			outputTouchElement.textContent = "";
+			outputTouchFormattedElement.textContent = "";
+			touchEnabledElement.checked = true;
+			touchEnabledElement.disabled = false;
 		}
 
 		reset();
@@ -93,33 +204,43 @@
 
 		const MOUSE_THRESHOLD = 5;
 
-		let moveEventHandler = recordMouseEventFactory(MouseEvents.Move);
-		document.addEventListener("mousemove", moveEventHandler);
-		let downEventHandler = recordMouseEventFactory(MouseEvents.Down);
-		document.addEventListener("mousedown", downEventHandler);
-		let upEventHandler = recordMouseEventFactory(MouseEvents.Up);
-		document.addEventListener("mouseup", upEventHandler);
+		document.addEventListener("mousemove", recordMouseEventFactory(MouseEvents.Move));
+		document.addEventListener("mousedown", recordMouseEventFactory(MouseEvents.Down));
+		document.addEventListener("mouseup", recordMouseEventFactory(MouseEvents.Up));
+
+		document.addEventListener("keydown", recordKeyPressEventFactory(KeyEvents.Down));
+		document.addEventListener("keyup", recordKeyPressEventFactory(KeyEvents.Up));
+
+		document.addEventListener("touchstart", recordTouchEventFactory(TouchEvents.Start), {
+			passive: false,
+		});
+		document.addEventListener("touchend", recordTouchEventFactory(TouchEvents.End), {
+			passive: false,
+		});
+		document.addEventListener("touchmove", recordTouchEventFactory(TouchEvents.Move), {
+			passive: false,
+		});
+		document.addEventListener("touchcancel", recordTouchEventFactory(TouchEvents.Cancel), {
+			passive: false,
+		});
 
 		function recordMouseEventFactory(mouseEventType) {
 			return function(mouseEvent) {
-				if(!enabledElement.checked) {
+				if(!mouseEnabledElement.checked) {
 					return;
 				}
 
-				const MAX_EVENTS = parseInt(maxEventsElement.value, 10);
+				const MAX_MOUSE_EVENTS = parseInt(maxMouseEventsElement.value, 10);
 
-				if(mouseEvents.length >= MAX_EVENTS) {
-					enabledElement.checked = false;
-					// document.removeEventListener("mousemove", moveEventHandler);
-					// document.removeEventListener("mousedown", downEventHandler);
-					// document.removeEventListener("mouseup", upEventHandler);
+				if(mouseEvents.length >= MAX_MOUSE_EVENTS) {
+					mouseEnabledElement.checked = false;
+					mouseEnabledElement.disabled = true;
 					return;
 				}
-
 
 				function insertEvent() {
 					const eventObject = {
-						timestamp: Date.now() - timestamp,
+						timestamp: Date.now() - startTimestamp,
 						type: mouseEventType,
 						x: mouseEvent.pageX,
 						y: mouseEvent.pageY,
@@ -127,10 +248,10 @@
 					mouseEvents.push(eventObject);
 					_lastMouseMove = eventObject;
 
-					updateDisplay(eventObject);
+					updateDisplay(outputMouseElement, outputMouseFormattedElement, mouseEvents, `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};`);
 				}
 
-				if(mouseEvents.length <= MAX_EVENTS) {
+				if(mouseEvents.length <= MAX_MOUSE_EVENTS) {
 					if(mouseEventType === MouseEvents.Move) {
 						if(_lastMouseMove) {
 							// magnitude = sqrt(x*x + y*y)
@@ -149,34 +270,106 @@
 					}
 
 					const eventObject = {
-						timestamp: Date.now() - timestamp,
+						timestamp: Date.now() - startTimestamp,
 						type: mouseEventType,
 						x: mouseEvent.pageX,
 						y: mouseEvent.pageY,
 					};
 					mouseEvents.push(eventObject);
-					updateDisplay(eventObject);
+					updateDisplay(outputMouseElement, outputMouseFormattedElement, mouseEvents, `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};`);
 				}
 			};
 		}
 
-		function updateDisplay(eventObject) {
-			outputElement.textContent = JSON.stringify(mouseEvents, null, 4);
+		function recordKeyPressEventFactory(keyEventType) {
+			return function(keyEvent) {
+				if(!keyEnabledElement.checked) {
+					return;
+				}
+
+				// 75 on bda, 50 on mbio
+				const MAX_KEY_EVENTS = parseInt(maxKeyEventsElement.value, 10);
+
+				if(keyPressEvents.length >= MAX_KEY_EVENTS) {
+					keyEnabledElement.checked = false;
+					keyEnabledElement.disabled = true;
+					return;
+				}
+
+				if(keyPressEvents.length < MAX_KEY_EVENTS) {
+					const eventObject = {
+						timestamp: Date.now() - startTimestamp,
+						type: keyEventType,
+						code: AllowedKeys[keyEvent.code] ?? AllowedKeys.Default,
+					};
+					keyPressEvents.push(eventObject);
+
+					updateDisplay(outputKeyElement, outputKeyFormattedElement, keyPressEvents, `${eventObject.timestamp},${eventObject.type},${eventObject.code};`);
+				}
+			};
+		}
+
+		function recordTouchEventFactory(touchEventType) {
+			return function(touchEvent) {
+				if(!touchEnabledElement.checked) {
+					return;
+				}
+
+				// 75 on bda, 150 on mbio
+				const MAX_TOUCH_EVENTS = parseInt(maxTouchEventsElement.value, 10);
+
+				if(touchEvents.length >= MAX_TOUCH_EVENTS) {
+					touchEnabledElement.checked = false;
+					touchEnabledElement.disabled = true;
+					return;
+				}
+
+				for(let i = 0; i < touchEvent.touches.length; i++) {
+					if(touchEvents.length < MAX_TOUCH_EVENTS) {
+						const eventObject = {
+							timestamp: Date.now() - startTimestamp,
+							type: touchEventType,
+							x: Math.floor(touchEvent.touches[i].pageX),
+							y: Math.floor(touchEvent.touches[i].pageY),
+						};
+						touchEvents.push(eventObject);
+
+						updateDisplay(outputTouchElement, outputTouchFormattedElement, touchEvents, `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};`);
+					}
+				}
+			};
+		}
+
+		function updateDisplay(outputElement, outputFormattedElement, allEvents, stringify) {
+			outputElement.textContent = JSON.stringify(allEvents, null, 4);
 			outputElement.scrollTop = 900000;
 
-			outputFormattedElement.textContent += `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};\n`;
+			outputFormattedElement.textContent += `${stringify}\n`;
 			outputFormattedElement.scrollTop = 900000;
 		}
 
-		document.getElementById("copyBtn1").addEventListener("click", (evt) => {
+		document.getElementById("bdaBtn").addEventListener("click", (evt) => {
 			evt.preventDefault();
-			copyToClipboard(JSON.stringify(mouseEvents));
+			maxMouseEventsElement.value = "75";
+			maxKeyEventsElement.value = "75";
+			maxTouchEventsElement.value = "75";
+		});
+		document.getElementById("mbioBtn").addEventListener("click", (evt) => {
+			evt.preventDefault();
+			maxMouseEventsElement.value = "150";
+			maxKeyEventsElement.value = "50";
+			maxTouchEventsElement.value = "150";
 		});
 
-		document.getElementById("copyBtn2").addEventListener("click", (evt) => {
-			evt.preventDefault();
-			copyToClipboard(outputFormattedElement.textContent.replaceAll("\n", ""));
-		});
+		const copyButtons = document.getElementsByClassName("copyBtn");
+		for(const copyButton of copyButtons) {
+			copyButton.addEventListener("click", (evt) => {
+				evt.preventDefault();
+				const targetId = copyButton.getAttribute("data-target");
+				const text = document.getElementById(targetId).textContent;
+				copyToClipboard(text);
+			});
+		}
 
 		function copyToClipboard(text) {
 			const textArea = document.createElement("textarea");
