@@ -1,0 +1,230 @@
+<html lang="en">
+<head>
+	<title>Arkose BDA Decoder</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+
+	<link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/ip3/arkoselabs.com.ico"/>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/nord.min.css" integrity="sha512-U/cZqAAOThvb4J9UCt/DWkkjoJWHXvutFDS/nZmZlirci2ZMuH6qFokOQDuuKgE7pXD+FmhDNH2jT43x0GreCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        code {
+            white-space: pre-wrap;
+
+            overflow-y: scroll;
+            min-height: 90vh;
+            max-height: 90vh;
+        }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>BDA Decoder</h1>
+		</header>
+
+		<div class="grid">
+			<div>
+				<label>
+					x-ark-esync-value:
+					<input id="timestampInput" type="number" placeholder="1700000000" aria-label="max events">
+				</label>
+
+				<label>
+					User Agent:
+					<input id="userAgentInput" placeholder="Mozilla/5.0..." aria-label="user agent">
+				</label>
+
+				<label>
+					Encrypted Payload:
+					<textarea id="inputContent" rows="10" placeholder="eyJjdCI6I..." style="width: 100%"></textarea>
+				</label>
+			</div>
+			<div>
+				<label>
+					Decrypted Payload:
+					<code style="width: 100%" id="outputContent"></code>
+				</label>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/js-md5@0.8.3/build/md5.min.js" integrity="sha512-Vspwtv6dGEzathjxMiV7hNvO1ZSKSAho+dtQieeqCgsmepPEukPl6WBsLCho0OMu2UieR5OC4AsPT7bD+E3InA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>
+		const timestampInputElement = document.getElementById("timestampInput");
+		const userAgentInputElement = document.getElementById("userAgentInput");
+		const inputContentElement = document.getElementById("inputContent");
+		const outputContentElement = document.getElementById("outputContent");
+
+		timestampInputElement.value = Date.now().toString();
+		userAgentInputElement.value = navigator.userAgent;
+
+		async function changeEventHandler() {
+			try {
+				const cipherObject = JSON.parse(atob(inputContentElement.value));
+				const userAgent = userAgentInputElement.value;
+				let timestamp = parseInt(timestampInputElement.value, 10);
+				timestamp = timestampInputElement.value.length > 10 ? timestamp : timestamp * 1000;
+
+				console.log("Attempting to decrypt with:", {
+					cipherObject,
+					userAgent,
+					timestamp,
+				});
+
+				const decryptedBda = await decryptSensor({
+					cipherObject,
+					userAgent,
+					timestamp,
+				});
+
+				outputContentElement.innerHTML = hljs.highlight(
+					JSON.stringify(decryptedBda, null, 4),
+					{language: "json"},
+				).value;
+			}
+			catch(err) {
+				console.error("Failed to decrypt with these values.");
+			}
+		}
+
+		timestampInputElement.addEventListener("input", changeEventHandler);
+		userAgentInputElement.addEventListener("input", changeEventHandler);
+		inputContentElement.addEventListener("input", changeEventHandler);
+
+		const TIME_CONSTANT_VALUE = 21600;
+
+		/**
+		 * @param {CipherObject} cipherObject
+		 * @param {string} userAgent
+		 * @param {number} timestamp
+		 * @returns {Promise<object>}
+		 */
+		async function decryptSensor({cipherObject, userAgent, timestamp = Date.now()}) {
+			const timeFrame = timestamp / 1000;
+			const timeFrameKey = Math.floor(timeFrame - (timeFrame % TIME_CONSTANT_VALUE));
+
+			return decrypt({
+				cipherObject,
+				key: userAgent + timeFrameKey,
+			});
+		}
+
+		/**
+		 * @typedef {object} CipherObject
+		 * @property {string} ct Encrypted content in base64.
+		 * @property {string} s Salt in hex.
+		 * @property {string} iv IV in hex.
+		 */
+
+		/**
+		 * @param {CipherObject} cipherObject
+		 * @param {string} key
+		 * @param {boolean} [isObject]
+		 * @returns {Promise<string|object>}
+		 */
+		async function decrypt({cipherObject, key, isObject = true}) {
+			if(cipherObject === undefined || cipherObject.ct === undefined || cipherObject.s === undefined || cipherObject.iv === undefined) {
+				throw new TypeError("Malformed encryption data");
+			}
+
+			if(!key) {
+				throw new TypeError("Invalid encryption key");
+			}
+
+			const ciphertextBytes = fromBase64(cipherObject.ct);
+			const saltBytes = fromHex(cipherObject.s);
+			const iv = fromHex(cipherObject.iv);
+
+			const derivedKey = EVP_BytesToKey(key, saltBytes, 32, 16);
+			const importedKey = await crypto.subtle.importKey(
+				"raw",
+				derivedKey.key,
+				{
+					name: "AES-CBC",
+				},
+				false,
+				["decrypt"],
+			);
+
+			const decrypted = await crypto.subtle.decrypt(
+				{
+					name: "AES-CBC",
+					iv: iv,
+				},
+				importedKey,
+				ciphertextBytes,
+			);
+
+			const plainText = new TextDecoder().decode(decrypted);
+
+			if(isObject) {
+				return JSON.parse(plainText);
+			}
+
+			return plainText;
+		}
+
+		/**
+		 * @param {string} password
+		 * @param {Uint8Array} saltBuffer
+		 * @param {number} keyLen
+		 * @param {number} ivLen
+		 * @returns {{iv: Uint8Array, key: Uint8Array}}
+		 */
+		function EVP_BytesToKey(password, saltBuffer, keyLen, ivLen) {
+			const passwordBuffer = new TextEncoder().encode(password);
+
+			if(saltBuffer.length !== 8) {
+				throw new RangeError("salt should be Buffer with 8 byte length");
+			}
+
+			let keyIv = new Uint8Array(0);
+			while(keyIv.length < (keyLen + ivLen)) {
+				const data = new Uint8Array([...keyIv, ...passwordBuffer, ...saltBuffer]);
+				// const hash = crypto.createHash("md5").update(data).digest();
+				const hash = md5.arrayBuffer(data);
+				keyIv = new Uint8Array([...keyIv, ...new Uint8Array(hash)]);
+			}
+
+			const key = keyIv.slice(0, keyLen);
+			const iv = keyIv.slice(keyLen, keyLen + ivLen);
+
+			return {key, iv};
+		}
+
+		/**
+		 * @param {string} base64String
+		 * @returns {Uint8Array}
+		 */
+		function fromBase64(base64String) {
+			const binaryString = atob(base64String);
+			const bytes = new Uint8Array(binaryString.length);
+
+			for(let i = 0; i < binaryString.length; i++) {
+				bytes[i] = binaryString.charCodeAt(i);
+			}
+
+			return bytes;
+		}
+
+		/**
+		 * @param {string} hexString
+		 * @returns {Uint8Array}
+		 */
+		function fromHex(hexString) {
+			return Uint8Array.from(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
+		}
+	</script>
+</body>
+</html>
