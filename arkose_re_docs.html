@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
 
-	<link rel="icon" type="image/png" href="https://www.arkoselabs.com/favicon.ico"/>
+	<link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/ip3/arkoselabs.com.ico"/>
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
@@ -36,6 +36,10 @@
             max-height: 50vh;
         }
 
+		.hljs {
+			background: var(--pico-code-background-color);
+		}
+
         code.hljs {
             padding: 10px 10px;
         }
@@ -57,6 +61,7 @@
 				<p>View the DevTools console for more details (Ctrl+Shift+I).</p>
 				<p>See also:</p>
 				<ul>
+					<li><a href="./decrypt.html">Payload decrypter</a></li>
 					<li><a href="./mouse.html">Mouse data</a></li>
 					<li><a href="./breaker.html">Breaker v2 (tguess)</a></li>
 					<li><a href="https://gist.github.com/AzureFlow/38788d6ee3eb5b2b811f88415bfa8d78">Arkose Mobile SDK fingerprint docs</a></li>
@@ -508,15 +513,15 @@ if (Qt["4ca87df3d1"].length < 75) {
 				<p>mbio touch events. See the <a href="./mouse.html">events page</a> for more details.</p>
 				<!-- prettier-ignore -->
 				<code class="language-javascript">for (let i = 0; i < v.touches.length; i += 1) {
-if (Qt["867e25e5d4"].length < 75) {
-	Qt["867e25e5d4"].push({
-		timestamp: Date.now() - Qt.timestamp,
-		type: e,
-		x: Math.floor(v.touches[i].pageX),
-		y: Math.floor(v.touches[i].pageY),
-	});
-}
-		}</code>
+	if (Qt["867e25e5d4"].length < 75) {
+		Qt["867e25e5d4"].push({
+			timestamp: Date.now() - Qt.timestamp,
+			type: e,
+			x: Math.floor(v.touches[i].pageX),
+			y: Math.floor(v.touches[i].pageY),
+		});
+	}
+}</code>
 			</section>
 
 			<section>
