@@ -64,7 +64,7 @@
 					<li><a href="./decrypt.html">Payload decrypter</a></li>
 					<li><a href="./mouse.html">Mouse data</a></li>
 					<li><a href="./breaker.html">Breaker v2 (tguess)</a></li>
-					<li><a href="https://gist.github.com/AzureFlow/38788d6ee3eb5b2b811f88415bfa8d78">Arkose Mobile SDK fingerprint docs</a></li>
+					<li><a href="https://gist.github.com/AzureFlow/38788d6ee3eb5b2b811f88415bfa8d78">Arkose Mobile SDK (Android) fingerprint docs</a></li>
 				</ul>
 				<p>This page was lasted updated <span id="updateTime">[loading...]</span>.</p>
 			</div>
@@ -454,25 +454,25 @@
 			</section>
 
 			<section>
-				<h3>6a62b2a558</h3>
+				<h3><abbr data-tooltip="Script Version">6a62b2a558</abbr></h3>
 				<p>Script version hash:</p>
 				<code>"enforcement.<strong>6c9d6e9be9aa044cc5ce9548b4abe1b0</strong>.js"</code>
 			</section>
 
 			<section>
-				<h3>4b4b269e68</h3>
+				<h3><abbr data-tooltip="Session UUID">4b4b269e68</abbr></h3>
 				<p>Random UUID:</p>
 				<code class="language-javascript">crypto.randomUUID();</code>
 			</section>
 
 			<section>
-				<h3>c8480e29a</h3>
+				<h3><abbr data-tooltip="Hashed Client URL">c8480e29a</abbr></h3>
 				<p>MD5 hashed surl.</p>
 				<code class="language-javascript">md5(surl) + (surl ? "\u2062" : "\u2063")</code>
 			</section>
 
 			<section>
-				<h3>4ca87df3d1</h3>
+				<h3><abbr data-tooltip="Mouse Events">4ca87df3d1</abbr></h3>
 				<p>mbio mouse events. See the <a href="./mouse.html">events page</a> for more details.</p>
 				<!-- prettier-ignore -->
 
@@ -509,7 +509,7 @@ if (Qt["4ca87df3d1"].length < 75) {
 			</section>
 
 			<section>
-				<h3>867e25e5d4</h3>
+				<h3><abbr data-tooltip="Touch Events">867e25e5d4</abbr></h3>
 				<p>mbio touch events. See the <a href="./mouse.html">events page</a> for more details.</p>
 				<!-- prettier-ignore -->
 				<code class="language-javascript">for (let i = 0; i < v.touches.length; i += 1) {
@@ -525,7 +525,7 @@ if (Qt["4ca87df3d1"].length < 75) {
 			</section>
 
 			<section>
-				<h3>d4a306884c</h3>
+				<h3><abbr data-tooltip="Keyboard Events">d4a306884c</abbr></h3>
 				<p>mbio key events. See the <a href="./mouse.html">events page</a> for more details.</p>
 				<!-- prettier-ignore -->
 				<code class="language-javascript">const keyboardEventTypes = {
