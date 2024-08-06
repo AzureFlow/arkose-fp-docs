@@ -36,12 +36,26 @@
             max-height: 50vh;
         }
 
-		.hljs {
-			background: var(--pico-code-background-color);
-		}
+        .hljs {
+            background: var(--pico-code-background-color);
+        }
 
         code.hljs {
             padding: 10px 10px;
+        }
+
+        h3 .anchor {
+            user-select: none;
+
+            padding-left: calc(var(--pico-spacing) * .5);
+            font-weight: 400;
+            text-decoration: none;
+            opacity: 0;
+            transition: color var(--pico-transition) opacity var(--pico-transition);
+        }
+
+        h3:hover .anchor {
+            opacity: 1;
         }
 	</style>
 </head>
@@ -171,21 +185,21 @@
 			<section>
 				<h3>navigator_pdf_viewer_enabled</h3>
 				Checks:
-				<code class="language-javascript">navigator.pdfViewerEnabled</code>
+				<code class="language-javascript">navigator.pdfViewerEnabled;</code>
 				<code class="language-json" id="navigator_pdf_viewer_enabled"></code>
 			</section>
 
 			<section>
 				<h3>user_agent_data_brands</h3>
 				Checks:
-				<code class="language-javascript">navigator.userAgentData.brands</code>
+				<code class="language-javascript">navigator.userAgentData.brands;</code>
 				<code class="language-json" id="user_agent_data_brands"></code>
 			</section>
 
 			<section>
 				<h3>user_agent_data_mobile</h3>
 				Checks:
-				<code class="language-javascript">navigator.userAgentData.mobile</code>
+				<code class="language-javascript">navigator.userAgentData.mobile;</code>
 				<code class="language-json" id="user_agent_data_mobile"></code>
 			</section>
 
@@ -306,7 +320,7 @@
 			<section>
 				<h3>media_query_dark_mode</h3>
 				<p>Queries for dark mode.</p>
-				<code class="language-javascript">matchMedia("(prefers-color-scheme: dark)").matches</code>
+				<code class="language-javascript">matchMedia("(prefers-color-scheme: dark)").matches;</code>
 				<code class="language-javascript" id="media_query_dark_mode"></code>
 			</section>
 
@@ -314,10 +328,10 @@
 				<h3>css_media_queries</h3>
 				<ul>
 					<li>
-						<code class="language-javascript">matchMedia("(prefers-color-scheme:light)")</code>
+						<code class="language-javascript">matchMedia("(prefers-color-scheme:light)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(prefers-color-scheme:dark)")</code>
+						<code class="language-javascript">matchMedia("(prefers-color-scheme:dark)");</code>
 					</li>
 				</ul>
 				<code class="language-json" id="css_media_queries"></code>
@@ -328,13 +342,13 @@
 				<p>Checks what color gamuts are supported.</p>
 				<ul>
 					<li>
-						<code class="language-javascript">matchMedia("(color-gamut:rec2020)")</code>
+						<code class="language-javascript">matchMedia("(color-gamut:rec2020)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(color-gamut:p3)")</code>
+						<code class="language-javascript">matchMedia("(color-gamut:p3)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(color-gamut:srgb)")</code>
+						<code class="language-javascript">matchMedia("(color-gamut:srgb)");</code>
 					</li>
 				</ul>
 				<code class="language-json" id="css_color_gamut"></code>
@@ -345,22 +359,22 @@
 				<p>Checks user's contrast preference.</p>
 				<ul>
 					<li>
-						<code class="language-javascript">matchMedia("(prefers-contrast:low)")</code>
+						<code class="language-javascript">matchMedia("(prefers-contrast:low)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(prefers-contrast:less)")</code>
+						<code class="language-javascript">matchMedia("(prefers-contrast:less)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(prefers-contrast:no-preference)")</code>
+						<code class="language-javascript">matchMedia("(prefers-contrast:no-preference)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(prefers-contrast:more)")</code>
+						<code class="language-javascript">matchMedia("(prefers-contrast:more)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(prefers-contrast:high)")</code>
+						<code class="language-javascript">matchMedia("(prefers-contrast:high)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(prefers-contrast:forced)")</code>
+						<code class="language-javascript">matchMedia("(prefers-contrast:forced)");</code>
 					</li>
 				</ul>
 				<code class="language-json" id="css_contrast"></code>
@@ -376,16 +390,17 @@
 				<h3>css_pointer</h3>
 				<ul>
 					<li>
-						<code class="language-javascript">matchMedia("(any-pointer:1)")</code>
+						<code class="language-javascript">matchMedia("(any-pointer:1)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(any-pointer:coarse)")</code>
+						<code class="language-javascript">matchMedia("(any-pointer:coarse)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(any-pointer:none")")</code>
+						<code class="language-javascript">matchMedia("(any-pointer:none");
+						")</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(any-pointer:fine)")</code>
+						<code class="language-javascript">matchMedia("(any-pointer:fine)");</code>
 					</li>
 				</ul>
 				<code class="language-json" id="css_pointer"></code>
@@ -395,10 +410,10 @@
 				<h3>css_grid_support</h3>
 				<ul>
 					<li>
-						<code class="language-javascript">matchMedia("(grid:1)")</code>
+						<code class="language-javascript">matchMedia("(grid:1)");</code>
 					</li>
 					<li>
-						<code class="language-javascript">matchMedia("(grid:0)")</code>
+						<code class="language-javascript">matchMedia("(grid:0)");</code>
 					</li>
 				</ul>
 				<code class="language-json" id="css_grid_support"></code>
@@ -421,13 +436,13 @@
 				<p>Checks the existence of:</p>
 				<ul>
 					<li>
-						<code class="language-javascript">window.RTCPeerConnection</code>
+						<code class="language-javascript">window.RTCPeerConnection;</code>
 					</li>
 					<li>
-						<code class="language-javascript">window.mozRTCPeerConnection</code>
+						<code class="language-javascript">window.mozRTCPeerConnection;</code>
 					</li>
 					<li>
-						<code class="language-javascript">window.webkitRTCPeerConnection</code>
+						<code class="language-javascript">window.webkitRTCPeerConnection;</code>
 					</li>
 				</ul>
 				<p>And then stores the result in a number using bit shifting.</p>
@@ -438,16 +453,16 @@
 				<h3>jsbd</h3>
 				<ul>
 					<li>HL:
-						<code class="language-javascript">window.history.length</code>
+						<code class="language-javascript">window.history.length;</code>
 					</li>
 					<li>NCE:
-						<code class="language-javascript">navigator.cookieEnabled</code>
+						<code class="language-javascript">navigator.cookieEnabled;</code>
 					</li>
 					<li>DT:
-						<code class="language-javascript">document.title</code>
+						<code class="language-javascript">document.title;</code>
 					</li>
 					<li>NWD:
-						<code class="language-javascript">JSON.stringify(navigator.webdriver)</code>
+						<code class="language-javascript">JSON.stringify(navigator.webdriver);</code>
 					</li>
 				</ul>
 				<code class="language-json" id="getJsbd"></code>
@@ -456,7 +471,7 @@
 			<section>
 				<h3><abbr data-tooltip="Script Version">6a62b2a558</abbr></h3>
 				<p>Script version hash:</p>
-				<code>"enforcement.<strong>6c9d6e9be9aa044cc5ce9548b4abe1b0</strong>.js"</code>
+				<code>"enforcement.<strong>6c9d6e9be9aa044cc5ce9548b4abe1b0</strong>.js";</code>
 			</section>
 
 			<section>
@@ -468,7 +483,7 @@
 			<section>
 				<h3><abbr data-tooltip="Hashed Client URL">c8480e29a</abbr></h3>
 				<p>MD5 hashed surl.</p>
-				<code class="language-javascript">md5(surl) + (surl ? "\u2062" : "\u2063")</code>
+				<code class="language-javascript">md5(surl) + (surl ? "\u2062" : "\u2063");</code>
 			</section>
 
 			<section>
@@ -477,51 +492,52 @@
 				<!-- prettier-ignore -->
 
 				<code class="language-javascript">function insertEvent() {
-	const n = {
-		timestamp: Date.now() - Qt.timestamp,
-		type: e,
-		x: m.pageX,
-		y: m.pageY,
-	};
-	Qt["4ca87df3d1"].push(n);
-	_lastMouseMove = n;
-}
+					const n = {
+						timestamp: Date.now() - Qt.timestamp,
+						type: e,
+						x: m.pageX,
+						y: m.pageY,
+					};
+					Qt["4ca87df3d1"].push(n);
+					_lastMouseMove = n;
+				}
 
-if (Qt["4ca87df3d1"].length < 75) {
-	if (e === 0) {
-		if (_lastMouseMove) {
-			if (Math.sqrt((m.pageX - _lastMouseMove.x) * (m.pageX - _lastMouseMove.x) + (m.pageY - _lastMouseMove.y) * (m.pageY - _lastMouseMove.y)) > 5) {
-				insertEvent();
-			}
-			return;
-		} else {
-			insertEvent();
-			return;
-		}
-	}
-	Qt["4ca87df3d1"].push({
-		timestamp: Date.now() - Qt.timestamp,
-		type: e,
-		x: m.pageX,
-		y: m.pageY,
-	});
-}</code>
+				if(Qt["4ca87df3d1"].length < 75) {
+					if(e === 0) {
+						if(_lastMouseMove) {
+							if(Math.sqrt((m.pageX - _lastMouseMove.x) * (m.pageX - _lastMouseMove.x) + (m.pageY - _lastMouseMove.y) * (m.pageY - _lastMouseMove.y)) > 5) {
+								insertEvent();
+							}
+							return;
+						}
+						else {
+							insertEvent();
+							return;
+						}
+					}
+					Qt["4ca87df3d1"].push({
+						timestamp: Date.now() - Qt.timestamp,
+						type: e,
+						x: m.pageX,
+						y: m.pageY,
+					});
+				}</code>
 			</section>
 
 			<section>
 				<h3><abbr data-tooltip="Touch Events">867e25e5d4</abbr></h3>
 				<p>mbio touch events. See the <a href="./mouse.html">events page</a> for more details.</p>
 				<!-- prettier-ignore -->
-				<code class="language-javascript">for (let i = 0; i < v.touches.length; i += 1) {
-	if (Qt["867e25e5d4"].length < 75) {
-		Qt["867e25e5d4"].push({
-			timestamp: Date.now() - Qt.timestamp,
-			type: e,
-			x: Math.floor(v.touches[i].pageX),
-			y: Math.floor(v.touches[i].pageY),
-		});
-	}
-}</code>
+				<code class="language-javascript">for(let i = 0; i < v.touches.length; i += 1) {
+					if(Qt["867e25e5d4"].length < 75) {
+						Qt["867e25e5d4"].push({
+							timestamp: Date.now() - Qt.timestamp,
+							type: e,
+							x: Math.floor(v.touches[i].pageX),
+							y: Math.floor(v.touches[i].pageY),
+						});
+					}
+				}</code>
 			</section>
 
 			<section>
@@ -529,27 +545,27 @@ if (Qt["4ca87df3d1"].length < 75) {
 				<p>mbio key events. See the <a href="./mouse.html">events page</a> for more details.</p>
 				<!-- prettier-ignore -->
 				<code class="language-javascript">const keyboardEventTypes = {
-	Tab: 0,
-	Enter: 1,
-	Space: 3,
-	ShiftLeft: 4,
-	ShiftRight: 5,
-	ControlLeft: 6,
-	ControlRight: 7,
-	MetaLeft: 8,
-	MetaRight: 9,
-	AltLeft: 10,
-	AltRight: 11,
-	Backspace: 12,
-	Escape: 13,
-};
-if (Qt.d4a306884c.length < 75) {
-	Qt.d4a306884c.push({
-		timestamp: Date.now() - Qt.timestamp,
-		type: e,
-		code: keyboardEventTypes[A.code] ?? 14,
-	});
-}</code>
+					Tab: 0,
+					Enter: 1,
+					Space: 3,
+					ShiftLeft: 4,
+					ShiftRight: 5,
+					ControlLeft: 6,
+					ControlRight: 7,
+					MetaLeft: 8,
+					MetaRight: 9,
+					AltLeft: 10,
+					AltRight: 11,
+					Backspace: 12,
+					Escape: 13,
+				};
+				if(Qt.d4a306884c.length < 75) {
+					Qt.d4a306884c.push({
+						timestamp: Date.now() - Qt.timestamp,
+						type: e,
+						code: keyboardEventTypes[A.code] ?? 14,
+					});
+				}</code>
 			</section>
 		</main>
 
@@ -569,9 +585,14 @@ if (Qt.d4a306884c.length < 75) {
 			const listItem = document.createElement("li");
 			listItem.innerHTML = `<a href="#${titleId}">${currentTitle.textContent}</a>`;
 			tocItem.appendChild(listItem);
+
+			const anchorLink = document.createElement("a");
+			anchorLink.textContent = "#";
+			anchorLink.className = "anchor secondary";
+			anchorLink.href = `#${titleId}`;
+			anchorLink.tabIndex = -1;
+			currentTitle.appendChild(anchorLink);
 		});
-
-
 	</script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js" integrity="sha512-8pbzenDolL1l5OPSsoURCx9TEdMFTaeFipASVrMYKhuYtly+k3tcsQYliOEKTmuB1t7yuzAiVo+yd7SJz+ijFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
