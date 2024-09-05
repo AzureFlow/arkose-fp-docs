@@ -22,8 +22,10 @@
             white-space: pre-wrap;
 
             overflow-y: scroll;
-            min-height: 90vh;
-            max-height: 90vh;
+            min-height: 90%;
+            max-height: 90%;
+            /*min-height: 90vh;*/
+            /*max-height: 90vh;*/
         }
 	</style>
 </head>
@@ -33,30 +35,65 @@
 			<h1>BDA Decoder</h1>
 		</header>
 
-		<div class="grid">
-			<div>
-				<label>
-					x-ark-esync-value:
-					<input id="timestampInput" type="number" placeholder="1700000000" aria-label="max events">
-				</label>
+		<details open>
+			<summary role="button" class="secondary">BDA Encryption</summary>
+			<div class="grid">
+				<div>
+					<label>
+						x-ark-esync-value:
+						<input id="timestampInput" type="number" placeholder="1700000000" aria-label="max events">
+					</label>
 
-				<label>
-					User Agent:
-					<input id="userAgentInput" placeholder="Mozilla/5.0..." aria-label="user agent">
-				</label>
+					<label>
+						User Agent:
+						<input id="userAgentInput" placeholder="Mozilla/5.0..." aria-label="user agent">
+					</label>
 
-				<label>
-					Encrypted Payload:
-					<textarea id="inputContent" rows="10" placeholder="eyJjdCI6I..." style="width: 100%"></textarea>
-				</label>
+					<label>
+						Encrypted Payload:
+						<textarea id="inputContent" rows="10" placeholder="eyJjdCI6I..." style="width: 100%"></textarea>
+					</label>
+				</div>
+				<div>
+					<label>
+						Decrypted Payload:
+						<code style="width: 100%" id="outputContent"></code>
+					</label>
+				</div>
 			</div>
-			<div>
-				<label>
-					Decrypted Payload:
-					<code style="width: 100%" id="outputContent"></code>
-				</label>
+		</details>
+
+		<details open>
+			<summary role="button" class="secondary">Other Encryption</summary>
+
+			<label for="sessionGroup">
+				Session Token:
+			</label>
+			<fieldset role="group" id="sessionGroup">
+				<input id="sessionTokenInput" type="text" name="text" placeholder="00000000000000000.0000000000" aria-label="Session token">
+				<select id="encryptionTypeInput" aria-label="Default" required>
+					<option selected value="default_method">Default</option>
+					<option value="default_method">Guess</option>
+					<option value="default_method">TGuess</option>
+					<option value="requested_id_method">x-requested-id</option>
+				</select>
+			</fieldset>
+
+			<div class="grid">
+				<div>
+					<label>
+						Encrypted Payload:
+						<textarea id="miscInput" rows="4" placeholder="&lcub;&quot;ct&quot;&colon; &quot;&period;&period;&period;&quot;&comma; &quot;s&quot;&colon; &quot;&period;&period;&period;&quot;&comma; &quot;iv&quot;&colon; &quot;&period;&period;&period;&quot;&rcub;" style="width: 100%"></textarea>
+					</label>
+				</div>
+				<div>
+					<label>
+						Decrypted Payload:
+						<code style="width: 100%" id="miscOutputContent"></code>
+					</label>
+				</div>
 			</div>
-		</div>
+		</details>
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/js-md5@0.8.3/build/md5.min.js" integrity="sha512-Vspwtv6dGEzathjxMiV7hNvO1ZSKSAho+dtQieeqCgsmepPEukPl6WBsLCho0OMu2UieR5OC4AsPT7bD+E3InA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -65,6 +102,11 @@
 		const userAgentInputElement = document.getElementById("userAgentInput");
 		const inputContentElement = document.getElementById("inputContent");
 		const outputContentElement = document.getElementById("outputContent");
+
+		const sessionTokenElement = document.getElementById("sessionTokenInput");
+		const encryptionTypeElement = document.getElementById("encryptionTypeInput");
+		const miscInputElement = document.getElementById("miscInput");
+		const miscOutputContentElement = document.getElementById("miscOutputContent");
 
 		timestampInputElement.value = Date.now().toString();
 		userAgentInputElement.value = navigator.userAgent;
@@ -101,6 +143,45 @@
 		timestampInputElement.addEventListener("input", changeEventHandler);
 		userAgentInputElement.addEventListener("input", changeEventHandler);
 		inputContentElement.addEventListener("input", changeEventHandler);
+
+		async function changeEventHandlerDecryptMisc() {
+			try {
+				const encryptionMethod = encryptionTypeElement.value;
+				const sessionToken = sessionTokenElement.value;
+
+				let key;
+				switch(encryptionMethod) {
+					case "default_method":
+						key = sessionToken;
+						break;
+					case "requested_id_method":
+						key = `REQUESTED${sessionToken}ID`;
+						break;
+					default:
+						console.error("Unsupported encryption method");
+						return;
+				}
+
+				const cipherObject = JSON.parse(miscInputElement.value);
+
+				const decryptedPayload = await decrypt({
+					cipherObject,
+					key,
+				});
+
+				miscOutputContentElement.innerHTML = hljs.highlight(
+					JSON.stringify(decryptedPayload, null, 4),
+					{language: "json"},
+				).value;
+			}
+			catch(err) {
+				console.error("Failed to decrypt with these values.");
+			}
+		}
+
+		sessionTokenElement.addEventListener("input", changeEventHandlerDecryptMisc);
+		encryptionTypeElement.addEventListener("input", changeEventHandlerDecryptMisc);
+		miscInputElement.addEventListener("input", changeEventHandlerDecryptMisc);
 
 		const TIME_CONSTANT_VALUE = 21600;
 
