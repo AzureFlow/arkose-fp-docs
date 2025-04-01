@@ -79,6 +79,11 @@
 					<li><a href="./mouse.html">Mouse data</a></li>
 					<li><a href="./breaker.html">Breaker v2 (tguess)</a></li>
 					<li><a href="https://gist.github.com/AzureFlow/38788d6ee3eb5b2b811f88415bfa8d78">Arkose Mobile SDK (Android) fingerprint docs</a></li>
+					<ul>
+						<li><a href="https://gitlab.com/gitlab-org/gitlab/-/blob/master/ee/lib/arkose/data_exchange_payload.rb#L36">Blob information</a></li>
+						<li><a href="https://docs.gitlab.com/ee/integration/arkose.html">Arkose overview</a></li>
+						<li><a href="https://developer.arkoselabs.com/docs/">Arkose documentation</a></li>
+					</ul>
 				</ul>
 				<p>This page was lasted updated <span id="updateTime">[loading...]</span>.</p>
 			</div>
@@ -306,13 +311,13 @@
 			</section>
 
 			<section>
-				<h3><abbr data-tooltip="1l2l5234ar2">CDP Check</abbr></h3>
+				<h3><abbr data-tooltip="CDP Check">1l2l5234ar2</abbr></h3>
 				<p>Checks if you have DevTools open or are using Puppeteer.</p>
 				<code class="language-json" id="cdpCheck"></code>
 			</section>
 
 			<section>
-				<h3><abbr data-tooltip="29s83ih9">Sandbox Checks</abbr></h3>
+				<h3><abbr data-tooltip="Sandbox Checks">29s83ih9</abbr></h3>
 				<p>Checks for different sandbox environments such as JSDom.</p>
 				<code class="language-json" id="sandboxCheck"></code>
 			</section>
@@ -397,7 +402,7 @@
 					</li>
 					<li>
 						<code class="language-javascript">matchMedia("(any-pointer:none");
-						")</code>
+							")</code>
 					</li>
 					<li>
 						<code class="language-javascript">matchMedia("(any-pointer:fine)");</code>
@@ -493,35 +498,35 @@
 
 				<code class="language-javascript">function insertEvent() {
 					const n = {
-						timestamp: Date.now() - Qt.timestamp,
-						type: e,
-						x: m.pageX,
-						y: m.pageY,
+					timestamp: Date.now() - Qt.timestamp,
+					type: e,
+					x: m.pageX,
+					y: m.pageY,
 					};
 					Qt["4ca87df3d1"].push(n);
 					_lastMouseMove = n;
-				}
+					}
 
-				if(Qt["4ca87df3d1"].length < 75) {
+					if(Qt["4ca87df3d1"].length < 75) {
 					if(e === 0) {
-						if(_lastMouseMove) {
-							if(Math.sqrt((m.pageX - _lastMouseMove.x) * (m.pageX - _lastMouseMove.x) + (m.pageY - _lastMouseMove.y) * (m.pageY - _lastMouseMove.y)) > 5) {
-								insertEvent();
-							}
-							return;
-						}
-						else {
-							insertEvent();
-							return;
-						}
+					if(_lastMouseMove) {
+					if(Math.sqrt((m.pageX - _lastMouseMove.x) * (m.pageX - _lastMouseMove.x) + (m.pageY - _lastMouseMove.y) * (m.pageY - _lastMouseMove.y)) > 5) {
+					insertEvent();
+					}
+					return;
+					}
+					else {
+					insertEvent();
+					return;
+					}
 					}
 					Qt["4ca87df3d1"].push({
-						timestamp: Date.now() - Qt.timestamp,
-						type: e,
-						x: m.pageX,
-						y: m.pageY,
+					timestamp: Date.now() - Qt.timestamp,
+					type: e,
+					x: m.pageX,
+					y: m.pageY,
 					});
-				}</code>
+					}</code>
 			</section>
 
 			<section>
@@ -530,14 +535,14 @@
 				<!-- prettier-ignore -->
 				<code class="language-javascript">for(let i = 0; i < v.touches.length; i += 1) {
 					if(Qt["867e25e5d4"].length < 75) {
-						Qt["867e25e5d4"].push({
-							timestamp: Date.now() - Qt.timestamp,
-							type: e,
-							x: Math.floor(v.touches[i].pageX),
-							y: Math.floor(v.touches[i].pageY),
-						});
+					Qt["867e25e5d4"].push({
+					timestamp: Date.now() - Qt.timestamp,
+					type: e,
+					x: Math.floor(v.touches[i].pageX),
+					y: Math.floor(v.touches[i].pageY),
+					});
 					}
-				}</code>
+					}</code>
 			</section>
 
 			<section>
@@ -558,14 +563,38 @@
 					AltRight: 11,
 					Backspace: 12,
 					Escape: 13,
-				};
-				if(Qt.d4a306884c.length < 75) {
+					};
+					if(Qt.d4a306884c.length < 75) {
 					Qt.d4a306884c.push({
-						timestamp: Date.now() - Qt.timestamp,
-						type: e,
-						code: keyboardEventTypes[A.code] ?? 14,
+					timestamp: Date.now() - Qt.timestamp,
+					type: e,
+					code: keyboardEventTypes[A.code] ?? 14,
 					});
-				}</code>
+					}</code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="web3">43f2d94</abbr></h3>
+				<p>Collects web3 data such as if MetaMask is available and MD5 hashes the stringified results. Otherwise, false.</p>
+				<code class="language-json" id="web3Check"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Apple Pay">4f59ca8</abbr></h3>
+				<p>Checks if Apple Pay is available and what version is supported.</p>
+				<code class="language-json" id="applePay"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Bluetooth">20c15922</abbr></h3>
+				<p>Checks if Bluetooth is available.</p>
+				<code class="language-json" id="bluetooth"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Sensors">c2d2015</abbr></h3>
+				<p>Collects sensor data (see source) and MD5 hashes it.</p>
+				<code class="language-json" id="sensors"></code>
 			</section>
 		</main>
 
@@ -678,6 +707,10 @@
 					runTest(getTimezone),
 					runTest(rtc_peer_connection),
 					runTest(getJsbd),
+					runTest(web3Check),
+					runTest(applePay),
+					runTest(bluetooth),
+					runTest(sensors),
 				]);
 
 				// 6a62b2a558 = "6c9d6e9be9aa044cc5ce9548b4abe1b0" (script version hash)
@@ -2149,6 +2182,108 @@
 				// Unknown
 				DOTO: 1,
 			};
+		}
+
+		// 43f2d94
+		function web3Check() {
+			const results = [];
+			if(window.ethereum) {
+				if(window.ethereum.isMetaMask) {
+					results.push("MetaMask");
+				}
+
+				if(window.ethereum.isCoinbaseWallet) {
+					results.push("Coinbase");
+				}
+
+				if(window.ethereum.isWalletConnect) {
+					results.push("WalletConnect");
+				}
+
+				if(window.ethereum.isTrust) {
+					results.push("Trust");
+				}
+
+				if(window.ethereum.isTokenary) {
+					results.push("Tokenary");
+				}
+
+				if(window.ethereum.isStatus) {
+					results.push("Status");
+				}
+
+				if(window.ethereum.isFrame) {
+					results.push("Frame");
+				}
+
+				return md5(JSON.stringify(results));
+			}
+			else {
+				return !!window.web3 && "Legacy";
+			}
+		}
+
+		// 4f59ca8
+		function applePay() {
+			if(window.location.protocol !== "https:" || typeof window.ApplePaySession != "function") {
+				return null;
+			}
+
+			try {
+				for(let i = 30; i > 0; i--) {
+					if(window.ApplePaySession.supportsVersion(i)) {
+						return i;
+					}
+				}
+
+				return 0;
+			}
+			catch(err) {
+				return 0;
+			}
+		}
+
+		// 20c15922
+		function bluetooth() {
+			return !!navigator && !!navigator.bluetooth && typeof navigator.bluetooth.getAvailability == "function";
+		}
+
+		// c2d2015
+		function sensors() {
+			const props = [
+				["accelerometer", typeof DeviceMotionEvent === "undefined" ? "undefined" : typeof DeviceMotionEvent],
+				["gyroscope", typeof DeviceOrientationEvent === "undefined" ? "undefined" : typeof DeviceOrientationEvent],
+				["ambient light sensor", typeof AmbientLightSensor === "undefined" ? "undefined" : typeof AmbientLightSensor],
+				["ambient temperature sensor", typeof AmbientTemperatureSensor === "undefined" ? "undefined" : typeof AmbientTemperatureSensor],
+				["proximity sensor", typeof ProximitySensor === "undefined" ? "undefined" : typeof ProximitySensor],
+				["magnetometer", typeof Magnetometer === "undefined" ? "undefined" : typeof Magnetometer],
+				["absolute orientation sensor", typeof AbsoluteOrientationSensor === "undefined" ? "undefined" : typeof AbsoluteOrientationSensor],
+				["geolocation", typeof Geolocation === "undefined" ? "undefined" : typeof Geolocation],
+			];
+			// [
+			// 	["accelerometer", "function"],
+			// 	["gyroscope", "function"],
+			// 	["ambient light sensor", "undefined"],
+			// 	["ambient temperature sensor", "undefined"],
+			// 	["proximity sensor", "undefined"],
+			// 	["magnetometer", "undefined"],
+			// 	["absolute orientation sensor", "function"],
+			// 	["geolocation", "function"]
+			// ]
+
+			return md5(
+				props
+					.map((item) => {
+						if(item[1] !== "undefined") {
+							return item[0];
+						}
+						else {
+							return undefined;
+						}
+					})
+					.filter(Boolean)
+					.join(","),
+			);
 		}
 	</script>
 	<script>
