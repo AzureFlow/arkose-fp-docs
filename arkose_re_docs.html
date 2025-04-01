@@ -1144,8 +1144,7 @@
 				console.log("voicesStringRaw:", voicesStringRaw);
 
 				if(voicesStringRaw.length) {
-					voicesHash = md5(voicesStringRaw.join(","));
-					// voicesHash = md5(toUtf8(voicesStringRaw.join(",")));
+					voicesHash = md5(toUtf8(voicesStringRaw.join(",")));
 				}
 			}
 
