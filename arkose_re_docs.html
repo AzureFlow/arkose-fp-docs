@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<title>Arkose FP Docs</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
 
-	<link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/ip3/arkoselabs.com.ico"/>
+	<link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/ip3/arkoselabs.com.ico" />
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css"
+		integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/nord.min.css" integrity="sha512-U/cZqAAOThvb4J9UCt/DWkkjoJWHXvutFDS/nZmZlirci2ZMuH6qFokOQDuuKgE7pXD+FmhDNH2jT43x0GreCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js" integrity="sha512-H69VMoQ814lKjFuFwLImb4OwoK8Rm8fcvsqZexaxjp/VkJfEnrt5TO7oaOdNlMf/j51QUctfLTe8+rgozW7l2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/nord.min.css"
+		integrity="sha512-U/cZqAAOThvb4J9UCt/DWkkjoJWHXvutFDS/nZmZlirci2ZMuH6qFokOQDuuKgE7pXD+FmhDNH2jT43x0GreCQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
+		integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"
+		integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"
+		integrity="sha512-H69VMoQ814lKjFuFwLImb4OwoK8Rm8fcvsqZexaxjp/VkJfEnrt5TO7oaOdNlMf/j51QUctfLTe8+rgozW7l2A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script>
 		hljs.configure({
@@ -23,42 +34,43 @@
 	</script>
 
 	<style>
-        html {
-            scroll-behavior: smooth;
-        }
+		html {
+			scroll-behavior: smooth;
+		}
 
-        code {
-            white-space: pre-wrap;
+		code {
+			white-space: pre-wrap;
 
-            overflow-y: auto;
-            min-width: 100%;
-            max-width: 100%;
-            max-height: 50vh;
-        }
+			overflow-y: auto;
+			min-width: 100%;
+			max-width: 100%;
+			max-height: 50vh;
+		}
 
-        .hljs {
-            background: var(--pico-code-background-color);
-        }
+		.hljs {
+			background: var(--pico-code-background-color);
+		}
 
-        code.hljs {
-            padding: 10px 10px;
-        }
+		code.hljs {
+			padding: 10px 10px;
+		}
 
-        h3 .anchor {
-            user-select: none;
+		h3 .anchor {
+			user-select: none;
 
-            padding-left: calc(var(--pico-spacing) * .5);
-            font-weight: 400;
-            text-decoration: none;
-            opacity: 0;
-            transition: color var(--pico-transition) opacity var(--pico-transition);
-        }
+			padding-left: calc(var(--pico-spacing) * .5);
+			font-weight: 400;
+			text-decoration: none;
+			opacity: 0;
+			transition: color var(--pico-transition) opacity var(--pico-transition);
+		}
 
-        h3:hover .anchor {
-            opacity: 1;
-        }
+		h3:hover .anchor {
+			opacity: 1;
+		}
 	</style>
 </head>
+
 <body>
 	<div class="container">
 		<header>
@@ -69,7 +81,8 @@
 			<div>
 				<p>
 					This document contains some of my research on ArkoseLabs' FunCaptcha fingerprinting.
-					This is missing a bunch of signals that I haven't got around to documenting since they're boring or self-explanatory. For example, hashes.
+					This is missing a bunch of signals that I haven't got around to documenting since they're boring or
+					self-explanatory. For example, hashes.
 				</p>
 				<p>Hover over text with ⋯ below it to see more details.</p>
 				<p>View the DevTools console for more details (Ctrl+Shift+I).</p>
@@ -78,9 +91,12 @@
 					<li><a href="./decrypt.html">Payload decrypter</a></li>
 					<li><a href="./mouse.html">Mouse data</a></li>
 					<li><a href="./breaker.html">Breaker v2 (tguess)</a></li>
-					<li><a href="https://gist.github.com/AzureFlow/38788d6ee3eb5b2b811f88415bfa8d78">Arkose Mobile SDK (Android) fingerprint docs</a></li>
+					<li><a href="https://gist.github.com/AzureFlow/38788d6ee3eb5b2b811f88415bfa8d78">Arkose Mobile SDK
+							(Android) fingerprint docs</a></li>
 					<ul>
-						<li><a href="https://gitlab.com/gitlab-org/gitlab/-/blob/master/ee/lib/arkose/data_exchange_payload.rb#L36">Blob information</a></li>
+						<li><a
+								href="https://gitlab.com/gitlab-org/gitlab/-/blob/master/ee/lib/arkose/data_exchange_payload.rb#L36">Blob
+								information</a></li>
 						<li><a href="https://docs.gitlab.com/ee/integration/arkose.html">Arkose overview</a></li>
 						<li><a href="https://developer.arkoselabs.com/docs/">Arkose documentation</a></li>
 					</ul>
@@ -106,9 +122,12 @@
 			<section>
 				<h3><abbr data-tooltip="Canvas Fingerprint">WebGL</abbr></h3>
 				<p>
-					Collects supported operations by your GPU via the WebGL API. This could, in theory, be used to correlate your
+					Collects supported operations by your GPU via the WebGL API. This could, in theory, be used to
+					correlate your
 					<a href="#h_cfp">canvas fingerprint</a> as described in this
-					<a href="https://research.google/pubs/picasso-lightweight-device-class-fingerprinting-for-web-clients/">paper by Google</a>.
+					<a
+						href="https://research.google/pubs/picasso-lightweight-device-class-fingerprinting-for-web-clients/">paper
+						by Google</a>.
 				</p>
 				<code class="language-json" id="collectWebGL"></code>
 			</section>
@@ -118,10 +137,12 @@
 				<p>See:</p>
 				<ol>
 					<li>
-						<a href="https://fingerprint.com/blog/audio-fingerprinting/">How the Web Audio API is used for audio fingerprinting</a>
+						<a href="https://fingerprint.com/blog/audio-fingerprinting/">How the Web Audio API is used for
+							audio fingerprinting</a>
 					</li>
 					<li>
-						<a href="https://fingerprint.com/blog/bypassing-safari-17-audio-fingerprinting-protection/">How We Bypassed Safari 17's Advanced Audio Fingerprinting Protection</a>
+						<a href="https://fingerprint.com/blog/bypassing-safari-17-audio-fingerprinting-protection/">How
+							We Bypassed Safari 17's Advanced Audio Fingerprinting Protection</a>
 					</li>
 				</ol>
 				<code class="language-json" id="audio_fingerprint"></code>
@@ -183,7 +204,9 @@
 
 			<section>
 				<h3>browser_detection_firefox</h3>
-				<p>Checks the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</a> for "Firefox".</p>
+				<p>Checks the <a
+						href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</a> for
+					"Firefox".</p>
 				<code class="language-json" id="browser_detection_firefox"></code>
 			</section>
 
@@ -222,7 +245,8 @@
 
 			<section>
 				<h3>headless_browser_generic</h3>
-				<p>Checks the various objects on the document and window related to browser automation frameworks. Including:</p>
+				<p>Checks the various objects on the document and window related to browser automation frameworks.
+					Including:</p>
 				<ul>
 					<li><a href="https://www.selenium.dev/">Selenium</a></li>
 					<li><a href="https://pypi.org/project/spynner/">Spynner</a></li>
@@ -287,13 +311,15 @@
 
 			<section>
 				<h3>getAudio</h3>
-				<p>Checks which audio codecs are available. This can be used to detect browser environments that don't support DRM.</p>
+				<p>Checks which audio codecs are available. This can be used to detect browser environments that don't
+					support DRM.</p>
 				<code class="language-json" id="getAudio"></code>
 			</section>
 
 			<section>
 				<h3>getVideo</h3>
-				<p>Checks which video codecs are available. This can be used to detect browser environments that don't support DRM.</p>
+				<p>Checks which video codecs are available. This can be used to detect browser environments that don't
+					support DRM.</p>
 				<code class="language-json" id="getVideo"></code>
 			</section>
 
@@ -306,7 +332,9 @@
 			<section>
 				<h3>math_fingerprint</h3>
 				<p>Runs a bunch of math calculations.</p>
-				<p>This can be used to detect if the enforcement script is being run in a different environment than is claimed by the client. For example, calculating the math like V8 (Chrome) but claiming to be JavaScriptCore (Safari).</p>
+				<p>This can be used to detect if the enforcement script is being run in a different environment than is
+					claimed by the client. For example, calculating the math like V8 (Chrome) but claiming to be
+					JavaScriptCore (Safari).</p>
 				<code class="language-json" id="math_fingerprint"></code>
 			</section>
 
@@ -426,7 +454,8 @@
 
 			<section>
 				<h3>getFonts</h3>
-				<p>Checks for the presence of 65 different fonts from a predetermined list. This could be used to detect your platform. For example, Wingdings is only on Windows.</p>
+				<p>Checks for the presence of 65 different fonts from a predetermined list. This could be used to detect
+					your platform. For example, Wingdings is only on Windows.</p>
 				<code class="language-json" id="getFonts"></code>
 			</section>
 
@@ -575,7 +604,8 @@
 
 			<section>
 				<h3><abbr data-tooltip="web3">43f2d94</abbr></h3>
-				<p>Collects web3 data such as if MetaMask is available and MD5 hashes the stringified results. Otherwise, false.</p>
+				<p>Collects web3 data such as if MetaMask is available and MD5 hashes the stringified results.
+					Otherwise, false.</p>
 				<code class="language-json" id="web3Check"></code>
 			</section>
 
@@ -595,6 +625,12 @@
 				<h3><abbr data-tooltip="Sensors">c2d2015</abbr></h3>
 				<p>Collects sensor data (see source) and MD5 hashes it.</p>
 				<code class="language-json" id="sensors"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="HDRInfo">3ea7194</abbr></h3>
+				<p>Detects High Dynamic Range (HDR) support using video decoding capabilities, color space, and screen metadata.</p>
+				<code class="language-json" id="getHDRInfo"></code>
 			</section>
 		</main>
 
@@ -624,8 +660,12 @@
 		});
 	</script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js" integrity="sha512-8pbzenDolL1l5OPSsoURCx9TEdMFTaeFipASVrMYKhuYtly+k3tcsQYliOEKTmuB1t7yuzAiVo+yd7SJz+ijFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/murmurhash3js/3.0.1/murmurhash3js.min.js" integrity="sha512-HCmS85fXMOkBrVzhJwv5ULIWC6ajmqSJ/JRNJEnD8blyvlSLjcAdlERQR5fazd3Iey5QfftJaFfUW5JiXTDhbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"
+		integrity="sha512-8pbzenDolL1l5OPSsoURCx9TEdMFTaeFipASVrMYKhuYtly+k3tcsQYliOEKTmuB1t7yuzAiVo+yd7SJz+ijFQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/murmurhash3js/3.0.1/murmurhash3js.min.js"
+		integrity="sha512-HCmS85fXMOkBrVzhJwv5ULIWC6ajmqSJ/JRNJEnD8blyvlSLjcAdlERQR5fazd3Iey5QfftJaFfUW5JiXTDhbw=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script type="module">
 		const UPDATE_TIME = 1721709277870;
 
@@ -639,7 +679,7 @@
 			try {
 				document.getElementById(id).textContent = JSON.stringify(contents, null, 4);
 			}
-			catch(err) {
+			catch (err) {
 				console.error(err);
 				debugger;
 			}
@@ -656,7 +696,7 @@
 			setOutputBox(func.name, results);
 		}
 
-		document.addEventListener("DOMContentLoaded", async() => {
+		document.addEventListener("DOMContentLoaded", async () => {
 			console.group("Items");
 			{
 				await Promise.all([
@@ -711,6 +751,7 @@
 					runTest(applePay),
 					runTest(bluetooth),
 					runTest(sensors),
+					runTest(getHDRInfo),
 				]);
 
 				// 6a62b2a558 = "6c9d6e9be9aa044cc5ce9548b4abe1b0" (script version hash)
@@ -727,7 +768,7 @@
 		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L910-L969
 		function getCFP() {
 			const canvasElement = document.createElement("canvas");
-			if(!canvasElement.getContext) {
+			if (!canvasElement.getContext) {
 				return false;
 			}
 
@@ -740,7 +781,7 @@
 				canvasElement.height = 200;
 				canvasElement.style.display = "inline";
 				const context = canvasElement.getContext("2d");
-				if(!context) {
+				if (!context) {
 					return false;
 				}
 
@@ -778,10 +819,10 @@
 				context.fill("evenodd");
 				results.push(`canvas fp:${canvasElement.toDataURL()}`);
 
-				return function() {
+				return function () {
 					const resultsString = results.join("~");
 					console.log("resultsString (raw):", resultsString);
-					if(!resultsString) {
+					if (!resultsString) {
 						return "";
 					}
 
@@ -811,17 +852,17 @@
 					// return hashed;
 				}();
 			}
-			catch(err) {
+			catch (err) {
 				console.error(err);
 				return false;
 			}
 		}
 
 		function audio_fingerprint() {
-			return new Promise(function(resolve) {
+			return new Promise(function (resolve) {
 				try {
-					if(!window.OfflineAudioContext) {
-						if(!window.webkitOfflineAudioContext) {
+					if (!window.OfflineAudioContext) {
+						if (!window.webkitOfflineAudioContext) {
 							resolve(null);
 							return;
 						}
@@ -835,23 +876,23 @@
 					oscillator.frequency.value = 10000;
 					const compressor = offlineAudioContext.createDynamicsCompressor();
 
-					if(compressor.threshold) {
+					if (compressor.threshold) {
 						compressor.threshold.value = -50;
 					}
 
-					if(compressor.knee) {
+					if (compressor.knee) {
 						compressor.knee.value = 40;
 					}
 
-					if(compressor.ratio) {
+					if (compressor.ratio) {
 						compressor.ratio.value = 12;
 					}
 
-					if(compressor.attack) {
+					if (compressor.attack) {
 						compressor.attack.value = 0;
 					}
 
-					if(compressor.release) {
+					if (compressor.release) {
 						compressor.release.value = 0.25;
 					}
 
@@ -859,9 +900,9 @@
 					compressor.connect(offlineAudioContext.destination);
 					oscillator.start(0);
 					offlineAudioContext.startRendering();
-					offlineAudioContext.oncomplete = function(completionEvent) {
+					offlineAudioContext.oncomplete = function (completionEvent) {
 						let resultFp = 0;
-						for(let i = 4500; i < 5000; i++) {
+						for (let i = 4500; i < 5000; i++) {
 							resultFp += Math.abs(completionEvent.renderedBuffer.getChannelData(0)[i]);
 						}
 
@@ -872,7 +913,7 @@
 						});
 					};
 				}
-				catch(err) {
+				catch (err) {
 					resolve(null);
 				}
 			});
@@ -881,12 +922,12 @@
 		function collectWh() {
 			// TODO: Why doesn't this part match?
 			function getWindowHash() {
-				if(!Object.getOwnPropertyNames) {
+				if (!Object.getOwnPropertyNames) {
 					return "LEGACY_ENV";
 				}
 
 				// Find all window props that aren't the webpack object
-				const props = Object.getOwnPropertyNames(window).filter(function(x) {
+				const props = Object.getOwnPropertyNames(window).filter(function (x) {
 					return !x.match(/^(f_|arkoseLabsClientApi|webpack).*/);
 				});
 
@@ -896,13 +937,13 @@
 			}
 
 			function getWindowProtoChainHash() {
-				if(!Object.getOwnPropertyNames) {
+				if (!Object.getOwnPropertyNames) {
 					return "LEGACY_ENV";
 				}
 
 				let v = window;
 				let results = [];
-				for(; Object.getPrototypeOf(v);) {
+				for (; Object.getPrototypeOf(v);) {
 					v = Object.getPrototypeOf(v);
 					results = results.concat(Object.getOwnPropertyNames(v));
 				}
@@ -926,14 +967,14 @@
 		 */
 		function window__tree_index(windowCheck = window) {
 			const parent = windowCheck.parent;
-			if(windowCheck === parent) {
+			if (windowCheck === parent) {
 				return [];
 			}
 
 			const results = window__tree_index(parent);
 			let windowIndex = -1;
-			for(let i = 0; i < parent.length; i++) {
-				if(windowCheck === parent[i]) {
+			for (let i = 0; i < parent.length; i++) {
+				if (windowCheck === parent[i]) {
 					windowIndex = i;
 					break;
 				}
@@ -948,23 +989,23 @@
 			try {
 				return JSON.stringify(function check(windowProxy) {
 					const results = [];
-					for(let i = 0; i < windowProxy.length; i++) {
+					for (let i = 0; i < windowProxy.length; i++) {
 						results.push(check(windowProxy[i]));
 					}
 
 					return results;
 				}(top));
 			}
-			catch(err) {
+			catch (err) {
 				return "";
 			}
 		}
 
 		// getAncestorOrigins
 		function window__ancestor_origins() {
-			if(window.location.ancestorOrigins) {
+			if (window.location.ancestorOrigins) {
 				const result = [];
-				for(let i = 0; i < window.location.ancestorOrigins.length; i++) {
+				for (let i = 0; i < window.location.ancestorOrigins.length; i++) {
 					result.push(window.location.ancestorOrigins[i]);
 				}
 				return result;
@@ -974,13 +1015,13 @@
 		}
 
 		function getPlugins() {
-			if((navigator.appName === "Microsoft Internet Explorer" || navigator.appName === "Netscape" && /Trident/.test(navigator.userAgent)) && (Object.getOwnPropertyDescriptor && Object.getOwnPropertyDescriptor(window, "ActiveXObject") || "ActiveXObject" in window)) {
-				return ["AcroPDF.PDF", "Adodb.Stream", "AgControl.AgControl", "DevalVRXCtrl.DevalVRXCtrl.1", "MacromediaFlashPaper.MacromediaFlashPaper", "Msxml2.DOMDocument", "Msxml2.XMLHTTP", "PDF.PdfCtrl", "QuickTime.QuickTime", "QuickTimeCheckObject.QuickTimeCheck.1", "RealPlayer", "RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)", "RealVideo.RealVideo(tm) ActiveX Control (32-bit)", "Scripting.Dictionary", "SWCtl.SWCtl", "Shell.UIHelper", "ShockwaveFlash.ShockwaveFlash", "Skype.Detection", "TDCCtl.TDCCtl", "WMPlayer.OCX", "rmocx.RealPlayer G2 Control", "rmocx.RealPlayer G2 Control.1"].reduce(function(previousValue, currentValue) {
+			if ((navigator.appName === "Microsoft Internet Explorer" || navigator.appName === "Netscape" && /Trident/.test(navigator.userAgent)) && (Object.getOwnPropertyDescriptor && Object.getOwnPropertyDescriptor(window, "ActiveXObject") || "ActiveXObject" in window)) {
+				return ["AcroPDF.PDF", "Adodb.Stream", "AgControl.AgControl", "DevalVRXCtrl.DevalVRXCtrl.1", "MacromediaFlashPaper.MacromediaFlashPaper", "Msxml2.DOMDocument", "Msxml2.XMLHTTP", "PDF.PdfCtrl", "QuickTime.QuickTime", "QuickTimeCheckObject.QuickTimeCheck.1", "RealPlayer", "RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)", "RealVideo.RealVideo(tm) ActiveX Control (32-bit)", "Scripting.Dictionary", "SWCtl.SWCtl", "Shell.UIHelper", "ShockwaveFlash.ShockwaveFlash", "Skype.Detection", "TDCCtl.TDCCtl", "WMPlayer.OCX", "rmocx.RealPlayer G2 Control", "rmocx.RealPlayer G2 Control.1"].reduce(function (previousValue, currentValue) {
 					try {
 						new ActiveXObject(currentValue);
 						return [].concat([...previousValue], [currentValue]);
 					}
-					catch(t) {
+					catch (t) {
 					}
 
 					return previousValue;
@@ -988,10 +1029,10 @@
 			}
 
 			const results = [];
-			if(navigator.plugins) {
-				for(let i = 0; i < navigator.plugins.length; i++) {
+			if (navigator.plugins) {
+				for (let i = 0; i < navigator.plugins.length; i++) {
 					const item = navigator.plugins[i];
-					if(item && item.name) {
+					if (item && item.name) {
 						results.push(item.name);
 					}
 				}
@@ -1008,7 +1049,7 @@
 				Object.defineProperty(thrownError, "stack", {
 					configurable: false,
 					enumerable: false,
-					get: function() {
+					get: function () {
 						trapped = true;
 						return "";
 					},
@@ -1018,21 +1059,21 @@
 				const trappedString = trapped ? "⁢" : "⁣";
 				return Date.now() + trappedString;
 			}
-			catch(err) {
+			catch (err) {
 				return null;
 			}
 		}
 
 		function getGlobalContextMaybe() {
-			if(typeof globalThis == "object") {
+			if (typeof globalThis == "object") {
 				return globalThis;
 			}
 
 			try {
 				return this || new Function("return this")();
 			}
-			catch(t) {
-				if(typeof window == "object") {
+			catch (t) {
+				if (typeof window == "object") {
 					return window;
 				}
 			}
@@ -1050,12 +1091,12 @@
 					// TODO:
 					// eh, it's empty anyways in a browser
 				};
-				if("object" !== "undefined" && window.module !== module && (module.path || module.filename || module.paths)) {
+				if ("object" !== "undefined" && window.module !== module && (module.path || module.filename || module.paths)) {
 					moduleStuffTODO = true;
 				}
 
 				let hasJsDom = false;
-				if("_virtualConsole" in window) {
+				if ("_virtualConsole" in window) {
 					hasJsDom = true;
 				}
 
@@ -1063,21 +1104,21 @@
 				console.log("29s83ih9 (rawString):", rawString);
 				return `${md5(rawString.toString())}${rawString ? "⁢" : "⁣"}`;
 			}
-			catch(err) {
+			catch (err) {
 				console.log("failed", err);
 				return `${md5("FAIL")}⁤`;
 			}
 		}
 
 		async function navigator_battery_charging() {
-			return new Promise(function(resolve) {
-				if(navigator.getBattery) {
-					navigator.getBattery().then(function(battery) {
+			return new Promise(function (resolve) {
+				if (navigator.getBattery) {
+					navigator.getBattery().then(function (battery) {
 						resolve({
 							key: "navigator_battery_charging",
 							value: battery.charging,
 						});
-					}).catch(function() {
+					}).catch(function () {
 						resolve(null);
 					});
 				}
@@ -1088,13 +1129,13 @@
 		}
 
 		async function media_devices() {
-			if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+			if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
 				// const C = navigator.mediaDevices.enumerateDevices();
 
 				const media_device_kinds = [];
 				const media_devices = [];
 
-				for(const mediaDeviceInfo of await navigator.mediaDevices.enumerateDevices()) {
+				for (const mediaDeviceInfo of await navigator.mediaDevices.enumerateDevices()) {
 					console.log(mediaDeviceInfo);
 					media_device_kinds.push(mediaDeviceInfo.kind);
 					media_devices.push({
@@ -1131,9 +1172,9 @@
 
 			let voicesString = null;
 			let voicesHash = null;
-			if(voices && voices.length > 0) {
+			if (voices && voices.length > 0) {
 				const voicesStringRaw = voices.reduce((previousValue, currentValue) => {
-					if(currentValue.default) {
+					if (currentValue.default) {
 						voicesString = `${currentValue.name} || ${currentValue.lang}`;
 					}
 
@@ -1143,7 +1184,7 @@
 
 				console.log("voicesStringRaw:", voicesStringRaw);
 
-				if(voicesStringRaw.length) {
+				if (voicesStringRaw.length) {
 					voicesHash = md5(voicesStringRaw.join(","));
 					// voicesHash = md5(toUtf8(voicesStringRaw.join(",")));
 				}
@@ -1162,7 +1203,7 @@
 		}
 
 		function toUtf8(str) {
-			if(/[\u0080-\uFFFF]/.test(str)) {
+			if (/[\u0080-\uFFFF]/.test(str)) {
 				str = unescape(encodeURIComponent(str));
 			}
 
@@ -1198,26 +1239,26 @@
 				"speaker",
 			];
 
-			if(!navigator || !navigator.permissions) {
-				return {key: "navigator_permissions_hash", value: null};
+			if (!navigator || !navigator.permissions) {
+				return { key: "navigator_permissions_hash", value: null };
 			}
 
 			const grantedPermissions = [];
-			for(const permissionName of permissionNames) {
+			for (const permissionName of permissionNames) {
 				try {
-					const permission = await navigator.permissions.query({name: permissionName});
-					if(permission) {
+					const permission = await navigator.permissions.query({ name: permissionName });
+					if (permission) {
 						grantedPermissions.push(permissionName);
 					}
 				}
-				catch(error) {
+				catch (error) {
 					// Handle error, if needed
 				}
 			}
 
 			console.log("grantedPermissions (raw):", grantedPermissions);
 			const permissionsHash = md5(grantedPermissions.join("|"));
-			return {key: "navigator_permissions_hash", value: permissionsHash};
+			return { key: "navigator_permissions_hash", value: permissionsHash };
 		}
 
 		// function navigator_permissions_hash() {
@@ -1307,7 +1348,7 @@
 					`playback_quality: ${!!window.HTMLVideoElement && !!window.HTMLVideoElement.prototype && !!window.HTMLVideoElement.prototype.getVideoPlaybackQuality}`,
 				];
 			}
-			catch(err) {
+			catch (err) {
 				return null;
 			}
 		}
@@ -1317,25 +1358,25 @@
 			let tt = navigator.oscpu;
 			const et = navigator.platform.toLowerCase();
 			let t = Q.indexOf("android") >= 0 ? "Android" : Q.indexOf("windows phone") >= 0 ? "Windows Phone" : Q.indexOf("win") >= 0 ? "Windows" : Q.indexOf("cros") >= 0 ? "CrOS" : Q.indexOf("linux") >= 0 ? "Linux" : Q.indexOf("iphone") >= 0 || Q.indexOf("ipad") >= 0 || Q.indexOf("ipod") >= 0 ? "iOS" : Q.indexOf("mac") >= 0 ? "Mac" : "Other";
-			if(typeof tt != "undefined") {
-				if((tt = tt.toLowerCase()).indexOf("win") >= 0 && t !== "Windows" && t !== "Windows Phone") {
+			if (typeof tt != "undefined") {
+				if ((tt = tt.toLowerCase()).indexOf("win") >= 0 && t !== "Windows" && t !== "Windows Phone") {
 					return true;
 				}
 
-				if(tt.indexOf("linux") >= 0 && t !== "Linux" && t !== "Android") {
+				if (tt.indexOf("linux") >= 0 && t !== "Linux" && t !== "Android") {
 					return true;
 				}
 
-				if(tt.indexOf("mac") >= 0 && t !== "Mac" && t !== "iOS") {
+				if (tt.indexOf("mac") >= 0 && t !== "Mac" && t !== "iOS") {
 					return true;
 				}
 
-				if(tt.indexOf("win") === 0 && tt.indexOf("linux") === 0 && tt.indexOf("mac") >= 0 && t !== "other") {
+				if (tt.indexOf("win") === 0 && tt.indexOf("linux") === 0 && tt.indexOf("mac") >= 0 && t !== "other") {
 					return true;
 				}
 			}
 
-			if(et.indexOf("win") >= 0 && t !== "Windows" && t !== "Windows Phone") {
+			if (et.indexOf("win") >= 0 && t !== "Windows" && t !== "Windows Phone") {
 				return Q.indexOf("eawebkit") < 0;
 			}
 			else {
@@ -1347,33 +1388,33 @@
 			let t;
 			const C = navigator.userAgent.toLowerCase();
 			const T = navigator.productSub;
-			if(((t = C.indexOf("firefox") >= 0 ? "Firefox" : C.indexOf("opera") >= 0 || C.indexOf("opr") >= 0 ? "Opera" : C.indexOf("chrome") >= 0 ? "Chrome" : C.indexOf("safari") >= 0 ? "Safari" : C.indexOf("trident") >= 0 ? "Internet Explorer" : "Other") === "Chrome" || t === "Safari" || t === "Opera") && T !== "20030107") {
+			if (((t = C.indexOf("firefox") >= 0 ? "Firefox" : C.indexOf("opera") >= 0 || C.indexOf("opr") >= 0 ? "Opera" : C.indexOf("chrome") >= 0 ? "Chrome" : C.indexOf("safari") >= 0 ? "Safari" : C.indexOf("trident") >= 0 ? "Internet Explorer" : "Other") === "Chrome" || t === "Safari" || t === "Opera") && T !== "20030107") {
 				return true;
 			}
 
 			let wasSuccessful;
 			const evalStringLength = eval.toString().length;
-			if(evalStringLength === 37 && t !== "Safari" && t !== "Firefox" && t !== "Other") {
+			if (evalStringLength === 37 && t !== "Safari" && t !== "Firefox" && t !== "Other") {
 				return true;
 			}
 
-			if(evalStringLength === 39 && t !== "Internet Explorer" && t !== "Other") {
+			if (evalStringLength === 39 && t !== "Internet Explorer" && t !== "Other") {
 				return true;
 			}
 
-			if(evalStringLength === 33 && t !== "Chrome" && t !== "Opera" && t !== "Other") {
+			if (evalStringLength === 33 && t !== "Chrome" && t !== "Opera" && t !== "Other") {
 				return true;
 			}
 
 			try {
 				throw "a";
 			}
-			catch(err) {
+			catch (err) {
 				try {
 					err.toSource();
 					wasSuccessful = true;
 				}
-				catch(t) {
+				catch (t) {
 					wasSuccessful = false;
 				}
 			}
@@ -1382,14 +1423,14 @@
 		}
 
 		function headless_browser_generic() {
-			const checkDocument = function(item) {
-				return function() {
+			const checkDocument = function (item) {
+				return function () {
 					console.log(`Checking window.document.${item} =`, item in window.document);
 					return item in window.document;
 				};
 			};
-			const checkWindow = function(item) {
-				return function() {
+			const checkWindow = function (item) {
+				return function () {
 					console.log(`Checking window.${item} =`, item in window);
 					return item in window;
 				};
@@ -1422,20 +1463,20 @@
 			];
 
 			const checkFuncs = [].concat(documentChecks, windowChecks, [
-				function() {
+				function () {
 					return ("domAutomation" in window) || ("domAutomationController" in window);
 				},
-				function() {
+				function () {
 					return window.external && window.external.toString && window.external.toString().indexOf("Sequentum") > -1;
 				},
-				function() {
+				function () {
 					return typeof window.process === "object" && ("type" in window.process) && window.process.type === "renderer" || typeof process !== "undefined" && typeof process.versions === "object" && process.versions.electron || window.close.toString().indexOf("ELECTRON") > -1;
 				},
 			]);
 
 			let result = 0;
-			for(let i = 0; i < checkFuncs.length; i++) {
-				if(checkFuncs[i]()) {
+			for (let i = 0; i < checkFuncs.length; i++) {
+				if (checkFuncs[i]()) {
 					result |= 1 << i;
 				}
 			}
@@ -1452,7 +1493,7 @@
 		}
 
 		function user_agent_data_brands() {
-			return navigator.userAgentData && navigator.userAgentData.brands ? navigator.userAgentData.brands.map(function(t) {
+			return navigator.userAgentData && navigator.userAgentData.brands ? navigator.userAgentData.brands.map(function (t) {
 				return t.brand;
 			}).join(",") : null;
 		}
@@ -1471,10 +1512,10 @@
 
 		function browser_object_checks() {
 			const objectsToCheck = ["chrome", "safari", "__crWeb", "__gCrWeb", "yandex", "__yb", "__ybro", "__firefox__", "firefox", "__edgeTrackingPreventionStatistics", "webkit", "oprt", "samsungAr", "ucweb", "UCShellJava", "puffinDevice", "opr"];
-			const foundObjects = objectsToCheck.reduce(function(previousValue, currentValue) {
+			const foundObjects = objectsToCheck.reduce(function (previousValue, currentValue) {
 				// if(window[r] && t(window[r]) === "object") return [].concat(l(e), [r]);
 
-				if(window[currentValue] && typeof window[currentValue] === "object") {
+				if (window[currentValue] && typeof window[currentValue] === "object") {
 					return [].concat([...previousValue], [currentValue]);
 				}
 				else {
@@ -1484,7 +1525,7 @@
 
 			console.log("browser_objects (raw):", foundObjects);
 
-			if(foundObjects.length > 0) {
+			if (foundObjects.length > 0) {
 				return md5(foundObjects.sort().join(","));
 			}
 			else {
@@ -1514,7 +1555,7 @@
 
 		function audio_codecs() {
 			const audioElement = document.createElement("audio");
-			if(audioElement.canPlayType) {
+			if (audioElement.canPlayType) {
 				return JSON.stringify({
 					ogg: audioElement.canPlayType("audio/ogg; codecs=\"vorbis\""),
 					mp3: audioElement.canPlayType("audio/mpeg;"),
@@ -1529,7 +1570,7 @@
 
 		function video_codecs() {
 			const videoElement = document.createElement("video");
-			if(videoElement.canPlayType) {
+			if (videoElement.canPlayType) {
 				return JSON.stringify({
 					ogg: videoElement.canPlayType("video/ogg; codecs=\"theora\""),
 					h264: videoElement.canPlayType("video/mp4; codecs=\"avc1.42E01E\""),
@@ -1548,14 +1589,14 @@
 
 			const results = {};
 			const audioElement = document.createElement("audio");
-			AUDIO_CODECS.forEach(function(codec) {
+			AUDIO_CODECS.forEach(function (codec) {
 				let canPlayType = null;
-				if(audioElement.canPlayType) {
+				if (audioElement.canPlayType) {
 					canPlayType = audioElement.canPlayType(codec);
 				}
 
 				let isTypeSupported = null;
-				if(window.MediaSource && window.MediaSource.isTypeSupported) {
+				if (window.MediaSource && window.MediaSource.isTypeSupported) {
 					isTypeSupported = window.MediaSource.isTypeSupported(codec);
 				}
 
@@ -1573,14 +1614,14 @@
 
 			const results = {};
 			const videoElement = document.createElement("video");
-			VIDEO_CODECS.forEach(function(codec) {
+			VIDEO_CODECS.forEach(function (codec) {
 				let canPlayType = null;
-				if(videoElement.canPlayType) {
+				if (videoElement.canPlayType) {
 					canPlayType = videoElement.canPlayType(codec);
 				}
 
 				let isTypeSupported = null;
-				if(window.MediaSource && window.MediaSource.isTypeSupported) {
+				if (window.MediaSource && window.MediaSource.isTypeSupported) {
 					isTypeSupported = window.MediaSource.isTypeSupported(codec);
 				}
 
@@ -1594,7 +1635,7 @@
 		}
 
 		function supported_math_functions() {
-			const items = Object.getOwnPropertyNames(Math).filter(function(x) {
+			const items = Object.getOwnPropertyNames(Math).filter(function (x) {
 				return typeof Math[x] === "function";
 			});
 			console.log("supported_math_functions (raw):", items);
@@ -1608,7 +1649,7 @@
 				let r = arguments.length;
 				let n = new Array(r > 1 ? r - 1 : 0);
 
-				for(let o = 1; o < r; o++) {
+				for (let o = 1; o < r; o++) {
 					n[o - 1] = arguments[o];
 				}
 
@@ -1670,7 +1711,7 @@
 					options: ["reduce", "no-preference"],
 					bias: "reduce",
 				},
-			].reduce(function(previousValue, currentValue) {
+			].reduce(function (previousValue, currentValue) {
 				const attribute = currentValue.attribute;
 				const options = currentValue.options;
 				const bias = currentValue.bias;
@@ -1693,12 +1734,12 @@
 
 		function css_monochrome() {
 			const values = [];
-			for(let i = 0; i <= 10; i += 1) {
+			for (let i = 0; i <= 10; i += 1) {
 				values.push((i * 10).toString());
 			}
 
 			const result = checkProp("min-monochrome", ["0"]);
-			if(result === "unknown" || result === "unsupported") {
+			if (result === "unknown" || result === "unsupported") {
 				return result;
 			}
 			else {
@@ -1720,15 +1761,15 @@
 		 * @returns {unknown}
 		 */
 		function checkProp(prop, values) {
-			if(typeof matchMedia === "undefined") {
+			if (typeof matchMedia === "undefined") {
 				return "unsupported";
 			}
 
-			for(let i = 0, l = values.length; i < l; i += 1) {
+			for (let i = 0, l = values.length; i < l; i += 1) {
 				const value = values[i];
 				const checkResult = matchMedia("(" + prop + ":" + value + ")");
 
-				if(checkResult.matches || checkResult.msMatchesSelector) {
+				if (checkResult.matches || checkResult.msMatchesSelector) {
 					return value;
 				}
 			}
@@ -1739,7 +1780,7 @@
 		console.log("getFontsNEW:", getFontsNEW());
 
 		function getFontsNEW() {
-			if(!document.body) {
+			if (!document.body) {
 				return false;
 			}
 
@@ -1748,13 +1789,13 @@
 			const testString = "mmmmmmmmmmlli";
 
 			function setFontFamily(t) {
-				return function(element) {
+				return function (element) {
 					const l = element.getAttribute("data-width");
 					element.style.fontFamily = `"${t}", ${l}`;
 				};
 			}
 
-			const Nn = function() {
+			const Nn = function () {
 				const styleEl = document.createElement("style");
 				styleEl.textContent = `
 					.font-parent {
@@ -1771,7 +1812,7 @@
 						left: -9999px;
 						line-height: normal;
 					}
-					${baseFonts.map(function(t) {
+					${baseFonts.map(function (t) {
 					return `.font[data-width='${t}'] { font-family: ${t}; }`;
 				}).join("\n")}`;
 				// if(a.nc) {
@@ -1787,17 +1828,17 @@
 				// 	},
 				// };
 				fontParentDiv.innerHTML = [
-					...baseFonts.map(function(x) {
+					...baseFonts.map(function (x) {
 						return `<span class="font" data-width="${x}">${testString}</span>`;
 					}),
-					...baseFonts.map(function(t, index) {
+					...baseFonts.map(function (t, index) {
 						return `<span class="font" data-index="${index}" data-width="${t}">${testString}</span>`;
 					}),
 				].join("\n");
 
 				return {
 					parent: fontParentDiv,
-					cleanup: function() {
+					cleanup: function () {
 						document.head.removeChild(styleEl);
 						document.body.removeChild(fontParentDiv);
 					},
@@ -1809,7 +1850,7 @@
 			const allSpans = Array.from ? Array.from(Nn.parent.children) : [].slice.call(Nn.parent.children);
 			// For some reason these can be all (0, 0) on some websites.
 			// As a result, no fonts are detected for JSF.
-			const defaults = allSpans.slice(0, baseFonts.length).map(function(child) {
+			const defaults = allSpans.slice(0, baseFonts.length).map(function (child) {
 				return {
 					offsetWidth: child.offsetWidth,
 					offsetHeight: child.offsetHeight,
@@ -1818,14 +1859,14 @@
 			const fontSpans = allSpans.slice(baseFonts.length);
 
 			const availableFonts = [];
-			for(let i = 0; i < fontList.length; i++) {
+			for (let i = 0; i < fontList.length; i++) {
 				const font = fontList[i];
 				fontSpans.forEach(setFontFamily(font));
 
 				const detected = baseFonts.some((value, index) => {
 					return fontSpans[index].offsetWidth !== defaults[index].offsetWidth || fontSpans[index].offsetHeight !== defaults[index].offsetHeight;
 				});
-				if(detected) {
+				if (detected) {
 					availableFonts.push(font);
 				}
 			}
@@ -1845,7 +1886,7 @@
 			// And we use a LLi so that the same matching fonts can get separated
 			const testString = "mmmmmmmmmmlli";
 
-			if(!document.getElementsByTagName("body")[0]) {
+			if (!document.getElementsByTagName("body")[0]) {
 				return false;
 			}
 
@@ -1882,9 +1923,9 @@
 			// checks if a font is available
 			function isFontAvailable(fontSpans) {
 				let detected = false;
-				for(let i = 0; i < baseFonts.length; i++) {
+				for (let i = 0; i < baseFonts.length; i++) {
 					detected = detected = fontSpans[i].offsetWidth !== defaultWidth[baseFonts[i]] || fontSpans[i].offsetHeight !== defaultHeight[baseFonts[i]];
-					if(detected) {
+					if (detected) {
 						return detected;
 					}
 				}
@@ -1893,9 +1934,9 @@
 			}
 
 			// creates spans for the base fonts and adds them to baseFontsDiv
-			const baseFontsSpans = function() {
+			const baseFontsSpans = function () {
 				const results = [];
-				for(let i = 0, n = baseFonts.length; i < n; i++) {
+				for (let i = 0, n = baseFonts.length; i < n; i++) {
 					const span = createTestSpan();
 					span.style.fontFamily = baseFonts[i];
 					baseFontsDiv.appendChild(span);
@@ -1909,17 +1950,17 @@
 			bodyElement.appendChild(baseFontsDiv);
 
 			// get the default width for the three base fonts
-			for(let i = 0; i < baseFonts.length; i++) {
+			for (let i = 0; i < baseFonts.length; i++) {
 				defaultWidth[baseFonts[i]] = baseFontsSpans[i].offsetWidth;
 				defaultHeight[baseFonts[i]] = baseFontsSpans[i].offsetHeight;
 			}
 
 			// create spans for fonts to detect
-			const fontsSpans = function() {
+			const fontsSpans = function () {
 				const spans = {};
-				for(let i = 0, n = fontList.length; i < n; i++) {
+				for (let i = 0, n = fontList.length; i < n; i++) {
 					const fontSpans = [];
-					for(let j = 0, a = baseFonts.length; j < a; j++) {
+					for (let j = 0, a = baseFonts.length; j < a; j++) {
 						const s = createSpanWithFonts(fontList[i], baseFonts[j]);
 						fontsDiv.appendChild(s);
 						fontSpans.push(s);
@@ -1937,9 +1978,9 @@
 
 			// check available fonts
 			const availableFonts = [];
-			for(let i = 0; i < fontList.length; i++) {
+			for (let i = 0; i < fontList.length; i++) {
 				const font = fontList[i];
-				if(isFontAvailable(fontsSpans[font])) {
+				if (isFontAvailable(fontsSpans[font])) {
 					availableFonts.push(font);
 				}
 			}
@@ -1982,18 +2023,18 @@
 
 			// document.body.appendChild(canvasElement); // Added by me, empty
 
-			const output = Object.keys(webGLNames).reduce(function(accumulator, currentValue) {
+			const output = Object.keys(webGLNames).reduce(function (accumulator, currentValue) {
 				accumulator[currentValue] = null;
 				return accumulator;
 			}, {});
 
-			if(!!canvasElement && !!window.WebGLRenderingContext && !!canvasElement.getContext) {
+			if (!!canvasElement && !!window.WebGLRenderingContext && !!canvasElement.getContext) {
 				const canvasContext = canvasElement.getContext("webgl") || canvasElement.getContext("experimental-webgl");
-				if(canvasContext) {
+				if (canvasContext) {
 					try {
 						Dr(output, canvasContext);
 					}
-					catch(err) {
+					catch (err) {
 						return output;
 					}
 				}
@@ -2015,7 +2056,7 @@
 				return `[${e[0]}, ${e[1]}]`;
 			}
 
-			if(context instanceof WebGLRenderingContext) {
+			if (context instanceof WebGLRenderingContext) {
 				output[webGLNames.webgl_extensions] = context.getSupportedExtensions().join(";");
 				output[webGLNames.webgl_extensions_hash] = murmurHash3.x64.hash128(output.webgl_extensions);
 				output[webGLNames.webgl_renderer] = context.getParameter(context.RENDERER);
@@ -2025,7 +2066,7 @@
 				output[webGLNames.webgl_aliased_line_width_range] = Yt(context, context.getParameter(context.ALIASED_LINE_WIDTH_RANGE));
 				output[webGLNames.webgl_aliased_point_size_range] = Yt(context, context.getParameter(context.ALIASED_POINT_SIZE_RANGE));
 				output[webGLNames.webgl_antialiasing] = context.getContextAttributes().antialias ? "yes" : "no";
-				output[webGLNames.webgl_bits] = function(ctx) {
+				output[webGLNames.webgl_bits] = function (ctx) {
 					const results = [];
 					results.push(ctx.getParameter(ctx.ALPHA_BITS));
 					results.push(ctx.getParameter(ctx.BLUE_BITS));
@@ -2036,13 +2077,13 @@
 					return results.join(",");
 				}(context);
 
-				output[webGLNames.webgl_max_params] = function(ctx) {
+				output[webGLNames.webgl_max_params] = function (ctx) {
 					const results = [];
-					results.push(function(t) {
+					results.push(function (t) {
 						let e;
 						const n = t.getExtension("EXT_texture_filter_anisotropic") || t.getExtension("WEBKIT_EXT_texture_filter_anisotropic") || t.getExtension("MOZ_EXT_texture_filter_anisotropic");
-						if(n) {
-							if((e = t.getParameter(n.MAX_TEXTURE_MAX_ANISOTROPY_EXT)) === 0) {
+						if (n) {
+							if ((e = t.getParameter(n.MAX_TEXTURE_MAX_ANISOTROPY_EXT)) === 0) {
 								e = 2;
 							}
 
@@ -2068,7 +2109,7 @@
 
 				output[webGLNames.webgl_max_viewport_dims] = Yt(context, context.getParameter(context.MAX_VIEWPORT_DIMS));
 
-				const rendererInfo = function(ctx) {
+				const rendererInfo = function (ctx) {
 					try {
 						const y = ctx.getExtension("WEBGL_debug_renderer_info");
 						return !!y && [
@@ -2076,18 +2117,18 @@
 							ctx.getParameter(y.UNMASKED_RENDERER_WEBGL),
 						];
 					}
-					catch(err) {
+					catch (err) {
 						return false;
 					}
 				}(context);
 
-				if(rendererInfo) {
+				if (rendererInfo) {
 					output[webGLNames.webgl_unmasked_vendor] = rendererInfo[0];
 					output[webGLNames.webgl_unmasked_renderer] = rendererInfo[1];
 				}
 
-				if(context.getShaderPrecisionFormat) {
-					output[webGLNames.webgl_vsf_params] = function(ctx) {
+				if (context.getShaderPrecisionFormat) {
+					output[webGLNames.webgl_vsf_params] = function (ctx) {
 						const results = [];
 						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_FLOAT).precision);
 						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_FLOAT).rangeMin);
@@ -2101,7 +2142,7 @@
 						return results.join(",");
 					}(context);
 
-					output[webGLNames.webgl_vsi_params] = function(ctx) {
+					output[webGLNames.webgl_vsi_params] = function (ctx) {
 						const results = [];
 						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_INT).precision);
 						results.push(ctx.getShaderPrecisionFormat(ctx.VERTEX_SHADER, ctx.HIGH_INT).rangeMin);
@@ -2115,7 +2156,7 @@
 						return results.join(",");
 					}(context);
 
-					output[webGLNames.webgl_fsf_params] = function(ctx) {
+					output[webGLNames.webgl_fsf_params] = function (ctx) {
 						const results = [];
 						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_FLOAT).precision);
 						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_FLOAT).rangeMin);
@@ -2129,7 +2170,7 @@
 						return results.join(",");
 					}(context);
 
-					output[webGLNames.webgl_fsi_params] = function(ctx) {
+					output[webGLNames.webgl_fsi_params] = function (ctx) {
 						const results = [];
 						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_INT).precision);
 						results.push(ctx.getShaderPrecisionFormat(ctx.FRAGMENT_SHADER, ctx.HIGH_INT).rangeMin);
@@ -2162,8 +2203,8 @@
 			];
 
 			let result = 0;
-			for(let i = 0; i < s.length; i++) {
-				if(s[i]) {
+			for (let i = 0; i < s.length; i++) {
+				if (s[i]) {
 					result |= 1 << i;
 				}
 			}
@@ -2187,32 +2228,32 @@
 		// 43f2d94
 		function web3Check() {
 			const results = [];
-			if(window.ethereum) {
-				if(window.ethereum.isMetaMask) {
+			if (window.ethereum) {
+				if (window.ethereum.isMetaMask) {
 					results.push("MetaMask");
 				}
 
-				if(window.ethereum.isCoinbaseWallet) {
+				if (window.ethereum.isCoinbaseWallet) {
 					results.push("Coinbase");
 				}
 
-				if(window.ethereum.isWalletConnect) {
+				if (window.ethereum.isWalletConnect) {
 					results.push("WalletConnect");
 				}
 
-				if(window.ethereum.isTrust) {
+				if (window.ethereum.isTrust) {
 					results.push("Trust");
 				}
 
-				if(window.ethereum.isTokenary) {
+				if (window.ethereum.isTokenary) {
 					results.push("Tokenary");
 				}
 
-				if(window.ethereum.isStatus) {
+				if (window.ethereum.isStatus) {
 					results.push("Status");
 				}
 
-				if(window.ethereum.isFrame) {
+				if (window.ethereum.isFrame) {
 					results.push("Frame");
 				}
 
@@ -2225,20 +2266,20 @@
 
 		// 4f59ca8
 		function applePay() {
-			if(window.location.protocol !== "https:" || typeof window.ApplePaySession != "function") {
+			if (window.location.protocol !== "https:" || typeof window.ApplePaySession != "function") {
 				return null;
 			}
 
 			try {
-				for(let i = 30; i > 0; i--) {
-					if(window.ApplePaySession.supportsVersion(i)) {
+				for (let i = 30; i > 0; i--) {
+					if (window.ApplePaySession.supportsVersion(i)) {
 						return i;
 					}
 				}
 
 				return 0;
 			}
-			catch(err) {
+			catch (err) {
 				return 0;
 			}
 		}
@@ -2274,7 +2315,7 @@
 			return md5(
 				props
 					.map((item) => {
-						if(item[1] !== "undefined") {
+						if (item[1] !== "undefined") {
 							return item[0];
 						}
 						else {
@@ -2285,6 +2326,59 @@
 					.join(","),
 			);
 		}
+
+		function getHDRInfo() {
+			const dynamicFormats = [
+				{
+					name: 'HDR10',
+					format: 'codecs="hev1.2.4.L153.B0"; eotf="smpte2084"'
+				},
+				{
+					name: 'HLG',
+					format: 'codecs="hev1.2.4.L153.B0"; eotf="arib-std-b67"'
+				},
+				{
+					name: 'DolbyVision',
+					format: 'codecs="dvh1.1"'
+				}
+			];
+
+			const videoElement = document.createElement('video');
+
+			const supportedFormats = dynamicFormats.reduce((acc, formatInfo) => {
+				const { name, format } = formatInfo;
+				if (videoElement.canPlayType(`video/mp4; ${format}`)) {
+					acc.push(name);
+				}
+				return acc;
+			}, []);
+
+			const isHDRSupported = supportedFormats.length > 0;
+
+			const checks = [
+				function () {
+					const getDecodingInfo = window.matchMedia?.call(window, '(dynamic-range: high)');
+					return getDecodingInfo?.matches;
+				},
+				function () {
+					const colorGamutKey = "HDR";
+					return colorGamutKey in window.screen;
+				},
+				function () {
+					const screenColorSpace = window.screen?.colorSpace;
+					return screenColorSpace === "rec2020" || screenColorSpace === "p3";
+				}
+			];
+
+			const isHDR = checks.some(check => check());
+
+			return {
+				supported: isHDRSupported,
+				formats: supportedFormats,
+				isHDR: isHDR
+			};
+		}
+
 	</script>
 	<script>
 		/**
@@ -2293,7 +2387,7 @@
 		 * @returns {string}
 		 */
 		function unicodeEscape(str) {
-			return str.replace(/[\u00A0-\uffff]/gu, function(c) {
+			return str.replace(/[\u00A0-\uffff]/gu, function (c) {
 				return "\\u" + ("000" + c.charCodeAt(0).toString(16)).slice(-4);
 			});
 		}
@@ -2307,7 +2401,7 @@
 		 */
 		function hashCode(str) {
 			let hash = 0;
-			for(let i = 0, len = str.length; i < len; i++) {
+			for (let i = 0, len = str.length; i < len; i++) {
 				const chr = str.charCodeAt(i);
 				hash = (hash << 5) - hash + chr;
 				hash |= 0; // Convert to 32bit integer
@@ -2317,4 +2411,5 @@
 		}
 	</script>
 </body>
+
 </html>
