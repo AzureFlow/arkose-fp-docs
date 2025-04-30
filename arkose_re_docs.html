@@ -629,8 +629,14 @@
 
 			<section>
 				<h3><abbr data-tooltip="HDRInfo">3ea7194</abbr></h3>
-				<p>Detects High Dynamic Range (HDR) support using video decoding capabilities, color space, and screen metadata.</p>
+				<p>Detects High Dynamic Range (HDR) support using video decoding capabilities</p>
 				<code class="language-json" id="getHDRInfo"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="HDRInfo">05d3d24</abbr></h3>
+				<p>Detects device display and interaction features via media queries and returns a fingerprint hash.</p>
+				<code class="language-json" id="collectMediaQueryFeatures"></code>
 			</section>
 		</main>
 
@@ -752,6 +758,7 @@
 					runTest(bluetooth),
 					runTest(sensors),
 					runTest(getHDRInfo),
+					runTest(collectMediaQueryFeatures),
 				]);
 
 				// 6a62b2a558 = "6c9d6e9be9aa044cc5ce9548b4abe1b0" (script version hash)
@@ -2327,6 +2334,7 @@
 			);
 		}
 
+		// 3ea7194
 		function getHDRInfo() {
 			const dynamicFormats = [
 				{
@@ -2378,6 +2386,51 @@
 				isHDR: isHDR
 			};
 		}
+		
+		// 05d3d24
+		function collectMediaQueryFeatures() {
+			const rn = {};
+
+			rn.colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			rn.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : 'no-preference';
+			rn.forcedColors = window.matchMedia('(forced-colors: active)').matches ? 'active' : 'none';
+			rn.colorGamut = window.matchMedia('(color-gamut: p3)').matches ? "p3" : window.matchMedia('(color-gamut: srgb)').matches ? 'srgb' : 'default'
+			rn.prefersContrast = window.matchMedia('(prefers-contrast: more)').matches ? 'more' : 'no-preference';
+			rn.invertedColors = window.matchMedia('(inverted-colors: inverted)').matches ? 'inverted' : 'none';
+			rn.anyHover = window.matchMedia('(any-hover: hover)').matches ? 'hover' : 'none';
+			rn.prefersReducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches ? 'reduce' : 'no-preference';
+			rn.prefersReducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)').matches ? 'reduce' : 'no-preference';
+			rn.dynamicRange = window.matchMedia('(dynamic-range: high)').matches ? 'high' : 'standard';
+			rn.hover = window.matchMedia('(hover: hover)').matches ? 'hover' : 'none';
+			rn.pointerAccuracy = window.matchMedia('(pointer: fine)').matches ? 'fine' : window.matchMedia('(pointer: coarse)').matches ? 'coarse' : 'none';
+			rn.orientation = window.matchMedia('(orientation: landscape)').matches ? 'landscape' : "portrait";
+			rn.displayMode = window.matchMedia('(display-mode: fullscreen)').matches ? 'fullscreen' : window.matchMedia('(display-mode: standalone)').matches ? 'standalone' : window.matchMedia('(display-mode: minimal-ui)').matches ? 'minimal-ui' : 'browser';
+			rn.videoColorGamut = window.matchMedia('(video-color-gamut: p3)').matches ? "p3" : window.matchMedia('(video-color-gamut: srgb)').matches ? 'srgb' : window.matchMedia('(video-color-gamut: rec2020)').matches ? 'rec2020' : 'default';
+			rn.videoContrast = window.matchMedia('(video-contrast: high)').matches ? 'high' : 'standard';
+			rn.videoDynamicRange = window.matchMedia('(video-dynamic-range: high)').matches ? 'high' : 'standard';
+
+			var nn = function (t) {
+				const u = Object.keys(t).sort((t, e) => {
+					return t.localeCompare(e)
+				});
+
+				for (var s = [], f = 0; f < u.length; f++) {
+					var l = u[f];
+					var p = t[l];
+
+					s.push(l + "=" + p)
+				}
+
+				return s.join(";")
+			}(rn);
+
+			// return {
+			// 	nn,
+			// 	hash: md5(JSON.stringify(nn))
+			// }
+
+			return md5(JSON.stringify(nn));
+		};
 
 	</script>
 	<script>
