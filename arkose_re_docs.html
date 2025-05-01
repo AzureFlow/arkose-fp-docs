@@ -75,6 +75,8 @@
 				<p>View the DevTools console for more details (Ctrl+Shift+I).</p>
 				<p>See also:</p>
 				<ul>
+					<li><a href="https://ko-fi.com/azureflow">Buy me a coffee ☕</a></li>
+					<li><a href="https://github.com/AzureFlow/arkose-fp-docs/blob/main/arkose_re_docs.html">Source code</a></li>
 					<li><a href="./decrypt.html">Payload decrypter</a></li>
 					<li><a href="./mouse.html">Mouse data</a></li>
 					<li><a href="./breaker.html">Breaker v2 (tguess)</a></li>
@@ -97,6 +99,11 @@
 		<hr>
 
 		<main>
+			<section>
+				<h3><abbr data-tooltip="Keyless">is_keyless</abbr></h3>
+				<p>This field is likely currently unused.</p>
+			</section>
+
 			<section>
 				<h3><abbr data-tooltip="Canvas Fingerprint">cfp</abbr></h3>
 				<p>Canvas fingerprint that's hashed using Java's hashCode method.</p>
@@ -288,12 +295,14 @@
 			<section>
 				<h3>getAudio</h3>
 				<p>Checks which audio codecs are available. This can be used to detect browser environments that don't support DRM.</p>
+				<p><span style="color: deepskyblue">NOTICE:</span> "audio_codecs_extended" is no longer included in the payload to reduce payload size.</p>
 				<code class="language-json" id="getAudio"></code>
 			</section>
 
 			<section>
 				<h3>getVideo</h3>
 				<p>Checks which video codecs are available. This can be used to detect browser environments that don't support DRM.</p>
+				<p><span style="color: deepskyblue">NOTICE:</span> "video_codecs_extended" is no longer included in the payload to reduce payload size.</p>
 				<code class="language-json" id="getVideo"></code>
 			</section>
 
@@ -596,12 +605,58 @@
 				<p>Collects sensor data (see source) and MD5 hashes it.</p>
 				<code class="language-json" id="sensors"></code>
 			</section>
+
+			<section>
+				<h3><abbr data-tooltip="HDR">3ea7194</abbr></h3>
+				<p>Checks if "HDR10", "HLG", "DolbyVision" codecs are supported. Checks if HDR is supported.</p>
+				<code class="language-json" id="video_codecs_extended_new"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="mediaQuery">05d3d24</abbr></h3>
+				<p>Checks the following CSS properties, sorts, stringify "key=value;key=value", md5 hash:</p>
+
+				<ul>
+					<li><code class="language-javascript">"(prefers-color-scheme: dark)"</code></li>
+					<li><code class="language-javascript">"(prefers-reduced-motion: reduce)"</code></li>
+					<li><code class="language-javascript">"(forced-colors: active)"</code></li>
+					<li><code class="language-javascript">"(color-gamut: p3)"</code></li>
+					<li><code class="language-javascript">"(color-gamut: srgb)"</code></li>
+					<li><code class="language-javascript">"(prefers-contrast: more)"</code></li>
+					<li><code class="language-javascript">"(inverted-colors: inverted)"</code></li>
+					<li><code class="language-javascript">"(any-hover: hover)"</code></li>
+					<li><code class="language-javascript">"(prefers-reduced-data: reduce)"</code></li>
+					<li><code class="language-javascript">"(prefers-reduced-transparency: reduce)"</code></li>
+					<li><code class="language-javascript">"(dynamic-range: high)"</code></li>
+					<li><code class="language-javascript">"(hover: hover)"</code></li>
+					<li><code class="language-javascript">"(pointer: fine)"</code></li>
+					<li><code class="language-javascript">"(pointer: coarse)"</code></li>
+					<li><code class="language-javascript">"(orientation: landscape)"</code></li>
+					<li><code class="language-javascript">"(display-mode: fullscreen)"</code></li>
+					<li><code class="language-javascript">"(display-mode: standalone)"</code></li>
+					<li><code class="language-javascript">"(display-mode: minimal-ui)"</code></li>
+					<li><code class="language-javascript">"(video-color-gamut: p3)"</code></li>
+					<li><code class="language-javascript">"(video-color-gamut: srgb)"</code></li>
+					<li><code class="language-javascript">"(video-color-gamut: rec2020)"</code></li>
+					<li><code class="language-javascript">"(video-contrast: high)"</code></li>
+					<li><code class="language-javascript">"(video-dynamic-range: high)"</code></li>
+				</ul>
+
+				<code class="language-json" id="css_media_queries_extended"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Keyboard Layout">83eb055</abbr></h3>
+				<p>Gets the keyboard layout. Returns false in 2.13.0 because of "SecurityError: getLayoutMap() must be called from a top-level browsing context or allowed by the permission policy." since 3.x.x is architected differently.</p>
+				<code class="language-json" id="keyboard_layout"></code>
+			</section>
 		</main>
 
 		<hr>
 
 		<footer style="margin: 25px">
 			Made by <a href="https://github.com/AzureFlow">AzureFlow</a>.
+
 		</footer>
 	</div>
 
@@ -627,7 +682,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js" integrity="sha512-8pbzenDolL1l5OPSsoURCx9TEdMFTaeFipASVrMYKhuYtly+k3tcsQYliOEKTmuB1t7yuzAiVo+yd7SJz+ijFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/murmurhash3js/3.0.1/murmurhash3js.min.js" integrity="sha512-HCmS85fXMOkBrVzhJwv5ULIWC6ajmqSJ/JRNJEnD8blyvlSLjcAdlERQR5fazd3Iey5QfftJaFfUW5JiXTDhbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script type="module">
-		const UPDATE_TIME = 1721709277870;
+		const UPDATE_TIME = 1746071603560;
 
 		document.getElementById("updateTime").textContent = new Date(UPDATE_TIME).toLocaleString();
 
@@ -711,6 +766,9 @@
 					runTest(applePay),
 					runTest(bluetooth),
 					runTest(sensors),
+					runTest(video_codecs_extended_new),
+					runTest(css_media_queries_extended),
+					runTest(keyboard_layout),
 				]);
 
 				// 6a62b2a558 = "6c9d6e9be9aa044cc5ce9548b4abe1b0" (script version hash)
@@ -1104,7 +1162,7 @@
 					});
 				}
 
-				console.log("media_devices raw:", media_devices);
+				console.log("media_devices (raw):", media_devices);
 
 				return [
 					{
@@ -1141,7 +1199,7 @@
 					return [].concat([...previousValue], [[currentValue.name, currentValue.lang]]);
 				}, []);
 
-				console.log("voicesStringRaw:", voicesStringRaw);
+				console.log("voicesString (raw):", voicesStringRaw);
 
 				if(voicesStringRaw.length) {
 					voicesHash = md5(voicesStringRaw.join(","));
@@ -1543,6 +1601,74 @@
 			return null;
 		}
 
+		// 3ea7194
+		function video_codecs_extended_new() {
+			const videoElement = document.createElement("video");
+
+			const supportedFormats = function() {
+				// @arkose if you're reading this, please include DRM checks
+				const formatsToCheck = [
+					{
+						name: "HDR10",
+						format: "codecs=\"hev1.2.4.L153.B0\"; eotf=\"smpte2084\"",
+					},
+					{
+						name: "HLG",
+						format: "codecs=\"hev1.2.4.L153.B0\"; eotf=\"arib-std-b67\"",
+					},
+					{
+						name: "DolbyVision",
+						format: "codecs=\"dvh1.1\"",
+					},
+				];
+
+				return formatsToCheck.reduce(function(accumulator, currentValue) {
+					if(videoElement.canPlayType(`video/mp4; ${currentValue.format}`)) {
+						accumulator.push(currentValue.name);
+						return accumulator;
+					}
+					else {
+						return accumulator;
+					}
+				}, []);
+			}();
+
+			// If any of these functions return true, then HDR is supported
+			const isHDR = [
+				function() {
+					let matchMedia = window.matchMedia;
+					if(matchMedia === null || matchMedia === undefined) {
+						return undefined;
+					}
+
+					const mediaQueryList = matchMedia.call(window, "(dynamic-range: high)");
+					if(mediaQueryList === null || mediaQueryList === undefined) {
+						return undefined;
+					}
+
+					return mediaQueryList.matches;
+				},
+				function() {
+					return "HDR" in window.screen;
+				},
+				function() {
+					const colorSpace = window.screen?.colorSpace;
+					return colorSpace === "rec2020" || colorSpace === "p3";
+				},
+			].some(function(func) {
+				return func();
+			});
+
+			const results = {
+				supported: supportedFormats.length > 0,
+				formats: supportedFormats,
+				isHDR: isHDR,
+			};
+			console.log("video_codecs_extended_new (raw):", results);
+
+			return results;
+		}
+
 		function audio_codecs_extended() {
 			const AUDIO_CODECS = ["audio/mp4; codecs=\"mp4a.40\"", "audio/mp4; codecs=\"mp4a.40.1\"", "audio/mp4; codecs=\"mp4a.40.2\"", "audio/mp4; codecs=\"mp4a.40.3\"", "audio/mp4; codecs=\"mp4a.40.4\"", "audio/mp4; codecs=\"mp4a.40.5\"", "audio/mp4; codecs=\"mp4a.40.6\"", "audio/mp4; codecs=\"mp4a.40.7\"", "audio/mp4; codecs=\"mp4a.40.8\"", "audio/mp4; codecs=\"mp4a.40.9\"", "audio/mp4; codecs=\"mp4a.40.12\"", "audio/mp4; codecs=\"mp4a.40.13\"", "audio/mp4; codecs=\"mp4a.40.14\"", "audio/mp4; codecs=\"mp4a.40.15\"", "audio/mp4; codecs=\"mp4a.40.16\"", "audio/mp4; codecs=\"mp4a.40.17\"", "audio/mp4; codecs=\"mp4a.40.19\"", "audio/mp4; codecs=\"mp4a.40.20\"", "audio/mp4; codecs=\"mp4a.40.21\"", "audio/mp4; codecs=\"mp4a.40.22\"", "audio/mp4; codecs=\"mp4a.40.23\"", "audio/mp4; codecs=\"mp4a.40.24\"", "audio/mp4; codecs=\"mp4a.40.25\"", "audio/mp4; codecs=\"mp4a.40.26\"", "audio/mp4; codecs=\"mp4a.40.27\"", "audio/mp4; codecs=\"mp4a.40.28\"", "audio/mp4; codecs=\"mp4a.40.29\"", "audio/mp4; codecs=\"mp4a.40.32\"", "audio/mp4; codecs=\"mp4a.40.33\"", "audio/mp4; codecs=\"mp4a.40.34\"", "audio/mp4; codecs=\"mp4a.40.35\"", "audio/mp4; codecs=\"mp4a.40.36\"", "audio/mp4; codecs=\"mp4a.66\"", "audio/mp4; codecs=\"mp4a.67\"", "audio/mp4; codecs=\"mp4a.68\"", "audio/mp4; codecs=\"mp4a.69\"", "audio/mp4; codecs=\"mp4a.6B\"", "audio/mp4; codecs=\"mp3\"", "audio/mp4; codecs=\"flac\"", "audio/mp4; codecs=\"bogus\"", "audio/mp4; codecs=\"aac\"", "audio/mp4; codecs=\"ac3\"", "audio/mp4; codecs=\"A52\"", "audio/mpeg; codecs=\"mp3\"", "audio/wav; codecs=\"0\"", "audio/wav; codecs=\"2\"", "audio/wave; codecs=\"0\"", "audio/wave; codecs=\"1\"", "audio/wave; codecs=\"2\"", "audio/x-wav; codecs=\"0\"", "audio/x-wav; codecs=\"1\"", "audio/x-wav; codecs=\"2\"", "audio/x-pn-wav; codecs=\"0\"", "audio/x-pn-wav; codecs=\"1\"", "audio/x-pn-wav; codecs=\"2\""];
 
@@ -1734,6 +1860,50 @@
 			}
 
 			return "unknown";
+		}
+
+		// 05d3d24
+		function css_media_queries_extended() {
+			try {
+				const props = {
+					colorScheme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
+					reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "reduce" : "no-preference",
+					forcedColors: window.matchMedia("(forced-colors: active)").matches ? "active" : "none",
+					colorGamut: window.matchMedia("(color-gamut: p3)").matches ? "p3" : window.matchMedia("(color-gamut: srgb)").matches ? "srgb" : "default",
+					prefersContrast: window.matchMedia("(prefers-contrast: more)").matches ? "more" : "no-preference",
+					invertedColors: window.matchMedia("(inverted-colors: inverted)").matches ? "inverted" : "none",
+					anyHover: window.matchMedia("(any-hover: hover)").matches ? "hover" : "none",
+					prefersReducedData: window.matchMedia("(prefers-reduced-data: reduce)").matches ? "reduce" : "no-preference",
+					prefersReducedTransparency: window.matchMedia("(prefers-reduced-transparency: reduce)").matches ? "reduce" : "no-preference",
+					dynamicRange: window.matchMedia("(dynamic-range: high)").matches ? "high" : "standard",
+					hover: window.matchMedia("(hover: hover)").matches ? "hover" : "none",
+					pointerAccuracy: window.matchMedia("(pointer: fine)").matches ? "fine" : window.matchMedia("(pointer: coarse)").matches ? "coarse" : "none",
+					orientation: window.matchMedia("(orientation: landscape)").matches ? "landscape" : "portrait",
+					displayMode: window.matchMedia("(display-mode: fullscreen)").matches ? "fullscreen" : window.matchMedia("(display-mode: standalone)").matches ? "standalone" : window.matchMedia("(display-mode: minimal-ui)").matches ? "minimal-ui" : "browser",
+					videoColorGamut: window.matchMedia("(video-color-gamut: p3)").matches ? "p3" : window.matchMedia("(video-color-gamut: srgb)").matches ? "srgb" : window.matchMedia("(video-color-gamut: rec2020)").matches ? "rec2020" : "default",
+					videoContrast: window.matchMedia("(video-contrast: high)").matches ? "high" : "standard",
+					videoDynamicRange: window.matchMedia("(video-dynamic-range: high)").matches ? "high" : "standard",
+				};
+
+				const propsKeysSorted = Object.keys(props).sort((a, b) => {
+					return a.localeCompare(b);
+				});
+
+				/** @type {string[]} */
+				const keyValues = [];
+				for(let i = 0; i < propsKeysSorted.length; i++) {
+					const key = propsKeysSorted[i];
+					const value = props[key];
+					keyValues.push(key + "=" + value);
+				}
+
+				const result = JSON.stringify(keyValues.join(";"));
+				console.log("css_media_queries_extended (raw):", result);
+				return md5(result);
+			}
+			catch(err) {
+				return null;
+			}
 		}
 
 		console.log("getFontsNEW:", getFontsNEW());
@@ -2273,9 +2443,9 @@
 
 			return md5(
 				props
-					.map((item) => {
-						if(item[1] !== "undefined") {
-							return item[0];
+					.map(([key, value]) => {
+						if(value !== "undefined") {
+							return key;
 						}
 						else {
 							return undefined;
@@ -2284,6 +2454,48 @@
 					.filter(Boolean)
 					.join(","),
 			);
+		}
+
+		// 83eb055
+		async function keyboard_layout() {
+			if(navigator && navigator.keyboard && navigator.keyboard.getLayoutMap) {
+				const keyLayout = await navigator.keyboard.getLayoutMap();
+				/** @type {Map<string, string>} */
+				const keyLayoutMap = new Map();
+				try {
+					for(const [key, value] of [...keyLayout]) {
+						keyLayoutMap.set(key, value);
+					}
+				}
+				catch(err) {
+					console.error(err);
+					return {
+						key: "83eb055",
+						value: false,
+					};
+				}
+
+				// Sort by keys
+				const results = Array.from(keyLayoutMap)
+					.sort(function(a, b) {
+						return a[0].localeCompare(b[0]);
+					})
+					.map(function([key, value]) {
+						return `${key}:${value}`;
+					})
+					.join("|");
+				console.log("keyboard layout (raw):", results)
+
+				return {
+					key: "83eb055",
+					value: md5(results),
+				};
+			}
+
+			return {
+				key: "83eb055",
+				value: false,
+			};
 		}
 	</script>
 	<script>
