@@ -101,7 +101,10 @@
 		<main>
 			<section>
 				<h3><abbr data-tooltip="Keyless">is_keyless</abbr></h3>
-				<p>This field is likely currently unused.</p>
+				<p>
+					This field is true if no public key is provided in the "[...]/v2/api.js" script url. Instead, the public key is provided with "setConfig". More information can be found
+					<a href="https://developer.arkoselabs.com/docs/standard-setup#dynamic-client-api-key-setup" target="_blank">here</a>.
+				</p>
 			</section>
 
 			<section>
@@ -682,7 +685,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js" integrity="sha512-8pbzenDolL1l5OPSsoURCx9TEdMFTaeFipASVrMYKhuYtly+k3tcsQYliOEKTmuB1t7yuzAiVo+yd7SJz+ijFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/murmurhash3js/3.0.1/murmurhash3js.min.js" integrity="sha512-HCmS85fXMOkBrVzhJwv5ULIWC6ajmqSJ/JRNJEnD8blyvlSLjcAdlERQR5fazd3Iey5QfftJaFfUW5JiXTDhbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script type="module">
-		const UPDATE_TIME = 1746071603560;
+		const UPDATE_TIME = 1746132252378;
 
 		document.getElementById("updateTime").textContent = new Date(UPDATE_TIME).toLocaleString();
 
@@ -2484,7 +2487,7 @@
 						return `${key}:${value}`;
 					})
 					.join("|");
-				console.log("keyboard layout (raw):", results)
+				console.log("keyboard layout (raw):", results);
 
 				return {
 					key: "83eb055",
