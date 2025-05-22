@@ -342,7 +342,29 @@
 			</section>
 
 			<section>
-				<h3>css_media_queries</h3>
+				<h3>f9bf2db</h3>
+				<p>Checks various CSS media queries shown below:</p>
+				<ul>
+					<li>"pc" = "prefers-contrast"</li>
+					<li>"ah" = "any-hover"</li>
+					<li>"ap" = "any-pointer"</li>
+					<li>"p" = "pointer"</li>
+					<li>"h" = "hover"</li>
+					<li>"u" = "update"</li>
+					<li>"ic" = "inverted-colors"</li>
+					<li>"prm" = "prefers-reduced-motion"</li>
+					<li>"prt" = "prefers-reduced-transparency"</li>
+					<li>"s" = "scripting"</li>
+					<li>"fc" = "forced-colors"</li>
+				</ul>
+				<p>This succeeds css_media_queries.</p>
+
+				<code class="language-json" id="css_media_queries_new"></code>
+			</section>
+
+			<section>
+				<h3>css_media_queries (replaced by <a href="#h_f9bf2db">f9bf2db</a>)</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> Removed as of 3.4.0</p>
 				<ul>
 					<li>
 						<code class="language-javascript">matchMedia("(prefers-color-scheme:light)");</code>
@@ -356,6 +378,7 @@
 
 			<section>
 				<h3>css_color_gamut</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> Removed as of 3.4.0</p>
 				<p>Checks what color gamuts are supported.</p>
 				<ul>
 					<li>
@@ -373,6 +396,7 @@
 
 			<section>
 				<h3>css_contrast</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> Removed as of 3.4.0</p>
 				<p>Checks user's contrast preference.</p>
 				<ul>
 					<li>
@@ -405,6 +429,7 @@
 
 			<section>
 				<h3>css_pointer</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> Removed as of 3.4.0</p>
 				<ul>
 					<li>
 						<code class="language-javascript">matchMedia("(any-pointer:1)");</code>
@@ -425,6 +450,7 @@
 
 			<section>
 				<h3>css_grid_support</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> Removed as of 3.4.0</p>
 				<ul>
 					<li>
 						<code class="language-javascript">matchMedia("(grid:1)");</code>
@@ -756,6 +782,7 @@
 					}),
 					runTest(media_query_dark_mode),
 					runTest(css_media_queries),
+					runTest(css_media_queries_new),
 					runTest(css_color_gamut),
 					runTest(css_contrast),
 					runTest(css_monochrome),
@@ -1806,6 +1833,91 @@
 
 				return previousValue + Number(checkProp(attribute, options) === bias);
 			}, 0);
+		}
+
+		function css_media_queries_new() {
+			/** @type {Object<string, string>} */
+			const results = {};
+			try {
+				const propsToCheck = {
+					"prefers-contrast": {
+						"values": ["high", "more", "low", "less", "forced", "no-preference"],
+						"name": "pc",
+					},
+					"any-hover": {
+						"values": ["hover", "none"],
+						"name": "ah",
+					},
+					"any-pointer": {
+						"values": ["none", "coarse", "fine"],
+						"name": "ap",
+					},
+					"pointer": {
+						"values": ["none", "coarse", "fine"],
+						"name": "p",
+					},
+					"hover": {
+						"values": ["hover", "none"],
+						"name": "h",
+					},
+					"update": {
+						"values": ["fast", "slow"],
+						"name": "u",
+					},
+					"inverted-colors": {
+						"values": ["inverted", "none"],
+						"name": "ic",
+					},
+					"prefers-reduced-motion": {
+						"values": ["reduce", "no-preference"],
+						"name": "prm",
+					},
+					"prefers-reduced-transparency": {
+						"values": ["reduce", "no-preference"],
+						"name": "prt",
+					},
+					"scripting": {
+						"values": ["none", "initial-only", "enabled"],
+						"name": "s",
+					},
+					"forced-colors": {
+						"values": ["active", "none"],
+						"name": "fc",
+					},
+				};
+
+				// Original code
+				// Object.keys(propsToCheck).forEach((item) => {
+				// 	const props = propsToCheck[item].values;
+				// 	for(let i = 0; i < props.length; i += 1) {
+				// 		const prop = props[i];
+				// 		if(matchMedia(`(${item}: ${prop})`).matches) {
+				// 			const resultObjName = propsToCheck[item].name;
+				// 			results[resultObjName] = prop;
+				// 			break;
+				// 		}
+				// 	}
+				// });
+
+				// Refactored code, does the same thing
+				for(const [key, item] of Object.entries(propsToCheck)) {
+					const {values: props, name: resultObjName} = item;
+					for(let i = 0; i < props.length; i++) {
+						const prop = props[i];
+						if(matchMedia(`(${key}: ${prop})`).matches) {
+							results[resultObjName] = prop;
+							break;
+						}
+					}
+				}
+
+				console.log("css_media_queries_new:", results);
+
+				return JSON.stringify(results);
+			}
+			catch(err) {
+				return null;
+			}
 		}
 
 		function media_query_dark_mode() {
