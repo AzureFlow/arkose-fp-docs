@@ -680,6 +680,29 @@
 				<p>Gets the keyboard layout. Returns false in 2.13.0 because of "SecurityError: getLayoutMap() must be called from a top-level browsing context or allowed by the permission policy." since 3.x.x is architected differently.</p>
 				<code class="language-json" id="keyboard_layout"></code>
 			</section>
+
+
+			<section>
+				<h3><abbr data-tooltip="Navigation Entries">vsadsa</abbr></h3>
+				<code class="language-json" id="navigation_entries"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="jsHeapSizeLimit">basfas</abbr></h3>
+				<p>window.performance.memory.jsHeapSizeLimit</p>
+				<code class="language-json" id="heap_size_limit"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="ark-build-id">lfasdgs</abbr></h3>
+				<p>Arkose Build ID (header: "ark-build-id"). "cbid" likely stands for Client Build ID.</p>
+				<code class="language-javascript">window.arkl.cbid</code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Connection Type ;)">network_info_rtt_type</abbr></h3>
+				<p>This value is being withheld until further notice. Changed as of 4.x.x.</p>
+			</section>
 		</main>
 
 		<hr>
@@ -800,6 +823,8 @@
 					runTest(video_codecs_extended_new),
 					runTest(css_media_queries_extended),
 					runTest(keyboard_layout),
+					runTest(navigation_entries),
+					runTest(heap_size_limit),
 				]);
 
 				// 6a62b2a558 = "6c9d6e9be9aa044cc5ce9548b4abe1b0" (script version hash)
@@ -2612,6 +2637,31 @@
 				key: "83eb055",
 				value: false,
 			};
+		}
+
+		function navigation_entries() {
+			if(window.navigation) {
+				const bf460 = window.navigation.entries();
+				return bf460.length;
+			}
+			return null;
+		}
+
+		function heap_size_limit() {
+			const perf = window.performance;
+			if(!perf) {
+				return [1, null];
+			}
+
+			if(!perf.memory) {
+				return [2, null];
+			}
+
+			if(!perf.memory.jsHeapSizeLimit) {
+				return [3, null];
+			}
+
+			return [0, perf.memory.jsHeapSizeLimit];
 		}
 	</script>
 	<script>
