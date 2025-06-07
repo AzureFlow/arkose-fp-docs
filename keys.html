@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Arkose Keys</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+
+	<link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/ip3/arkoselabs.com.ico"/>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.3.1/css/tabulator.min.css" rel="stylesheet">
+	<!--	<link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.3.1/css/tabulator_site_dark.min.css" rel="stylesheet">-->
+	<!--	<link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.3.1/css/tabulator_midnight.min.css" rel="stylesheet">-->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.3.1/js/tabulator.min.js"></script>
+
+	<style>
+        html {
+            scroll-behavior: smooth;
+        }
+	</style>
+</head>
+<body>
+	<div id="key-table"></div>
+
+	<script>
+		// new Set(tabledata.map(x => x.key))
+		const tabledata = [
+			{
+				name: "Meta",
+				key: "DB86BC89-0641-4DD1-80A6-2202AAB94E90",
+				surl: "client-api.arkoselabs.com",
+				description: "https://fbsbx.com/captcha/arkose/iframe/",
+				required: false,
+			},
+
+			{name: "GitHub", key: "D72ECCFB-262E-4065-9196-856E70BE98ED", surl: "github-api.arkoselabs.com", description: "Default / Password Reset / etc", required: true},
+			{name: "GitHub", key: "747B83EC-2CA3-43AD-A7DF-701F286FBABA", surl: "github-api.arkoselabs.com", description: "Register", required: true},
+
+			{
+				name: "Twitter",
+				key: "BF5FA6C8-9668-4AF9-AFA2-E362F56E5B71",
+				surl: "client-api.arkoselabs.com",
+				description: "arkose_challenge_lo_web_notification_dev",
+				required: false,
+			},
+			{
+				name: "Twitter",
+				key: "6A2FD110-7C1A-47CD-82EE-D01FFB4810D7",
+				surl: "client-api.arkoselabs.com",
+				description: "arkose_challenge_lo_web_notification_mobile_prod",
+				required: true,
+			},
+			{
+				name: "Twitter",
+				key: "50706BFE-942C-4EEC-B9AD-03F7CD268FB1",
+				surl: "client-api.arkoselabs.com",
+				description: "arkose_challenge_lo_web_notification_prod",
+				required: true,
+			},
+			{name: "Twitter", key: "DF58DD3B-DFCC-4502-91FA-EDC0DC385CFF", surl: "client-api.arkoselabs.com", description: "arkose_challenge_login_web_devel", required: false},
+			{name: "Twitter", key: "2F4F0B28-BC94-4271-8AD7-A51662E3C91C", surl: "client-api.arkoselabs.com", description: "arkose_challenge_login_web_prod", required: false},
+			{name: "Twitter", key: "560C66A3-C8EB-4D11-BE53-A8232734AA62", surl: "client-api.arkoselabs.com", description: "arkose_challenge_open_app_dev", required: false},
+			{name: "Twitter", key: "6E8D3D6E-30D4-45F1-9838-BA3D9651AAA1", surl: "client-api.arkoselabs.com", description: "arkose_challenge_open_app_prod", required: true},
+			{name: "Twitter", key: "006B5E87-7497-403E-9E0C-8FFBAAC6FA67", surl: "client-api.arkoselabs.com", description: "arkose_challenge_signup_mobile_dev", required: false},
+			{name: "Twitter", key: "867D55F2-24FD-4C56-AB6D-589EDAF5E7C5", surl: "client-api.arkoselabs.com", description: "arkose_challenge_signup_mobile_prod", required: true},
+			{name: "Twitter", key: "DF58DD3B-DFCC-4502-91FA-EDC0DC385CFF", surl: "client-api.arkoselabs.com", description: "arkose_challenge_signup_web_dev", required: false},
+			{name: "Twitter", key: "2CB16598-CB82-4CF7-B332-5990DB66F3AB", surl: "client-api.arkoselabs.com", description: "arkose_challenge_signup_web_prod", required: true},
+			{
+				name: "Twitter",
+				key: "6627C16B-DA60-47A5-85F7-CFF23BD2BE69",
+				surl: "client-api.arkoselabs.com",
+				description: "arkose_challenge_transparent_signup_dev",
+				required: false,
+			},
+			{
+				name: "Twitter",
+				key: "4CB8C8B0-40FF-439C-9D0D-9A389ADA18CB",
+				surl: "client-api.arkoselabs.com",
+				description: "arkose_challenge_transparent_signup_prod",
+				required: false,
+			},
+			{name: "Twitter", key: "0152B4EB-D2DC-460A-89A1-629838B529C9", surl: "client-api.arkoselabs.com", description: "Unlock - https://x.com/account/access", required: true},
+			{name: "Twitter", key: "C07CAFBC-F76F-4DFD-ABFA-A6B78ADC1F29", surl: "client-api.arkoselabs.com", description: "Contact - https://help.x.com", required: false},
+
+			{name: "Microsoft", key: "B7D8911C-5CC8-A9A3-35B0-554ACEE604DA", surl: "client-api.arkoselabs.com", description: "Outlook - Production", required: true},
+			{name: "Microsoft", key: "38505C28-942F-4513-00AA-9AB405B635C5", surl: "client-api.arkoselabs.com", description: "Outlook - Staging", required: true},
+			{name: "Microsoft", key: "272AEF57-0D14-458A-BCCB-0C2D6CD6494F", surl: "microsoft-api.arkoselabs.com", description: "Azure", required: false},
+
+			{name: "Blizzard", key: "E8A75615-1CBA-5DFF-8032-D16BCF234E10", surl: "blizzard-api.arkoselabs.com", description: "Register", required: false},
+			{name: "Blizzard", key: "CF5C61EE-F062-45DF-A32F-E9398E2B4E0D", surl: "blizzard-api.arkoselabs.com", description: "Login", required: false},
+			{name: "Blizzard", key: "9C3260E3-AD4C-6719-E0A9-56D21BFB0BCD", surl: "blizzard-api.arkoselabs.com", description: "Password reset", required: false},
+
+			{name: "Roblox", key: "63E4117F-E727-42B4-6DAA-C8448E9B137F", surl: "arkoselabs.roblox.com", description: "ASSET_COMMENT", required: true},
+			{name: "Roblox", key: "63E4117F-E727-42B4-6DAA-C8448E9B137F", surl: "arkoselabs.roblox.com", description: "CLOTHING_ASSET_UPLOAD", required: true},
+			{name: "Roblox", key: "63E4117F-E727-42B4-6DAA-C8448E9B137F", surl: "arkoselabs.roblox.com", description: "FOLLOW_USER", required: true},
+			{name: "Roblox", key: "CC30DB96-0C88-4DEB-86E5-6601927ACBB4", surl: "arkoselabs.roblox.com", description: "GENERIC_CHALLENGE", required: true},
+			{name: "Roblox", key: "63E4117F-E727-42B4-6DAA-C8448E9B137F", surl: "arkoselabs.roblox.com", description: "GROUP_JOIN", required: true},
+			{name: "Roblox", key: "63E4117F-E727-42B4-6DAA-C8448E9B137F", surl: "arkoselabs.roblox.com", description: "GROUP_WALL_POST", required: true},
+			{name: "Roblox", key: "63E4117F-E727-42B4-6DAA-C8448E9B137F", surl: "arkoselabs.roblox.com", description: "MARKETPLACE", required: true},
+			{name: "Roblox", key: "63E4117F-E727-42B4-6DAA-C8448E9B137F", surl: "arkoselabs.roblox.com", description: "SUPPORT_REQUEST", required: true},
+			{name: "Roblox", key: "1B154715-ACB4-2706-19ED-0DC7E3F7D855", surl: "arkoselabs.roblox.com", description: "WEB_GAMECARD_REDEMPTION", required: true},
+			{name: "Roblox", key: "476068BF-9607-4799-B53D-966BE98E2B81", surl: "arkoselabs.roblox.com", description: "WEB_LOGIN", required: true},
+			{name: "Roblox", key: "476068BF-9607-4799-B53D-966BE98E2B81", surl: "arkoselabs.roblox.com", description: "WEB_RESET_PASSWORD", required: true},
+			{name: "Roblox", key: "A2A14B1D-1AF3-C791-9BBC-EE33CC7A0A6F", surl: "arkoselabs.roblox.com", description: "WEB_SIGNUP", required: true},
+
+			{name: "EA", key: "73BEC076-3E53-30F5-B1EB-84F494D43DBA", surl: "ea-api.arkoselabs.com", description: "Register", required: false},
+			{name: "EA", key: "0F5FE186-B3CA-4EDB-A39B-9B9A3397D01D", surl: "ea-api.arkoselabs.com", description: "Login (blob or deleted)", required: true},
+			{name: "EA", key: "A4EECF77-AC87-8C8D-5754-BF882F72063B", surl: "ea-api.arkoselabs.com", description: "EA FUT 18/19", required: false},
+			{name: "EA", key: "20C1B296-B15C-4F72-AF0F-882F187EC2C9", surl: "ea-api.arkoselabs.com", description: "EA FUT 20 (blob or deleted)", required: true},
+			{name: "EA", key: "A4EECF77-AC87-8C8D-5754-BF882F72063B", surl: "ea-api.arkoselabs.com", description: "FUT", required: false},
+
+			{
+				name: "Epic Games",
+				key: "E8AD0E2A-2E72-0F06-2C52-706D88BECA75",
+				surl: "client-api.arkoselabs.com",
+				description: "REACT_APP_ARKOSE_SITE_KEY_REGISTRATION",
+				required: true,
+			},
+			{name: "Epic Games", key: "37D033EB-6489-3763-2AE1-A228C04103F5", surl: "client-api.arkoselabs.com", description: "REACT_APP_ARKOSE_SITE_KEY_LOGIN", required: true},
+
+			{name: "GitLab", key: "12D76D4C-5EDF-4EB4-A84D-042C497A9610", surl: "gitlab-api.arkoselabs.com", description: "Production", required: false},
+			{name: "GitLab", key: "9F5BDFCD-E895-43B5-8D96-B24E0107B685", surl: "gitlab-api.arkoselabs.com", description: "Staging", required: false},
+
+			{name: "Rockstar", key: "7DA506C6-4E50-4C35-B92B-997D252B270D", surl: "rockstar-api.arkoselabs.com", description: "", required: true},
+			{name: "Rockstar", key: "A5A70501-FCDE-4065-AF18-D9FAF06EF479", surl: "rockstar-api.arkoselabs.com", description: "", required: true},
+
+			{name: "LinkedIn", key: "3117BF26-4762-4F5A-8ED9-A85E69209A46", surl: "client-api.arkoselabs.com", description: "", required: false},
+			{name: "LinkedIn", key: "D86E85D5-F029-43FA-B4D0-33086FDDABDF", surl: "client-api.arkoselabs.com", description: "", required: false},
+			{name: "LinkedIn", key: "9E881D9A-F495-4A23-BE4B-16067FF8CC3B", surl: "client-api.arkoselabs.com", description: "LinkedIn China?", required: false},
+			{name: "LinkedIn", key: "45E410AF-DA6C-45D0-9044-9A226EE04221", surl: "client-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Minecraft", key: "D39B0EE3-2973-4147-98EF-C92F93451E2D", surl: "client-api.arkoselabs.com", description: "deleted", required: true},
+
+			{
+				name: "Warner Bros. Discovery - DiscoveryPlus",
+				key: "FB507644-AE66-4F85-AE7B-851C82D71195",
+				surl: "client-api.arkoselabs.com",
+				description: "Register - OLD",
+				required: false,
+			},
+			{
+				name: "Warner Bros. Discovery - DiscoveryPlus",
+				key: "FE296399-FDEA-2EA2-8CD5-50F6E3157ECA",
+				surl: "client-api.arkoselabs.com",
+				description: "Login - OLD",
+				required: false,
+			},
+			{
+				name: "Warner Bros. Discovery - DiscoveryPlus",
+				key: "342FE9D0-4049-4BCD-B32D-1FA3FFD5FC23",
+				surl: "wbd-api.arkoselabs.com",
+				description: "accountLookupForm",
+				required: false,
+			},
+			{
+				name: "Warner Bros. Discovery - DiscoveryPlus",
+				key: "DE3ED76D-9E1C-481D-8EBB-009081141200",
+				surl: "wbd-api.arkoselabs.com",
+				description: "createAccountForm",
+				required: false,
+			},
+			{
+				name: "Warner Bros. Discovery - DiscoveryPlus",
+				key: "09CB1E22-0FB7-4AD8-957C-4F06CAFB3C7E",
+				surl: "wbd-api.arkoselabs.com",
+				description: "loginForm",
+				required: false,
+			},
+			{
+				name: "Warner Bros. Discovery - DiscoveryPlus",
+				key: "DE3ED76D-9E1C-481D-8EBB-009081141200",
+				surl: "wbd-api.arkoselabs.com",
+				description: "partnerCreateAccountForm",
+				required: false,
+			},
+
+			{name: "HBO", key: "7A946A46-88B6-40F4-9A8E-7286D122B384", surl: "a4gds3vfh.max.com", description: "accountLookupForm", required: false},
+			{name: "HBO", key: "626ED8CB-A366-467A-974A-E5A3B2A1C542", surl: "a4gds3vfh.max.com", description: "createAccountForm", required: false},
+			{name: "HBO", key: "B0217B00-2CA4-41CC-925D-1EEB57BFFC2F", surl: "a4gds3vfh.max.com", description: "loginForm", required: false},
+			{name: "HBO", key: "626ED8CB-A366-467A-974A-E5A3B2A1C542", surl: "a4gds3vfh.max.com", description: "partnerCreateAccountForm", required: false},
+			{name: "HBO", key: "84D44DED-3981-4C93-971A-76F84702C84E", surl: "a4gds3vfh.max.com", description: "payment", required: false},
+			{name: "HBO", key: "12542EDB-1782-4932-A841-D2D21B6BBB9C", surl: "a4gds3vfh.max.com", description: "resetPasswordForm", required: false},
+
+			{name: "Snapchat", key: "07EAB4B8-2D80-4234-B897-A2CD1F194866", surl: "client-api.arkoselabs.com", description: "login (production)", required: false},
+			{name: "Snapchat", key: "EA4B65CB-594A-438E-B4B5-D0DBA28C9334", surl: "client-api.arkoselabs.com", description: "signup (production)", required: false},
+			{name: "Snapchat", key: "D99D7D11-158A-408C-A6C5-29F2B60EFADE", surl: "client-api.arkoselabs.com", description: "wwwLogin (production)", required: false},
+			{name: "Snapchat", key: "FE9DC8DA-5E83-495F-A762-582267EEACDE", surl: "client-api.arkoselabs.com", description: "login (development)", required: false},
+			{name: "Snapchat", key: "152E1D0C-D805-4060-A111-6AC82CA6821B", surl: "client-api.arkoselabs.com", description: "signup (development)", required: false},
+			{name: "Snapchat", key: "C383A903-0809-41A2-A832-5F7ACC690EA6", surl: "client-api.arkoselabs.com", description: "wwwLogin (development)", required: false},
+
+			{name: "Tinder", key: "B5B07C8C-F93F-44A8-A353-4A47B8AD5238", surl: "tinder-api.arkoselabs.com", description: "web", required: false},
+			{name: "Tinder", key: "EBC0462E-1FD4-25CD-A21E-A68A0E5DDB23", surl: "tinder-api.arkoselabs.com", description: "mobile", required: false},
+			{name: "Tinder", key: "15485B1D-E5A1-0166-162C-FF8EBF968955", surl: "tinder-api.arkoselabs.com", description: "onboardingKey", required: false},
+			{name: "Tinder", key: "EBC0462E-1FD4-25CD-A21E-A68A0E5DDB23", surl: "tinder-api.arkoselabs.com", description: "banAppealKey", required: false},
+
+			{name: "OpenAI", key: "35536E1E-65B4-4D96-9D97-6ADB7EFF8147", surl: "tcr9i.openai.com", description: "PAID", required: true},
+			{name: "OpenAI", key: "3D86FBBA-9D22-402A-B512-3420086BA6CC", surl: "tcr9i.openai.com", description: "FREEACCOUNT", required: true},
+			{name: "OpenAI", key: "BD7D7B66-1476-42B2-A6BE-095F3BB4DF2D", surl: "tcr9i.openai.com", description: "NOAUTH", required: true},
+			{name: "OpenAI", key: "8E3CED7F-F5EA-43D0-A5C3-745D29FDCFBC", surl: "tcr9i.openai.com", description: "SUBSCRIPTION", required: true},
+			{name: "OpenAI", key: "0A1D34FC-659D-4E23-B17B-694DCFCF6A6C", surl: "tcr9i.openai.com", description: "Auth0 (?)", required: true},
+			{name: "OpenAI", key: "0655BC92-82E1-43D9-B32E-9DF9B01AF50C", surl: "tcr9i.openai.com", description: "Login (?)", required: true},
+			{name: "OpenAI", key: "23AAD243-4799-4A9E-B01D-1166C5DE02DF", surl: "tcr9i.openai.com", description: "platform_account_modification - production", required: true},
+			{name: "OpenAI", key: "44A91F6A-1A18-4192-B949-DDD1823EBEF4", surl: "tcr9i.openai.com", description: "platform_account_modification - development", required: false},
+			{name: "OpenAI", key: "0655BC92-82E1-43D9-B32E-9DF9B01AF50C", surl: "tcr9i.openai.com", description: "signup - production", required: true},
+			{name: "OpenAI", key: "CDABFB24-FCDC-44B9-B5F4-DCBEAEADAB79", surl: "tcr9i.openai.com", description: "signup - development", required: false},
+			{name: "OpenAI", key: "ABFE4E70-B947-490F-84CE-369187A9989F", surl: "tcr9i.openai.com", description: "mobile_signup - production", required: true},
+			{name: "OpenAI", key: "6FA444B3-1667-4B9C-B5E2-3755D712F3C1", surl: "tcr9i.openai.com", description: "mobile_signup - development", required: false},
+
+			{name: "Dropbox - HelloSign", key: "C1B9473A-DB06-4C96-B79E-B0CB5CAFE50C", surl: "dropbox-api.arkoselabs.com", description: "arkoseSignUpPublicKey", required: false},
+			{name: "Dropbox - HelloSign", key: "07071A28-2099-0596-6DA4-8CCD9C580290", surl: "dropbox-api.arkoselabs.com", description: "arkoseSignInPublicKey", required: false},
+
+			{name: "Dropbox", key: "419899FA-7FAF-5C1D-C027-BC34963E3A4F", surl: "dropbox-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Adobe", key: "A56018E0-FCBA-4C1D-9905-D273B424E252", surl: "arks-client.adobe.com", description: "arkoseCaptchaSiteKey - staging", required: false},
+			{name: "Adobe", key: "436DD567-5435-4B14-89A6-2F1188E11334", surl: "arks-client.adobe.com", description: "arkoseCaptchaSiteKey - production", required: true},
+			{name: "Adobe", key: "FEC00DE9-743E-4B59-8182-B5E1C5E8F210", surl: "arks-client.adobe.com", description: "arkoseCaptchaSignInSiteKey - staging", required: false},
+			{name: "Adobe", key: "430FF2C3-1AB1-40B7-8BE7-44FC683FE02C", surl: "arks-client.adobe.com", description: "arkoseCaptchaSignInSiteKey - production", required: false},
+
+			{name: "LevelBlue", key: "EEE19E8E-9269-2EBD-7AD5-EE149237BA46", surl: "funcaptcha.com", description: "", required: false},
+
+			{name: "Singapore Airlines", key: "4D297134-67EC-B943-E0E9-79E2E0D9F8DB", surl: "funcaptcha.com", description: "", required: false},
+
+			{name: "Agoda", key: "1C2BB537-D5F7-4A66-BC74-25881B58F1D6", surl: "agoda-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Sony", key: "5B50130F-E160-4D2A-BB1E-ABEC31A7AA9E", surl: "sony-api.arkoselabs.com", description: "arkoseLabsPublicKeyAccountCreation", required: false},
+			{name: "Sony", key: "DCE65287-3F66-46A2-916B-551DA76809A7", surl: "sony-api.arkoselabs.com", description: "arkoseLabsPublicKeyAccountUpdate", required: false},
+			{name: "Sony", key: "9869C2EE-434F-4116-A2E5-B6E1237239DA", surl: "sony-api.arkoselabs.com", description: "arkoseLabsPublicKeyPasswordRecovery", required: false},
+			{name: "Sony", key: "7D857050-F609-4F6A-AF63-CD04DE665FFE", surl: "sony-api.arkoselabs.com", description: "arkoseLabsPublicKeySignIn", required: false},
+			{name: "Sony", key: "9111AFAA-345E-411A-B25D-1D41E74937F4", surl: "sony-api.arkoselabs.com", description: "test key", required: false},
+			{name: "Sony", key: "CDB38584-ABDB-4342-BCED-6F5067CBC8DC", surl: "sony-legacy.arkoselabs.com", description: "unknown", required: false},
+
+			{name: "Chime", key: "BEDA1951-6B54-4C39-9E81-235056A5E4A4", surl: "arkose-client.chime.com", description: "Development - INVALID / TESTING", required: false},
+			{name: "Chime", key: "4B305C4F-4CD6-4AD9-A578-695CBACC741E", surl: "arkose-client.chime.com", description: "Development - TESTING_FRICTIONLESS", required: false},
+			{
+				name: "Chime",
+				key: "120D7BDC-080B-45BD-9F7C-9F7336F9234F",
+				surl: "arkose-client.chime.com",
+				description: "Development - RFA / LOGIN / PASSWORD_RESET / ENROLLMENT",
+				required: false,
+			},
+			{name: "Chime", key: "0ECC6D89-EF01-47E3-BAE3-303BBF2A3C4C", surl: "arkose-client.chime.com", description: "Development - detect", required: false},
+			{
+				name: "Chime",
+				key: "7BA04117-FC6C-4968-834C-DC69A7D0AD58",
+				surl: "arkose-client.chime.com",
+				description: "Production - INVALID / TESTING / TESTING_FRICTIONLESS / LOGIN / PASSWORD_RESET",
+				required: false,
+			},
+			{name: "Chime", key: "F169C36A-0A9B-411B-B4AF-72C71E27853B", surl: "arkose-client.chime.com", description: "Production - RFA", required: false},
+			{name: "Chime", key: "8F5905D7-1435-4252-87B2-F902B2C7FD74", surl: "arkose-client.chime.com", description: "Production - ENROLLMENT", required: false},
+			{name: "Chime", key: "F74462F6-01AA-4323-99D7-4F53118BF5C8", surl: "arkose-client.chime.com", description: "Production - detect", required: false},
+
+			{name: "IMVU", key: "0C2B415C-D772-47D4-A183-34934F786C7E", surl: "imvu-api.arkoselabs.com", description: "arkoseApiRegistration", required: true},
+			{name: "IMVU", key: "11442AA4-D1D6-A483-2F2A-53CEB5286783", surl: "imvu-api.arkoselabs.com", description: "arkoseApiResetPassword", required: true},
+			{name: "IMVU", key: "4A6BFC8F-18C0-9025-894E-9A4670BF567A", surl: "imvu-api.arkoselabs.com", description: "arkoseApiNonReg", required: true},
+			{name: "IMVU", key: "CFCBEFBE-054C-D22E-0F14-527A6E48FAE2", surl: "imvu-api.arkoselabs.com", description: "Register (mobile)", required: true},
+
+			{name: "Amazon", key: "2F1CD804-FE45-F12B-9723-240962EBA6F8", surl: "amazon-api.arkoselabs.com", description: "", required: false},
+
+			{name: "GroupMe", key: "49D02870-26F8-42F2-8619-0157104B9DEE", surl: "groupme-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Zilch", key: "284CE8B2-89E0-45B0-98B7-38594A810745", surl: "c37b9.payzilch.com", description: "arkoseLoginPublicKey", required: true},
+			{name: "Zilch", key: "D5264E07-85CF-434C-88E5-6F095A832C01", surl: "c37b9.payzilch.com", description: "arkoseRegistrationPublicKey", required: true},
+
+			// {name: "Twilio", key: "", surl: "twilio-api.arkoselabs.com", description: "Advertised partner.", required: true},
+
+			{name: "Asurion", key: "4601B256-1307-4B9E-BB47-503CA664866F", surl: "asurion-api.arkoselabs.com", description: "ID", required: false},
+			{name: "Asurion", key: "8FC6BCF0-83CA-59A1-F97D-65E2322F5E70", surl: "asurion-api.arkoselabs.com", description: "Phone Claim", required: true},
+
+			{name: "TriNet / Zenefits", key: "FB46D6FD-2DBE-4998-BDD0-968585F0263C", surl: "client-api.arkoselabs.com", description: "", required: false},
+			{name: "TriNet / Zenefits", key: "A515BA54-5E55-4708-88F6-E0CCC8EB9A23", surl: "client-api.arkoselabs.com", description: "", required: false},
+			{name: "TriNet / Zenefits", key: "05BEFACE-9F6E-4EF5-BE31-35692C5034B3", surl: "client-api.arkoselabs.com", description: "", required: false},
+
+			{name: "BeReal", key: "CCB0863E-D45D-42E9-A6C8-9E8544E8B17E", surl: "bereal-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Lively", key: "05846D28-284B-8EC4-B45A-ACC6F6759588", surl: "lively-api.arkoselabs.com", description: "Production", required: false},
+			{name: "Lively", key: "3F14A00E-105C-AAE6-0CC3-567568A0CF00", surl: "lively-api.arkoselabs.com", description: "Development", required: false},
+
+			{name: "Expedia", key: "33C384C0-7DE5-4243-80DB-2C5E35802C15", surl: "expedia-api.arkoselabs.com", description: "botOrNot", required: true},
+			{name: "Expedia", key: "F0C12973-2BA8-408E-A33F-714B4349832F", surl: "expedia-api.arkoselabs.com", description: "captchaHtml", required: false},
+			{name: "Expedia", key: "B8BDED1B-BA3C-492B-AEDB-016DDA3E4837", surl: "expedia-api.arkoselabs.com", description: "verifyOtpSigninCaptchaHtml", required: false},
+			{name: "Expedia - expediapartnercentral.com", key: "A3FCC6D6-5894-4033-A13A-20B3A5E72761", surl: "expedia-api.arkoselabs.com", description: "", required: false},
+			{name: "Expedia - carrentals.com", key: "A3FCC6D6-5894-4033-A13A-20B3A5E72761", surl: "expedia-api.arkoselabs.com", description: "", required: false},
+			{
+				name: "Expedia - vrbo.com / stayz.com.au / fewo-direkt.de",
+				key: "FB58AF3E-E7BE-4AF8-BB16-E7CDB94CADCF",
+				surl: "expedia-api.arkoselabs.com",
+				description: "Login",
+				required: false,
+			},
+			{
+				name: "Expedia - vrbo.com / stayz.com.au / fewo-direkt.de",
+				key: "BDA5383C-6738-45E7-9811-213B1B853E45",
+				surl: "expedia-api.arkoselabs.com",
+				description: "Register",
+				required: false,
+			},
+			{
+				name: "Expedia - lastminute.com.au / wotif.com / cheaptickets.com / ebookers.com / orbitz.com",
+				key: "F0C12973-2BA8-408E-A33F-714B4349832F",
+				surl: "expedia-api.arkoselabs.com",
+				description: "Login",
+				required: false,
+			},
+			{
+				name: "Expedia - lastminute.com.au / wotif.com / cheaptickets.com / ebookers.com / orbitz.com",
+				key: "BDA5383C-6738-45E7-9811-213B1B853E45",
+				surl: "expedia-api.arkoselabs.com",
+				description: "Register",
+				required: false,
+			},
+			{name: "Expedia - Hotels.com", key: "33C384C0-7DE5-4243-80DB-2C5E35802C15", surl: "expedia-api.arkoselabs.com", description: "botOrNot", required: true},
+			{name: "Expedia - Hotels.com", key: "0C3DD163-8BBF-3286-A402-9BE88C5F3EDC", surl: "expedia-api.arkoselabs.com", description: "captchaHtml", required: true},
+			{
+				name: "Expedia - Hotels.com",
+				key: "F7B5AE6C-E684-9B4C-50B0-9839F6BF8FC2",
+				surl: "expedia-api.arkoselabs.com",
+				description: "verifyOtpSigninCaptchaHtml",
+				required: false,
+			},
+
+			{
+				name: "ZipAir",
+				key: "D4643E9F-7FF0-4299-9FE7-095F928F84A1",
+				surl: "zipair-api.arkoselabs.com",
+				description: "Payment - https://bff.zipair.net/v1/data-exchange",
+				required: true,
+			},
+
+			{name: "x-news.pl", key: "342FE9D0-4049-4BCD-B32D-1FA3FFD5FC23", surl: "funcaptcha.com", description: "Very old", required: false},
+
+			{name: "Tiaa / EverBank", key: "942A102E-8D3A-4F0F-9ED3-13CA6D754952", surl: "tiaa-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Twitch", key: "E5554D43-23CC-1982-971D-6A2262A2CA24", surl: "twitch.arkoselabs.com", description: "deleted", required: true},
+
+			{name: "PayPal", key: "9409E63B-D2A5-9CBD-DBC0-5095707D0090", surl: "paypal.arkoselabs.com", description: "deleted", required: true},
+
+			{name: "Uber", key: "30000F36-CADF-490C-929A-C6A7DD8B33C4", surl: "uber.arkoselabs.com", description: "", required: false},
+
+			{name: "Robinhood", key: "633AB27B-AAB3-4385-96DB-7A82ED5B845A", surl: "robinhood-api.arkoselabs.com", description: "Register (web)", required: false},
+			{name: "Robinhood", key: "7F867EDC-C71B-467F-B0A1-8DCBA5D4D2E3", surl: "robinhood-api.arkoselabs.com", description: "Login (web)", required: false},
+			{name: "Robinhood", key: "5C98B66C-8D7A-4549-B5F1-442FA0E224D5", surl: "robinhood-api.arkoselabs.com", description: "LOGIN (mobile)", required: true},
+			{name: "Robinhood", key: "5E05A19C-5AB0-4A0A-8EBC-41DF42B53739", surl: "robinhood-api.arkoselabs.com", description: "ONBOARDING (mobile)", required: true},
+
+			{name: "Arkose - Portal", key: "E2B95E32-21FE-4E68-8BB0-0AB02AC2BCEC", surl: "client-api.arkoselabs.com", description: "", required: false},
+			{name: "Arkose University", key: "4DA54682-A5C9-4558-ADAB-41DC0F26A630", surl: "client-api.arkoselabs.com", description: "Register", required: false},
+			{name: "Arkose University", key: "BC55A4F0-CA5B-48C4-B37A-0BAEAA623E1A", surl: "client-api.arkoselabs.com", description: "Login", required: false},
+			{name: "Arkose - Unknown", key: "D0432FDA-ED45-4489-91D3-54C104BD60D2", surl: "client-api.arkoselabs.com", description: "", required: false},
+			{
+				name: "Arkose - MatchKey Demo",
+				key: "3EE79F8D-13A6-474B-9278-448EA19F79B3",
+				surl: "client-api.arkoselabs.com",
+				description: "https://www.arkoselabs.com/arkose-matchkey/#startscroll",
+				required: false,
+			},
+
+			{name: "Blackhawk Network", key: "84E1DACC-3B8E-04D6-6E35-2A7D2B8ACFE1", surl: "bhn-api.arkoselabs.com", description: "", required: true},
+			{name: "Blackhawk Network - giftcardkey.com", key: "25F047CE-AC4D-A023-583D-14FEE20E4E1E", surl: "bhn-api.arkoselabs.com", description: "", required: true},
+
+			{name: "Airbnb", key: "513F48D7-3DCD-468D-8557-EFF418CF794D", surl: "airbnb-api.arkoselabs.com", description: "", required: true},
+
+			{name: "CBS Broadcasting", key: "C24F81B7-72AC-4E1E-954B-E72A5F733DA4", surl: "cbs-api.arkoselabs.com", description: "", required: true},
+
+			{
+				name: "Rightmove",
+				key: "91523F73-E56D-4DD9-86C4-5D4E5464E3D8",
+				surl: "rightmove-api.arkoselabs.com",
+				description: "https://www.rightmove.co.uk/api/user-authentication-web/arkose",
+				required: false,
+			},
+
+			{name: "Bumble", key: "717C7D7F-8ED2-4587-AF41-E7E34907A6FB", surl: "bumble.arkoselabs.com", description: "", required: false},
+			{name: "Bumble", key: "73C53A42-FEEA-4097-8B08-F9F3E8B143CE", surl: "bumble.arkoselabs.com", description: "", required: false},
+
+			{name: "Bumble - Badoo", key: "3515A340-B7C5-46F9-B049-98D04BE7CA60", surl: "badoo-api.arkoselabs.com", description: "", required: false},
+			{name: "Bumble - Badoo", key: "85AD0329-8516-4C2D-AC57-3519CAA3240D", surl: "badoo-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Fruitz.io", key: "1835D7BA-4402-4162-BF79-442C8CE6CE7C", surl: "", description: "", required: false},
+
+			{name: "Navan", key: "A5F794F7-A799-47D1-82FC-E11AF34F97D8", surl: "navan-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Coinbase", key: "03CB9CF0-EE31-41F9-A4B7-E57FD94373C5", surl: "ark.coinbase.com", description: "", required: false},
+			{name: "Coinbase", key: "32FBE3BC-228C-4967-9D76-8B27B3EBCF08", surl: "ark.coinbase.com", description: "Login", required: false},
+			{name: "Coinbase", key: "E191DADD-00A4-46D9-BC38-89721CB34BC7", surl: "ark.coinbase.com", description: "Signup", required: false},
+
+			{name: "Coursera", key: "98EFB87D-3554-499A-B9C9-4285EDF0DF57", surl: "coursera-api.arkoselabs.com", description: "", required: false},
+			{name: "Coursera", key: "043FE28E-77E9-4A6F-9D15-927D0B035904", surl: "coursera-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Coinone", key: "BC62C960-E0AC-3DD7-EBF2-7708C06BCECC", surl: "client-api.arkoselabs.com", description: "", required: true},
+
+			{name: "Venmo", key: "42E264FC-E567-4BFE-BE76-CE05AE80C7AA", surl: "venmo-api.arkoselabs.com", description: "Password reset", required: true},
+
+			{name: "Payoneer", key: "EE844FC3-499D-4A4D-A643-D7400F0FD4DE", surl: "payoneer-api.arkoselabs.com", description: "Production", required: false},
+			{name: "Payoneer", key: "7D76E2A2-89F4-4CD7-AB0E-416683BF595D", surl: "payoneer-api.arkoselabs.com", description: "Development", required: false},
+
+			{name: "linktr.ee", key: "07D6B751-10C8-4C00-91A9-88D6CAB8BE0B", surl: "linktree-api.arkoselabs.com", description: "", required: false},
+
+			{name: "HP.com", key: "5B6F3411-4A78-4EC2-9223-16001F3B3E68", surl: "hp-api.arkoselabs.com", description: "arkose", required: true},
+			{name: "HP.com", key: "6E7F820D-4A08-446C-85AE-3FA0601853FE", surl: "hp-api.arkoselabs.com", description: "arkose_signup", required: true},
+
+			{name: "Ring.com", key: "98C7DD49-EFC1-46E9-A99B-E3D61BF09C5C", surl: "ring-api.arkoselabs.com", description: "", required: true},
+
+			{name: "Figma", key: "A207F8A1-ED09-4325-ACE6-C8E26A458FBA", surl: "figma-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Citizens Bank", key: "4455454D-C855-4A36-A31B-45D7DB0F01C0", surl: "citizensbank-api.arkoselabs.com", description: "Login", required: false},
+			{name: "Citizens Bank", key: "3D55474D-320E-4955-902D-9433350203DA", surl: "citizensbank-api.arkoselabs.com", description: "", required: false},
+
+			{
+				name: "Warner Bros. Discovery - DCUniverseInfinite.com",
+				key: "4464DBBF-69BA-467C-A632-15BC005D7943",
+				surl: "client-api.arkoselabs.com",
+				description: "ARKOSE_KEY_DEFAULT (register)",
+				required: false,
+			},
+			{
+				name: "Warner Bros. Discovery - DCUniverseInfinite.com",
+				key: "D4EC8D04-608C-483B-8841-5D69FA1A7001",
+				surl: "client-api.arkoselabs.com",
+				description: "ARKOSE_KEY_LOGIN",
+				required: false,
+			},
+
+			{name: "Warner Bros. Discovery - BluTV", key: "4464DBBF-69BA-467C-A632-15BC005D7943", surl: "", description: "", required: false},
+			{name: "Warner Bros. Discovery - BluTV", key: "D4EC8D04-608C-483B-8841-5D69FA1A7001", surl: "", description: "Login", required: false},
+
+			{name: "Whatnot.com", key: "E64CE3A1-A1E2-41D6-9993-7086A8CEE5DC", surl: "client-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Match.com", key: "447C2794-FFAC-8520-7E87-5F18FA220197", surl: "client-api.arkoselabs.com", description: "", required: false},
+			{name: "Match.com", key: "85800716-F435-4981-864C-8B90602D10F7", surl: "client-api.arkoselabs.com", description: "Login", required: false},
+
+			{name: "DigitalOcean", key: "06A0678C-C410-48EA-A18A-DC519C2B5877", surl: "client-api.arkoselabs.com", description: "Register", required: false},
+
+			{name: "Wells Fargo", key: "9B8ED233-984B-4DE5-A7B6-3A370D9FF48B", surl: "okra.wf.com / wf-api.arkoselabs.com", description: "Production", required: false},
+			{name: "Wells Fargo", key: "3C5073B0-3106-423D-8D6B-81FE82CF5C2C", surl: "okra.wf.com / wf-api.arkoselabs.com", description: "Development", required: false},
+
+			{name: "Warner Bros. Discovery - CNN", key: "A81F9530-112A-47B2-BA4B-8CB41D7C6DD6", surl: "wbd-api.arkoselabs.com", description: "ARKOSE_LOGIN_KEY", required: false},
+			{
+				name: "Warner Bros. Discovery - CNN",
+				key: "12FB7448-F055-4621-BC01-1DDF7CB3945A",
+				surl: "wbd-api.arkoselabs.com",
+				description: "ARKOSE_NEWSLETTERS_KEY",
+				required: false,
+			},
+			{
+				name: "Warner Bros. Discovery - CNN",
+				key: "95218C8B-B84E-413C-B875-785B35F92134",
+				surl: "wbd-api.arkoselabs.com",
+				description: "ARKOSE_REGISTRATION_KEY",
+				required: false,
+			},
+
+			{name: "Kik", key: "87CCB3D1-226B-41F4-AAC2-9EE3BF4F54DC", surl: "kik-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Olo", key: "DB877074-ACFD-4BCE-8BDB-B6A343B05A2C", surl: "olo-api.arkoselabs.com", description: "ARKOSE_INTERNAL_LOGIN_PUBLIC_KEY", required: false},
+			{name: "Olo", key: "F82162A1-2E05-485A-BD5E-C4DF6F7486FC", surl: "olo-api.arkoselabs.com", description: "ARKOSE_SUBMIT_ORDER_PUBLIC_KEY", required: false},
+
+			{name: "Tabcorp", key: "1A413285-A58D-4629-A9FD-B77170BBCBCE", surl: "tabcorp-api.arkoselabs.com", description: "Arkose's unnamed gambling customer?", required: false},
+
+			{
+				name: "Pitney Bowes",
+				key: "1A413285-A58D-4629-A9FD-B77170BBCBCE",
+				surl: "pitneybowes-api.arkoselabs.com",
+				description: "",
+				required: false,
+			},
+
+			{
+				name: "Databricks",
+				key: "A0DE7B75-1138-44F2-B132-ED188CEB66F3",
+				surl: "databricks-api.arkoselabs.com",
+				description: "",
+				required: false,
+			},
+
+			{name: "Docusign", key: "A7D5C061-8620-4225-89CF-43A310CCD54F", surl: "docusign-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Square Enix", key: "FA3D9236-A32B-42C4-A307-1E30CAB0EC71", surl: "square-enix-api.arkoselabs.com", description: "Login", required: false},
+			{name: "Square Enix", key: "5416FB6F-A586-4064-B444-5335283658F8", surl: "square-enix-api.arkoselabs.com", description: "Register", required: false},
+
+			// {name: "", key: "", surl: "", description: "", required: true},
+		];
+
+		const table = new Tabulator("#key-table", {
+			// height: 205,
+			data: tabledata,
+			layout: "fitColumns",
+			groupBy: "name",
+			groupStartOpen: true,
+			groupHeader: function(value, count, data, group) {
+				return value;
+			},
+			groupToggleElement: false,
+			columns: [
+				{
+					title: "Company",
+					field: "name",
+					width: 150,
+					resizable: true,
+				},
+				{
+					title: "Public Key",
+					field: "key",
+					width: 300,
+					resizable: true,
+					cellDblClick: function(e, cell) {
+						const publicKey = cell.getData().key;
+
+						copyToClipboard(`https://iframe.arkoselabs.com/${publicKey}/index.html`)
+					},
+				},
+				{
+					title: "Client API URL",
+					field: "surl",
+					width: 200,
+					resizable: true,
+				},
+				{
+					title: "Description",
+					field: "description",
+					// width: 150,
+					resizable: true,
+				},
+				{
+					title: "Blob Required",
+					field: "required",
+					formatter: "tickCross",
+					width: 150,
+				},
+			],
+			initialSort: [
+				{column: "name", dir: "asc"},
+			],
+		});
+
+		function copyToClipboard(text) {
+			const textarea = document.createElement("textarea");
+			textarea.value = text;
+
+			// Avoid scrolling to bottom
+			textarea.style.top = "0";
+			textarea.style.left = "0";
+			textarea.style.position = "fixed";
+
+			document.body.appendChild(textarea);
+			textarea.focus();
+			textarea.select();
+
+			try {
+				document.execCommand("copy");
+			}
+			catch(err) {
+				console.error("Fallback: Unable to copy", err);
+			}
+
+			document.body.removeChild(textarea);
+		}
+	</script>
+</body>
+</html>
