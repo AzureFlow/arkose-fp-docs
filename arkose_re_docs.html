@@ -256,13 +256,22 @@
 			</section>
 
 			<section>
-				<h3>navigator_permissions_hash</h3>
+				<h3>navigator_permissions_hash (replaced by <a href="#h_1f220c9">1f220c9</a>)</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> Removed as of 2.15.0 and 3.5.0</p>
 				<ul>
 					<li>Checks which permissions the current page has.</li>
 					<li>Joins them with "|".</li>
 					<li>md5 hashes them.</li>
 				</ul>
 				<code class="language-json" id="navigator_permissions_hash"></code>
+			</section>
+
+			<section>
+				<h3>1f220c9</h3>
+				<ul>
+					<li>Checks which permissions the current page has.</li>
+				</ul>
+				<code class="language-json" id="navigator_permissions_hash_new"></code>
 			</section>
 
 			<section>
@@ -615,7 +624,7 @@
 
 			<section>
 				<h3><abbr data-tooltip="web3">43f2d94</abbr></h3>
-				<p>Collects web3 data such as if MetaMask is available and MD5 hashes the stringified results. Otherwise, false.</p>
+				<p>Collects web3 data such as if MetaMask is available.</p>
 				<code class="language-json" id="web3Check"></code>
 			</section>
 
@@ -788,6 +797,7 @@
 					runTest(headless_browser_generic),
 					runTest(hasFakeOS),
 					runTest(navigator_permissions_hash),
+					runTest(navigator_permissions_hash_new),
 					runTest(browser_api_checks),
 					runTest(getPlugins),
 					runTest(speech_default),
@@ -1335,74 +1345,66 @@
 			return {key: "navigator_permissions_hash", value: permissionsHash};
 		}
 
-		// function navigator_permissions_hash() {
-		// 	switch(t.prev = t.next) {
-		// 		case 0:
-		// 			const r = ["accelerometer", "accessibility-events", "ambient-light-sensor", "background-sync", "bluetooth", "camera", "clipboard", "clipboard-read", "clipboard-write", "device-info", "geolocation", "gyroscope", "magnetometer", "microphone", "midi", "notifications", "payment-handler", "persistent-storage", "push", "speaker"];
-		// 			if(navigator && navigator.permissions) {
-		// 				const n = [];
-		// 				let o = 0;
-		//
-		// 				if(o >= r.length) {
-		// 					t.next = 21;
-		// 					break;
-		// 				}
-		// 				t.prev = 6;
-		// 				i = r[o];
-		// 				t.next = 10;
-		// 				const h = {
-		// 					name: i,
-		// 				};
-		//
-		// 				return navigator.permissions.query(h);
-		// 			}
-		//
-		// 			return {
-		// 				key: "navigator_permissions_hash",
-		// 				value: null,
-		// 			};
-		// 		case 3:
-		// 			n = [];
-		// 			o = 0;
-		// 		case 5:
-		// 			if(o >= r.length) {
-		// 				t.next = 21;
-		// 				break;
-		// 			}
-		// 			t.prev = 6;
-		// 			i = r[o];
-		// 			t.next = 10;
-		// 			var h = {
-		// 				name: i,
-		// 			};
-		// 			return navigator.permissions.query(h);
-		// 		case 10:
-		// 			if(t.sent) {
-		// 				t.next = 13;
-		// 				break;
-		// 			}
-		// 			return t.abrupt("continue", 18);
-		// 		case 13:
-		// 			n.push(i);
-		// 			t.next = 18;
-		// 			break;
-		// 		case 16:
-		// 			t.prev = 16;
-		// 			t.t0 = t.catch(6);
-		// 		case 18:
-		// 			o++;
-		// 			t.next = 5;
-		// 			break;
-		// 		case 21:
-		// 			a = md5(n.join("|"));
-		// 			var mt = {
-		// 				key: "navigator_permissions_hash",
-		// 				value: a,
-		// 			};
-		// 			return t.abrupt("return", mt);
-		// 	}
-		//
-		// }
+		async function navigator_permissions_hash_new() {
+			/**
+			 * @param {PermissionDescriptor|string} permissionName
+			 * @return {Promise<"denied"|"granted"|"prompt"|string>}
+			 */
+			async function getPermissionState(permissionName) {
+				try {
+					const permissionStatus = await navigator.permissions.query({
+						name: permissionName,
+					});
+
+					return permissionStatus.state;
+				}
+				catch(error) {
+					return "unknown";
+				}
+			}
+
+			/**
+			 * @param {PermissionDescriptor|string} permissionName
+			 * @param {number} samples
+			 * @returns {Promise<string>}
+			 */
+			async function samplePermissionState(permissionName, samples) {
+				const stateCounts = {};
+				for(let i = 0; i < samples; i++) {
+					const state = await getPermissionState(permissionName);
+					if(state !== "unknown") {
+						stateCounts[state] = (stateCounts[state] ?? 0) + 1;
+					}
+				}
+
+				return Object.keys(stateCounts).reduce((a, b) => (stateCounts[a] > stateCounts[b] ? a : b), "unknown");
+			}
+
+			const permissionNames = [
+				"accelerometer", "accessibility", "accessibility-events", "ambient-light-sensor",
+				"background-fetch", "background-sync", "bluetooth", "camera", "clipboard", "gamepad",
+				"speaker-selection", "screen-wake-lock", "clipboard-read", "clipboard-write", "device-info",
+				"display-capture", "gyroscope", "geolocation", "local-fonts", "magnetometer", "microphone",
+				"midi", "nfc", "notifications", "payment-handler", "persistent-storage", "push", "speaker",
+				"storage-access", "top-level-storage-access", "window-management", "query",
+			];
+
+			/** @type {Record<string, string>} */
+			const permissionStates = {};
+			await Promise.allSettled(
+				permissionNames.map(async(name) => {
+					permissionStates[name] = await samplePermissionState(name, 3);
+				}),
+			);
+
+			const rawValue = JSON.stringify(permissionStates);
+			console.log("1f220c9:", rawValue);
+
+			return {
+				key: "1f220c9",
+				value: md5(rawValue),
+			};
+		}
 
 		function browser_api_checks() {
 			try {
@@ -2498,42 +2500,130 @@
 
 		// 43f2d94
 		function web3Check() {
+			/** @type {string[]} */
 			const results = [];
-			if(window.ethereum) {
-				if(window.ethereum.isMetaMask) {
-					results.push("MetaMask");
+
+			try {
+				if(typeof window === "undefined") {
+					return [];
 				}
 
-				if(window.ethereum.isCoinbaseWallet) {
-					results.push("Coinbase");
+				if(window.ethereum) {
+					if(window.ethereum.isMetaMask) {
+						results.push("MetaMask");
+					}
+
+					if(window.ethereum.isCoinbaseWallet || window.coinbaseWalletExtension) {
+						results.push("Coinbase");
+					}
+
+					if(window.ethereum.isTrust || window.ethereum.isTrustWallet) {
+						results.push("Trust Wallet");
+					}
+
+					if(window.ethereum.isBraveWallet) {
+						results.push("Brave Wallet");
+					}
+
+					if(window.ethereum.isOkxWallet || window.okxwallet) {
+						results.push("OKX Wallet");
+					}
+
+					if(window.ethereum.isRainbow) {
+						results.push("Rainbow");
+					}
+
+					if(window.ethereum.isStatus) {
+						results.push("Status");
+					}
+
+					if(window.ethereum.isExodus) {
+						results.push("Exodus");
+					}
+
+					if(window.ethereum.isOpera) {
+						results.push("Opera Crypto Wallet");
+					}
+
+					if(window.ethereum.isRabby) {
+						results.push("Rabby Wallet");
+					}
+
+					if(window.ethereum.isPhantom) {
+						results.push("Phantom (EVM)");
+					}
+
+					if(results.length === 0 && typeof window.ethereum.request == "function") {
+						results.push("Generic Ethereum Wallet");
+					}
 				}
 
-				if(window.ethereum.isWalletConnect) {
-					results.push("WalletConnect");
+				if(window.phantom !== null && window.phantom !== undefined && window.phantom.solana || window.solana !== null && window.solana !== undefined && window.solana.isPhantom) {
+					results.push("Phantom");
 				}
 
-				if(window.ethereum.isTrust) {
-					results.push("Trust");
+				if(window.solflare !== null && window.solflare !== undefined && window.solflare.isSolflare || window.solana !== null && window.solana !== undefined && window.solana.isSolflare) {
+					results.push("Solflare");
 				}
 
-				if(window.ethereum.isTokenary) {
-					results.push("Tokenary");
+				if(window.glow || window.glowSolana) {
+					results.push("Glow");
 				}
 
-				if(window.ethereum.isStatus) {
-					results.push("Status");
+				if(window.tronLink && window.tronWeb) {
+					if(window.tronLink.isTronLink) {
+						results.push("TronLink");
+					}
+					else if(window.tronWeb.defaultAddress) {
+						results.push("Tron Web (likely TronLink)");
+					}
 				}
 
-				if(window.ethereum.isFrame) {
-					results.push("Frame");
-				}
-
-				return md5(JSON.stringify(results));
+				return results;
 			}
-			else {
-				return !!window.web3 && "Legacy";
+			catch(err) {
+				return null;
 			}
 		}
+
+		// 43f2d94 - old (pre 2.15.0 and 3.5.0)
+		// function web3Check() {
+		// 	const results = [];
+		// 	if(window.ethereum) {
+		// 		if(window.ethereum.isMetaMask) {
+		// 			results.push("MetaMask");
+		// 		}
+		//
+		// 		if(window.ethereum.isCoinbaseWallet) {
+		// 			results.push("Coinbase");
+		// 		}
+		//
+		// 		if(window.ethereum.isWalletConnect) {
+		// 			results.push("WalletConnect");
+		// 		}
+		//
+		// 		if(window.ethereum.isTrust) {
+		// 			results.push("Trust");
+		// 		}
+		//
+		// 		if(window.ethereum.isTokenary) {
+		// 			results.push("Tokenary");
+		// 		}
+		//
+		// 		if(window.ethereum.isStatus) {
+		// 			results.push("Status");
+		// 		}
+		//
+		// 		if(window.ethereum.isFrame) {
+		// 			results.push("Frame");
+		// 		}
+		//
+		// 		return md5(JSON.stringify(results));
+		// 	}
+		// 	else {
+		// 		return !!window.web3 && "Legacy";
+		// 	}
+		// }
 
 		// 4f59ca8
 		function applePay() {
