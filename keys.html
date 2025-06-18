@@ -24,7 +24,7 @@
 <body>
 	<div id="key-table"></div>
 
-	<script>
+	<script type="module">
 		// new Set(tabledata.map(x => x.key))
 		const tabledata = [
 			{
@@ -371,11 +371,11 @@
 				required: false,
 			},
 
-			{name: "Bumble", key: "717C7D7F-8ED2-4587-AF41-E7E34907A6FB", surl: "bumble.arkoselabs.com", description: "", required: false},
-			{name: "Bumble", key: "73C53A42-FEEA-4097-8B08-F9F3E8B143CE", surl: "bumble.arkoselabs.com", description: "", required: false},
+			{name: "Bumble", key: "717C7D7F-8ED2-4587-AF41-E7E34907A6FB", surl: "bumble.arkoselabs.com", description: "phone - web - login", required: false},
+			{name: "Bumble", key: "73C53A42-FEEA-4097-8B08-F9F3E8B143CE", surl: "bumble.arkoselabs.com", description: "social (Facebook / Apple) - web - login", required: false},
 
-			{name: "Bumble - Badoo", key: "3515A340-B7C5-46F9-B049-98D04BE7CA60", surl: "badoo-api.arkoselabs.com", description: "", required: false},
-			{name: "Bumble - Badoo", key: "85AD0329-8516-4C2D-AC57-3519CAA3240D", surl: "badoo-api.arkoselabs.com", description: "", required: false},
+			{name: "Bumble - Badoo", key: "3515A340-B7C5-46F9-B049-98D04BE7CA60", surl: "badoo-api.arkoselabs.com", description: "phone - web - login", required: false},
+			{name: "Bumble - Badoo", key: "85AD0329-8516-4C2D-AC57-3519CAA3240D", surl: "badoo-api.arkoselabs.com", description: "email/etc - web - login", required: false},
 
 			{name: "Fruitz.io", key: "1835D7BA-4402-4162-BF79-442C8CE6CE7C", surl: "", description: "", required: false},
 
@@ -500,14 +500,48 @@
 					resizable: true,
 				},
 				{
+					title: "Version",
+					formatter: function(cell, formatterParams) {
+						// credit: https://tablericons.com/icon/download
+						return `<!--
+category: Arrows
+tags: [save, arrow]
+version: "1.0"
+unicode: "ea96"
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#000000"
+  stroke-width="1"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+  <path d="M7 11l5 5l5 -5" />
+  <path d="M12 4l0 12" />
+</svg>`;
+					},
+					width: 85,
+					cellClick: async function(e, cell) {
+						const publicKey = cell.getRow().getData().key;
+						const version = await getClientVersion(publicKey);
+
+						alert(`CAPI v${version} on "${publicKey}"`);
+					},
+				},
+				{
 					title: "Public Key",
 					field: "key",
 					width: 300,
 					resizable: true,
 					cellDblClick: function(e, cell) {
-						const publicKey = cell.getData().key;
+						const publicKey = cell.getRow().getData().key;
 
-						copyToClipboard(`https://iframe.arkoselabs.com/${publicKey}/index.html`)
+						copyToClipboard(`https://iframe.arkoselabs.com/${publicKey}/index.html`);
 					},
 				},
 				{
@@ -555,6 +589,33 @@
 			}
 
 			document.body.removeChild(textarea);
+		}
+
+		/**
+		 * @param {string} publicKey
+		 * @returns {Promise<string>}
+		 */
+		async function getClientVersion(publicKey) {
+			const scriptUrl = `https://client-api.arkoselabs.com/v2/${publicKey}/api.js`;
+			const scriptResp = await fetch(scriptUrl);
+			const scriptContents = await scriptResp.text();
+
+			// 1.x
+			if(scriptContents.includes("ENFORCEMENT_URL")) {
+				throw new Error(`Unsupported public key type for "${publicKey}"`);
+			}
+
+			// 2.x+
+			const searchRe = scriptContents.match(/(?<filename>\d+\.\d+\.\d+\/enforcement\.[a-z0-9]{32}\.html)/);
+			if(searchRe === null) {
+				console.log(scriptContents);
+				throw new Error(`Unable to find regex for: "${scriptUrl}"`);
+			}
+			const {filename} = searchRe.groups;
+
+			const [versionNumber, versionHashRaw] = filename.split("/");
+
+			return versionNumber;
 		}
 	</script>
 </body>
