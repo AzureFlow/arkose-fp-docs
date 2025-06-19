@@ -86,7 +86,23 @@
 
 			{name: "Microsoft", key: "B7D8911C-5CC8-A9A3-35B0-554ACEE604DA", surl: "client-api.arkoselabs.com", description: "Outlook - Production", required: true},
 			{name: "Microsoft", key: "38505C28-942F-4513-00AA-9AB405B635C5", surl: "client-api.arkoselabs.com", description: "Outlook - Staging", required: true},
-			{name: "Microsoft", key: "272AEF57-0D14-458A-BCCB-0C2D6CD6494F", surl: "microsoft-api.arkoselabs.com", description: "Azure", required: false},
+
+			{name: "Microsoft - Azure", key: "272AEF57-0D14-458A-BCCB-0C2D6CD6494F", surl: "microsoft-api.arkoselabs.com", description: "Azure", required: false},
+
+			{
+				name: "Microsoft - Learn",
+				key: "272AEF57-0D14-458A-BCCB-0C2D6CD6494F",
+				surl: "client-api.arkoselabs.com",
+				description: "learn.microsoft.com - Production",
+				required: false,
+			},
+			{
+				name: "Microsoft - Learn",
+				key: "272AEF57-0D14-458A-BCCB-0C2D6CD6494F",
+				surl: "client-api.arkoselabs.com",
+				description: "learn.microsoft.com - Staging",
+				required: false,
+			},
 
 			{name: "Blizzard", key: "E8A75615-1CBA-5DFF-8032-D16BCF234E10", surl: "blizzard-api.arkoselabs.com", description: "Register", required: false},
 			{name: "Blizzard", key: "CF5C61EE-F062-45DF-A32F-E9398E2B4E0D", surl: "blizzard-api.arkoselabs.com", description: "Login", required: false},
@@ -217,6 +233,7 @@
 			{name: "Adobe", key: "436DD567-5435-4B14-89A6-2F1188E11334", surl: "arks-client.adobe.com", description: "arkoseCaptchaSiteKey - production", required: true},
 			{name: "Adobe", key: "FEC00DE9-743E-4B59-8182-B5E1C5E8F210", surl: "arks-client.adobe.com", description: "arkoseCaptchaSignInSiteKey - staging", required: false},
 			{name: "Adobe", key: "430FF2C3-1AB1-40B7-8BE7-44FC683FE02C", surl: "arks-client.adobe.com", description: "arkoseCaptchaSignInSiteKey - production", required: false},
+			{name: "Adobe", key: "BBCC314C-4937-4CCD-B0A3-FDF0F0F7603C", surl: "adobe-client.adobe.com", description: "status.adobe.com", required: false},
 
 			{name: "LevelBlue", key: "EEE19E8E-9269-2EBD-7AD5-EE149237BA46", surl: "funcaptcha.com", description: "", required: false},
 
@@ -337,7 +354,9 @@
 
 			{name: "PayPal", key: "9409E63B-D2A5-9CBD-DBC0-5095707D0090", surl: "paypal.arkoselabs.com", description: "deleted", required: true},
 
-			{name: "Uber", key: "30000F36-CADF-490C-929A-C6A7DD8B33C4", surl: "uber.arkoselabs.com", description: "", required: false},
+			{name: "Uber", key: "30000F36-CADF-490C-929A-C6A7DD8B33C4", surl: "ak04a6qc.uber.com", description: "Production", required: false},
+			{name: "Uber", key: "6375512B-BEE6-458C-87B0-3E4DEED2C5E3", surl: "ak04a6qc.uber.com", description: "Development", required: false},
+			{name: "Uber", key: "1BE2475D-0F5A-4188-B20A-A9943639840C", surl: "uber.arkoselabs.com", description: "unknown", required: false},
 
 			{name: "Robinhood", key: "633AB27B-AAB3-4385-96DB-7A82ED5B845A", surl: "robinhood-api.arkoselabs.com", description: "Register (web)", required: false},
 			{name: "Robinhood", key: "7F867EDC-C71B-467F-B0A1-8DCBA5D4D2E3", surl: "robinhood-api.arkoselabs.com", description: "Login (web)", required: false},
@@ -371,13 +390,21 @@
 				required: false,
 			},
 
-			{name: "Bumble", key: "717C7D7F-8ED2-4587-AF41-E7E34907A6FB", surl: "bumble.arkoselabs.com", description: "phone - web - login", required: false},
-			{name: "Bumble", key: "73C53A42-FEEA-4097-8B08-F9F3E8B143CE", surl: "bumble.arkoselabs.com", description: "social (Facebook / Apple) - web - login", required: false},
+			{name: "Badoo - Bumble", key: "717C7D7F-8ED2-4587-AF41-E7E34907A6FB", surl: "bumble.arkoselabs.com", description: "phone - web - login", required: false},
+			{
+				name: "Badoo - Bumble",
+				key: "73C53A42-FEEA-4097-8B08-F9F3E8B143CE",
+				surl: "bumble.arkoselabs.com",
+				description: "social (Facebook / Apple) - web - login",
+				required: false,
+			},
 
-			{name: "Bumble - Badoo", key: "3515A340-B7C5-46F9-B049-98D04BE7CA60", surl: "badoo-api.arkoselabs.com", description: "phone - web - login", required: false},
-			{name: "Bumble - Badoo", key: "85AD0329-8516-4C2D-AC57-3519CAA3240D", surl: "badoo-api.arkoselabs.com", description: "email/etc - web - login", required: false},
+			{name: "Badoo", key: "3515A340-B7C5-46F9-B049-98D04BE7CA60", surl: "badoo-api.arkoselabs.com", description: "phone - web - login", required: false},
+			{name: "Badoo", key: "85AD0329-8516-4C2D-AC57-3519CAA3240D", surl: "badoo-api.arkoselabs.com", description: "email/etc - web - login", required: false},
 
-			{name: "Fruitz.io", key: "1835D7BA-4402-4162-BF79-442C8CE6CE7C", surl: "", description: "", required: false},
+			{name: "Badoo - Chat & Date", key: "F5BFC1A8-941A-4092-B3F4-E494C9C7879A", surl: "chatanddate-api.arkoselabs.com", description: "", required: false},
+
+			{name: "Fruitz.io", key: "1835D7BA-4402-4162-BF79-442C8CE6CE7C", surl: "fruitz-api.arkoselabs.com", description: "", required: false},
 
 			{name: "Navan", key: "A5F794F7-A799-47D1-82FC-E11AF34F97D8", surl: "navan-api.arkoselabs.com", description: "", required: false},
 
