@@ -710,8 +710,15 @@
 			</section>
 
 			<section>
-				<h3><abbr data-tooltip="Connection Type ;)">network_info_rtt_type</abbr></h3>
-				<p>This value is being withheld until further notice. Changed as of 4.x.x.</p>
+				<h3><abbr data-tooltip="Connection Type">network_info_rtt_type</abbr></h3>
+				<p>This value has been repurposed for use inside the virtual machine. It takes the first 3 characters of webgl_extensions_hash and webgl_hash_webgl then merges them.</p>
+				<code class="language-json" id="network_info_rtt_type"></code>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Pixel Depth">screen_pixel_depth</abbr></h3>
+				<p>This value has been repurposed for use inside the virtual machine. It takes the pixel depth and multiplies by 3.</p>
+				<code class="language-json" id="screen_pixel_depth"></code>
 			</section>
 		</main>
 
@@ -745,7 +752,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js" integrity="sha512-8pbzenDolL1l5OPSsoURCx9TEdMFTaeFipASVrMYKhuYtly+k3tcsQYliOEKTmuB1t7yuzAiVo+yd7SJz+ijFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/murmurhash3js/3.0.1/murmurhash3js.min.js" integrity="sha512-HCmS85fXMOkBrVzhJwv5ULIWC6ajmqSJ/JRNJEnD8blyvlSLjcAdlERQR5fazd3Iey5QfftJaFfUW5JiXTDhbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script type="module">
-		const UPDATE_TIME = 1749539046000;
+		const UPDATE_TIME = 1750809466017;
 
 		document.getElementById("updateTime").textContent = new Date(UPDATE_TIME).toLocaleString();
 
@@ -836,6 +843,8 @@
 					runTest(keyboard_layout),
 					runTest(navigation_entries),
 					runTest(heap_size_limit),
+					runTest(network_info_rtt_type),
+					runTest(screen_pixel_depth),
 				]);
 
 				// 6a62b2a558 = "6c9d6e9be9aa044cc5ce9548b4abe1b0" (script version hash)
@@ -2753,6 +2762,33 @@
 			}
 
 			return [0, perf.memory.jsHeapSizeLimit];
+		}
+
+		function network_info_rtt_type() {
+			const webglInfo = collectWebGL();
+
+			const extensionsHash = webglInfo.webgl_extensions_hash;
+			const webglHash = webglInfo.webgl_hash_webgl;
+
+			if(extensionsHash && webglHash) {
+				if(extensionsHash && extensionsHash.length > 12 && webglHash && webglHash.length > 12) {
+					return {
+						key: "network_info_rtt_type",
+						value: extensionsHash.slice(0, 3) + webglHash.slice(0, 3),
+					};
+				}
+				else {
+					return {
+						key: "network_info_rtt_type",
+						value: "abcdef",
+					};
+				}
+			}
+		}
+
+		function screen_pixel_depth() {
+			// VM multiplies by 3
+			return screen.pixelDepth * 3;
 		}
 	</script>
 	<script>
