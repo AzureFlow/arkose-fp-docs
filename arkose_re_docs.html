@@ -72,7 +72,7 @@
 					This is missing a bunch of signals that I haven't got around to documenting since they're boring or self-explanatory. For example, hashes.
 				</p>
 				<p>Hover over text with ⋯ below it to see more details.</p>
-				<p>View the DevTools console for more details (Ctrl+Shift+I).</p>
+				<p>View the DevTools console for more details (Ctrl+Shift+I). <strong>Including logs and source code</strong>.</p>
 				<p>See also:</p>
 				<ul>
 					<li><a href="https://ko-fi.com/azureflow">Buy me a coffee ☕</a></li>
@@ -268,9 +268,22 @@
 
 			<section>
 				<h3>1f220c9</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> Not <em>currently</em> part of 4.x.x</p>
 				<ul>
-					<li>Checks which permissions the current page has.</li>
+					<li>Checks which permissions the current page has (including accelerometer, gamepad, nfc, etc).</li>
+					<li>JSON stringifies them</li>
+					<li>md5 hashes them</li>
 				</ul>
+				<p>
+					This hasn't been "reverted" in 4.x.x, as some have claimed. ArkoseLabs maintains multiple
+					<a href="https://git-scm.com/docs/git-branch" target="_blank" rel="noopener noreferrer">branches</a> and active deployments. The 4.x.x branch was created from an older revision that predates the 3.5.0 release. Both versions are being developed in parallel and will eventually be
+					<a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests" target="_blank" rel="noopener noreferrer">merged</a>. Development has been very slow and could take a while to merge all the different active versions (2.x, 3.x, & 4.x).
+				</p>
+				<p>
+					In addition, ArkoseLabs performs
+					<a href="https://en.wikipedia.org/wiki/A/B_testing" target="_blank" rel="noopener noreferrer">A/B testing</a> on new versions with a limited user base before broader rollout. Clients will eventually have to migrate to the
+					<a href="https://developer.arkoselabs.com/docs/pick-a-tile-end-of-life-communication" target="_blank" rel="noopener noreferrer">new versions</a>.
+				</p>
 				<code class="language-json" id="navigator_permissions_hash_new"></code>
 			</section>
 
