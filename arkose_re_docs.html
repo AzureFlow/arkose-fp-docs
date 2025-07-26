@@ -83,7 +83,7 @@
 					<li><a href="./breaker.html">Breaker v2 (tguess)</a></li>
 					<li><a href="https://gist.github.com/AzureFlow/38788d6ee3eb5b2b811f88415bfa8d78">Arkose Mobile SDK (Android) fingerprint docs</a></li>
 					<ul>
-						<li><a href="https://gitlab.com/gitlab-org/gitlab/-/blob/master/ee/lib/arkose/data_exchange_payload.rb#L36">Blob information</a></li>
+						<li><a href="https://gitlab.com/gitlab-org/gitlab/-/blob/master/ee/lib/arkose/data_exchange_payload.rb#L42">Blob information</a></li>
 						<li><a href="https://docs.gitlab.com/ee/integration/arkose.html">Arkose overview</a></li>
 						<li><a href="https://developer.arkoselabs.com/docs/">Arkose documentation</a></li>
 					</ul>
@@ -104,7 +104,7 @@
 				<h3><abbr data-tooltip="Keyless">is_keyless</abbr></h3>
 				<p>
 					This field is true if no public key is provided in the "[...]/v2/api.js" script url. Instead, the public key is provided with "setConfig". More information can be found
-					<a href="https://developer.arkoselabs.com/docs/standard-setup#dynamic-client-api-key-setup" target="_blank">here</a>.
+					<a href="https://web.archive.org/web/20250323002049/https://developer.arkoselabs.com/docs/standard-setup#dynamic-client-api-key-setup" target="_blank">here</a>.
 				</p>
 			</section>
 
@@ -489,6 +489,27 @@
 			<section>
 				<h3>getFonts</h3>
 				<p>Checks for the presence of 65 different fonts from a predetermined list. This could be used to detect your platform. For example, Wingdings is only on Windows.</p>
+				<p>Can can be empty on some sites including R****x due to display: none on their dialog.</p>
+				<p>Search for "fade modal-modern modal-modern-challenge-captcha in modal"</p>
+				<a href="https://js.rbxcdn.com/e522b6ce43e33f1f4895045b603e11793093272b186d8a8084f747085ebceb2f.js">Source:</a>
+				<code class="language-javascript">
+					{
+					className: "modal-modern modal-modern-challenge-captcha",
+					show: (p || !T) && !L.current,
+					style: {
+					display: T ? "block" : "none"
+					},
+					onHide: P,
+					backdrop: !!T && "static"
+					}
+				</code>
+				<a href="https://css.rbxcdn.com/bc981bafa6b0a52c86d071d1f81b24168a8dd92e72b8ac52d37cb46bf8bd8c42.css">Source</a>:
+				<code class="language-css">
+					.modal-dialog .modal-content .modal-body .modal-processing {
+					display: none
+					}
+				</code>
+
 				<code class="language-json" id="getFonts"></code>
 			</section>
 
@@ -964,6 +985,7 @@
 			}
 		}
 
+		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L348-L409
 		function audio_fingerprint() {
 			return new Promise(function(resolve) {
 				try {
@@ -1120,6 +1142,7 @@
 			return null;
 		}
 
+		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L765-L809
 		function getPlugins() {
 			if((navigator.appName === "Microsoft Internet Explorer" || navigator.appName === "Netscape" && /Trident/.test(navigator.userAgent)) && (Object.getOwnPropertyDescriptor && Object.getOwnPropertyDescriptor(window, "ActiveXObject") || "ActiveXObject" in window)) {
 				return ["AcroPDF.PDF", "Adodb.Stream", "AgControl.AgControl", "DevalVRXCtrl.DevalVRXCtrl.1", "MacromediaFlashPaper.MacromediaFlashPaper", "Msxml2.DOMDocument", "Msxml2.XMLHTTP", "PDF.PdfCtrl", "QuickTime.QuickTime", "QuickTimeCheckObject.QuickTimeCheck.1", "RealPlayer", "RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)", "RealVideo.RealVideo(tm) ActiveX Control (32-bit)", "Scripting.Dictionary", "SWCtl.SWCtl", "Shell.UIHelper", "ShockwaveFlash.ShockwaveFlash", "Skype.Detection", "TDCCtl.TDCCtl", "WMPlayer.OCX", "rmocx.RealPlayer G2 Control", "rmocx.RealPlayer G2 Control.1"].reduce(function(previousValue, currentValue) {
@@ -1451,6 +1474,7 @@
 			}
 		}
 
+		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L1138-L1206
 		function hasFakeOS() {
 			const Q = navigator.userAgent.toLowerCase();
 			let tt = navigator.oscpu;
@@ -1482,6 +1506,7 @@
 			}
 		}
 
+		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L1207-L1265
 		function fake_browser() {
 			let t;
 			const C = navigator.userAgent.toLowerCase();
@@ -1630,7 +1655,6 @@
 				return null;
 			}
 		}
-
 
 		function getAudio() {
 			const audioCodecsStr = audio_codecs_extended();
@@ -2098,7 +2122,7 @@
 						top: 0;
 						left: 0;
 						visibility: hidden;
-						/* Test empty JSF cause */
+						/* Cause of empty JSF (Roblox): */
 						/* display: none; */
 					}
 					.font {
@@ -2172,7 +2196,7 @@
 		}
 
 		// getJSFonts
-		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L539
+		// https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L539-L726
 		function getFonts() {
 			const baseFonts = ["monospace", "sans-serif", "serif"];
 			const fontList = ["Andale Mono", "Arial", "Arial Black", "Arial Hebrew", "Arial MT", "Arial Narrow", "Arial Rounded MT Bold", "Arial Unicode MS", "Bitstream Vera Sans Mono", "Book Antiqua", "Bookman Old Style", "Calibri", "Cambria", "Cambria Math", "Century", "Century Gothic", "Century Schoolbook", "Comic Sans", "Comic Sans MS", "Consolas", "Courier", "Courier New", "Garamond", "Geneva", "Georgia", "Helvetica", "Helvetica Neue", "Impact", "Lucida Bright", "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "LUCIDA GRANDE", "Lucida Handwriting", "Lucida Sans", "Lucida Sans Typewriter", "Lucida Sans Unicode", "Microsoft Sans Serif", "Monaco", "Monotype Corsiva", "MS Gothic", "MS Outlook", "MS PGothic", "MS Reference Sans Serif", "MS Sans Serif", "MS Serif", "MYRIAD", "MYRIAD PRO", "Palatino", "Palatino Linotype", "Segoe Print", "Segoe Script", "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Symbol", "Tahoma", "Times", "Times New Roman", "Times New Roman PS", "Trebuchet MS", "Verdana", "Wingdings", "Wingdings 2", "Wingdings 3"];
@@ -2339,6 +2363,7 @@
 		}
 
 		/**
+		 * @see https://github.com/fingerprintjs/fingerprintjs/blob/5db63ed6613ddc6633c5fcc7a986018ea698c2ef/fingerprint2.js#L970-L1090
 		 * @param {object} output
 		 * @param {WebGLRenderingContext} context
 		 */
