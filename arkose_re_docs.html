@@ -200,6 +200,7 @@
 
 			<section>
 				<h3>navigator_pdf_viewer_enabled</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> Removed as of 2.16.0.</p>
 				Checks:
 				<code class="language-javascript">navigator.pdfViewerEnabled;</code>
 				<code class="language-json" id="navigator_pdf_viewer_enabled"></code>
@@ -220,7 +221,7 @@
 			</section>
 
 			<section>
-				<h3>screen_orientation</h3>
+				<h3>screen_orientation (3f76dd27)</h3>
 				<p>Gets the current device screen orientation.</p>
 				<code class="language-json" id="screen_orientation"></code>
 			</section>
@@ -232,7 +233,7 @@
 			</section>
 
 			<section>
-				<h3>headless_browser_generic</h3>
+				<h3>headless_browser_generic (862f2c1)</h3>
 				<p>Checks the various objects on the document and window related to browser automation frameworks. Including:</p>
 				<ul>
 					<li><a href="https://www.selenium.dev/">Selenium</a></li>
@@ -250,7 +251,8 @@
 			</section>
 
 			<section>
-				<h3>browser_api_checks</h3>
+				<h3>browser_api_checks (f58835f)</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> "f58835f" is now md5 hashed as of 2.16.0.</p>
 				<p>Supported browser features</p>
 				<code class="language-json" id="browser_api_checks"></code>
 			</section>
@@ -267,7 +269,7 @@
 			</section>
 
 			<section>
-				<h3>1f220c9</h3>
+				<h3>navigator_permissions_hash (1f220c9)</h3>
 				<p><span style="color: deepskyblue">NOTICE:</span> Not <em>currently</em> part of 4.x.x</p>
 				<ul>
 					<li>Checks which permissions the current page has (including accelerometer, gamepad, nfc, etc).</li>
@@ -313,15 +315,16 @@
 			</section>
 
 			<section>
-				<h3>media_devices</h3>
+				<h3>media_devices (7541c2s)</h3>
+				<p><span style="color: deepskyblue">NOTICE:</span> "media_device_kinds" is no longer included in the payload.</p>
 				<p>Checks which media devices are available.</p>
 				<code class="language-json" id="media_devices"></code>
 			</section>
 
 			<section>
 				<h3>getAudio</h3>
-				<p>Checks which audio codecs are available. This can be used to detect browser environments that don't support DRM.</p>
 				<p><span style="color: deepskyblue">NOTICE:</span> "audio_codecs_extended" is no longer included in the payload to reduce payload size.</p>
+				<p>Checks which audio codecs are available. This can be used to detect browser environments that don't support DRM.</p>
 				<code class="language-json" id="getAudio"></code>
 			</section>
 
@@ -520,7 +523,7 @@
 			</section>
 
 			<section>
-				<h3>rtc_peer_connection</h3>
+				<h3>rtc_peer_connection (5dd48ca0)</h3>
 				<p>Checks the existence of:</p>
 				<ul>
 					<li>
@@ -1453,7 +1456,7 @@
 
 		function browser_api_checks() {
 			try {
-				return [
+				const result = [
 					`permission_status: ${!!window.PermissionStatus && Object.prototype.hasOwnProperty.call(window.PermissionStatus.prototype, "name")}`,
 					`eye_dropper: ${!!window.EyeDropper}`,
 					`audio_data: ${!!window.AudioData}`,
@@ -1468,6 +1471,8 @@
 					`media_device: ${navigator.mediaDevices ? "defined" : "NA"}`,
 					`playback_quality: ${!!window.HTMLVideoElement && !!window.HTMLVideoElement.prototype && !!window.HTMLVideoElement.prototype.getVideoPlaybackQuality}`,
 				];
+
+				return md5(JSON.stringify(result));
 			}
 			catch(err) {
 				return null;
