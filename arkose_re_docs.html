@@ -109,6 +109,20 @@
 			</section>
 
 			<section>
+				<h3><abbr data-tooltip="Wait for settings">wait_for_settings</abbr></h3>
+				<p>
+					TODO
+				</p>
+			</section>
+
+			<section>
+				<h3><abbr data-tooltip="Copyright">c</abbr></h3>
+				<p>
+					Contains a copyright disclaimer that won't be reproduced here. Due to incompetence this field is an actually unused but could be in the future.
+				</p>
+			</section>
+
+			<section>
 				<h3><abbr data-tooltip="Canvas Fingerprint">cfp</abbr></h3>
 				<p>Canvas fingerprint that's hashed using Java's hashCode method.</p>
 				<code class="language-json" id="getCFP"></code>
@@ -188,14 +202,35 @@
 
 			<section>
 				<h3>browser_detection_brave</h3>
-				<p>Detects the Brave browser via the brave global object.</p>
+				<p>Detects <a href="https://brave.com/">Brave Browser</a> via the brave window object.</p>
 				<code class="language-json" id="browser_detection_brave"></code>
 			</section>
 
 			<section>
 				<h3>browser_detection_firefox</h3>
-				<p>Checks the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</a> for "Firefox".</p>
+				<p>Detects <a href="https://www.firefox.com/en-US/">Firefox</a> by checking the
+					<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</a> for "Firefox".</p>
 				<code class="language-json" id="browser_detection_firefox"></code>
+			</section>
+
+			<section>
+				<h3>browser_detection_comet</h3>
+				<p>Detects <a href="https://www.perplexity.ai/comet">Comet Browser</a> by checking the document's theme. This is similar to an old approach demonstrated by
+					<a href="https://blog.castle.io/from-detection-to-trust-the-evolving-challenge-of-ai-bot-authentication/#comet-also-overrides-styling">Castle's Research Team</a>.
+				</p>
+				<code class="language-json" id="browser_detection_comet"></code>
+			</section>
+
+			<section>
+				<h3>browser_detection_genspark</h3>
+				<p>Detects <a href="https://www.genspark.ai/browser">Genspark AI Browser</a> via the navigator.genspark property.</p>
+				<code class="language-json" id="browser_detection_genspark"></code>
+			</section>
+
+			<section>
+				<h3>browser_detection_sigma</h3>
+				<p>Detects <a href="https://www.sigmabrowser.com/">Sigma Browser</a> via the __SIGMA__ window object.</p>
+				<code class="language-json" id="browser_detection_sigma"></code>
 			</section>
 
 			<section>
@@ -833,6 +868,9 @@
 					runTest(browser_object_checks),
 					runTest(browser_detection_brave),
 					runTest(browser_detection_firefox),
+					runTest(browser_detection_comet),
+					runTest(browser_detection_genspark),
+					runTest(browser_detection_sigma),
 					runTest(navigator_pdf_viewer_enabled),
 					runTest(user_agent_data_brands),
 					runTest(user_agent_data_mobile),
@@ -1348,27 +1386,61 @@
 		 * @returns {Promise<{value, key: string}|{value: null, key: string}>}
 		 */
 		async function navigator_permissions_hash() {
+			// const permissionNames = [
+			// 	"accelerometer",
+			// 	"accessibility-events",
+			// 	"ambient-light-sensor",
+			// 	"background-sync",
+			// 	"bluetooth",
+			// 	"camera",
+			// 	"clipboard",
+			// 	"clipboard-read",
+			// 	"clipboard-write",
+			// 	"device-info",
+			// 	"geolocation",
+			// 	"gyroscope",
+			// 	"magnetometer",
+			// 	"microphone",
+			// 	"midi",
+			// 	"notifications",
+			// 	"payment-handler",
+			// 	"persistent-storage",
+			// 	"push",
+			// 	"speaker",
+			// ];
 			const permissionNames = [
 				"accelerometer",
+				"accessibility",
 				"accessibility-events",
 				"ambient-light-sensor",
+				"background-fetch",
 				"background-sync",
 				"bluetooth",
 				"camera",
 				"clipboard",
+				"gamepad",
+				"speaker-selection",
+				"screen-wake-lock",
 				"clipboard-read",
 				"clipboard-write",
 				"device-info",
-				"geolocation",
+				"display-capture",
 				"gyroscope",
+				"geolocation",
+				"local-fonts",
 				"magnetometer",
 				"microphone",
 				"midi",
+				"nfc",
 				"notifications",
 				"payment-handler",
 				"persistent-storage",
 				"push",
 				"speaker",
+				"storage-access",
+				"top-level-storage-access",
+				"window-management",
+				"query",
 			];
 
 			if(!navigator || !navigator.permissions) {
@@ -1632,6 +1704,30 @@
 
 		function browser_detection_firefox() {
 			return navigator.userAgent ? navigator.userAgent.indexOf("Firefox") > 0 : null;
+		}
+
+		// 9f41a2c
+		// https://www.perplexity.ai/comet
+		// https://blog.castle.io/from-detection-to-trust-the-evolving-challenge-of-ai-bot-authentication/
+		function browser_detection_comet() {
+			try {
+				return window.getComputedStyle(document.documentElement).getPropertyValue("--costa-300").trim() !== "";
+			}
+			catch(err) {
+				return false;
+			}
+		}
+
+		// 5c273b3
+		// https://www.genspark.ai/browser
+		function browser_detection_genspark() {
+			return navigator.genspark !== undefined;
+		}
+
+		// ce4046e
+		// https://www.sigmabrowser.com/
+		function browser_detection_sigma() {
+			return window.__SIGMA__ === true;
 		}
 
 		function navigator_pdf_viewer_enabled() {
