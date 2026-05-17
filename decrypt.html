@@ -1,317 +1,564 @@
+<!doctype html>
 <html lang="en">
-<head>
-	<title>Arkose BDA Decoder</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BDA decoder | Arkose FP Docs</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twemoji/16.0.1/72x72/1f4d8.png"
+    />
+    <script src="./js/docs-theme.js" data-hljs="1"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/docs.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+      integrity="sha512-EBLzUL8XLl+va/zAsmXwS7Z2B1F9HUHkZwyS/VKwh3S7T/U0nF4BaU29EP/ZSf6zgiIxYAnKLu6bJ8dqpmX5uw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"
+      integrity="sha512-f2/ljYb/tG4fTHu6672tyNdoyhTIpt4N1bGrBE8ZjwIgrjDCd+rljLpWCZ2Vym9PBWQy2Tl9O22Pp2rMOMvH4g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-nav" aria-label="Site navigation">
+        <div class="nav-brand">Reference <strong>Arkose FP</strong></div>
+        <details class="nav-related-pages" open>
+          <summary
+            class="nav-related-summary"
+            title="Click to show or hide this list"
+          >
+            <span>Tools and pages</span>
+            <svg
+              class="nav-related-chevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <nav
+            class="nav-related-pages-body"
+            aria-label="Tools and other pages"
+          >
+            <ul class="nav-related-list">
+              <li>
+                <a href="./arkose_re_docs.html">Fingerprint signals</a>
+              </li>
+              <li><a href="./keys.html">Known public keys</a></li>
+              <li>
+                <a href="./decrypt.html" class="nav-active"
+                  >Payload decrypter (&lt;4.x.x)</a
+                >
+              </li>
+              <li><a href="./mouse.html">Mouse data</a></li>
+              <li><a href="./breaker.html">Breaker v2 (tguess)</a></li>
+              <li>
+                <a
+                  href="https://github.com/AzureFlow/arkose-fp-docs/blob/main/decrypt.html"
+                  target="_blank"
+                  rel="noopener"
+                  >This page on GitHub &#x1F517;</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </aside>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="UTF-8">
+      <div class="doc-page">
+        <div class="top-bar">
+          <div class="top-bar-start">
+            <a
+              class="gh-link"
+              href="https://github.com/AzureFlow/arkose-fp-docs"
+              target="_blank"
+              rel="noopener"
+              aria-label="View source on GitHub"
+            >
+              <svg
+                class="gh-icon"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                />
+              </svg>
+              <span>Star on GitHub</span>
+            </a>
+          </div>
+          <button
+            type="button"
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="Switch theme"
+          >
+            <svg
+              id="icon-moon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg
+              id="icon-sun"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          </button>
+        </div>
 
-	<link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/ip3/arkoselabs.com.ico"/>
+        <a class="donate-cta" href="https://ko-fi.com/azureflow">
+          <em class="donate-heart">❤️</em> Support this research on Ko-fi
+          &#9749;
+        </a>
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <header class="page-intro">
+          <h1>BDA decoder</h1>
+          <p class="lede">
+            Decrypt older FunCaptcha payloads where keys derive from the user
+            agent plus a time bucket, or from the session token for misc blobs.
+            Paste base64 for the BDA field; use raw JSON for the misc tool.
+          </p>
+        </header>
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/nord.min.css" integrity="sha512-U/cZqAAOThvb4J9UCt/DWkkjoJWHXvutFDS/nZmZlirci2ZMuH6qFokOQDuuKgE7pXD+FmhDNH2jT43x0GreCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <main class="tool-main">
+          <section aria-labelledby="h-bda">
+            <h2 id="h-bda">BDA encryption</h2>
+            <div class="decrypt-grid">
+              <div>
+                <div class="tool-field">
+                  <label class="tool-label" for="timestampInput"
+                    >x-ark-esync-value</label
+                  >
+                  <input
+                    class="tool-input"
+                    id="timestampInput"
+                    type="number"
+                    placeholder="1700000000"
+                    aria-label="Timestamp"
+                  />
+                </div>
+                <div class="tool-field">
+                  <label class="tool-label" for="userAgentInput"
+                    >User agent</label
+                  >
+                  <input
+                    class="tool-input"
+                    id="userAgentInput"
+                    placeholder="Mozilla/5.0..."
+                    aria-label="User agent"
+                  />
+                </div>
+                <div class="tool-field">
+                  <label class="tool-label" for="inputContent"
+                    >Encrypted payload (base64 of JSON)</label
+                  >
+                  <div class="btn-row decrypt-io-row">
+                    <button
+                      type="button"
+                      class="tool-btn"
+                      id="pasteBdaEncrypted"
+                    >
+                      Paste encrypted
+                    </button>
+                  </div>
+                  <textarea
+                    class="tool-textarea"
+                    id="inputContent"
+                    rows="8"
+                    placeholder="eyJjdCI6I..."
+                  ></textarea>
+                </div>
+              </div>
+              <div class="tool-field">
+                <div class="tool-label">Decrypted payload</div>
+                <div class="btn-row decrypt-io-row">
+                  <button type="button" class="tool-btn" id="copyBdaDecrypted">
+                    Copy decrypted
+                  </button>
+                </div>
+                <code
+                  class="tool-code hljs language-json"
+                  id="outputContent"
+                ></code>
+              </div>
+            </div>
+          </section>
 
-	<style>
-        html {
-            scroll-behavior: smooth;
+          <section aria-labelledby="h-misc">
+            <h2 id="h-misc">Other encryption</h2>
+            <div class="tool-field">
+              <label class="tool-label" for="sessionTokenInput"
+                >Session token</label
+              >
+              <div class="tool-inline">
+                <input
+                  class="tool-input"
+                  id="sessionTokenInput"
+                  type="text"
+                  name="text"
+                  placeholder="00000000000000000.0000000000"
+                  aria-label="Session token"
+                />
+                <select
+                  class="tool-select"
+                  id="encryptionTypeInput"
+                  aria-label="Encryption mode"
+                  required
+                >
+                  <option selected value="default_method">Default</option>
+                  <option value="default_method">Guess</option>
+                  <option value="default_method">TGuess</option>
+                  <option value="requested_id_method">x-requested-id</option>
+                </select>
+              </div>
+            </div>
+            <div class="decrypt-grid">
+              <div class="tool-field">
+                <label class="tool-label" for="miscInput"
+                  >Encrypted payload (JSON)</label
+                >
+                <div class="btn-row decrypt-io-row">
+                  <button
+                    type="button"
+                    class="tool-btn"
+                    id="pasteMiscEncrypted"
+                  >
+                    Paste encrypted
+                  </button>
+                </div>
+                <textarea
+                  class="tool-textarea"
+                  id="miscInput"
+                  rows="8"
+                  placeholder='{"ct":"...","s":"...","iv":"..."}'
+                ></textarea>
+              </div>
+              <div class="tool-field">
+                <div class="tool-label">Decrypted payload</div>
+                <div class="btn-row decrypt-io-row">
+                  <button type="button" class="tool-btn" id="copyMiscDecrypted">
+                    Copy decrypted
+                  </button>
+                </div>
+                <code
+                  class="tool-code hljs language-json"
+                  id="miscOutputContent"
+                ></code>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/js-md5@0.8.3/build/md5.min.js"
+      integrity="sha512-Vspwtv6dGEzathjxMiV7hNvO1ZSKSAho+dtQieeqCgsmepPEukPl6WBsLCho0OMu2UieR5OC4AsPT7bD+E3InA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      const timestampInputElement = document.getElementById("timestampInput");
+      const userAgentInputElement = document.getElementById("userAgentInput");
+      const inputContentElement = document.getElementById("inputContent");
+      const outputContentElement = document.getElementById("outputContent");
+
+      const sessionTokenElement = document.getElementById("sessionTokenInput");
+      const encryptionTypeElement = document.getElementById(
+        "encryptionTypeInput",
+      );
+      const miscInputElement = document.getElementById("miscInput");
+      const miscOutputContentElement =
+        document.getElementById("miscOutputContent");
+
+      timestampInputElement.value = Date.now().toString();
+      userAgentInputElement.value = navigator.userAgent;
+
+      async function changeEventHandler() {
+        try {
+          const cipherObject = JSON.parse(atob(inputContentElement.value));
+          const userAgent = userAgentInputElement.value;
+          let timestamp = parseInt(timestampInputElement.value, 10);
+          timestamp =
+            timestampInputElement.value.length > 10
+              ? timestamp
+              : timestamp * 1000;
+
+          console.log("Attempting to decrypt with:", {
+            cipherObject,
+            userAgent,
+            timestamp,
+          });
+
+          const decryptedBda = await decryptSensor({
+            cipherObject,
+            userAgent,
+            timestamp,
+          });
+
+          outputContentElement.innerHTML = hljs.highlight(
+            JSON.stringify(decryptedBda, null, 4),
+            { language: "json" },
+          ).value;
+        } catch (err) {
+          console.error("Failed to decrypt with these values.");
+        }
+      }
+
+      timestampInputElement.addEventListener("input", changeEventHandler);
+      userAgentInputElement.addEventListener("input", changeEventHandler);
+      inputContentElement.addEventListener("input", changeEventHandler);
+
+      async function changeEventHandlerDecryptMisc() {
+        try {
+          const encryptionMethod = encryptionTypeElement.value;
+          const sessionToken = sessionTokenElement.value;
+
+          let key;
+          switch (encryptionMethod) {
+            case "default_method":
+              key = sessionToken;
+              break;
+            case "requested_id_method":
+              key = `REQUESTED${sessionToken}ID`;
+              break;
+            default:
+              console.error("Unsupported encryption method");
+              return;
+          }
+
+          const cipherObject = JSON.parse(miscInputElement.value);
+
+          const decryptedPayload = await decrypt({
+            cipherObject,
+            key,
+          });
+
+          miscOutputContentElement.innerHTML = hljs.highlight(
+            JSON.stringify(decryptedPayload, null, 4),
+            { language: "json" },
+          ).value;
+        } catch (err) {
+          console.error("Failed to decrypt with these values.");
+        }
+      }
+
+      sessionTokenElement.addEventListener(
+        "input",
+        changeEventHandlerDecryptMisc,
+      );
+      encryptionTypeElement.addEventListener(
+        "change",
+        changeEventHandlerDecryptMisc,
+      );
+      miscInputElement.addEventListener("input", changeEventHandlerDecryptMisc);
+
+      const TIME_CONSTANT_VALUE = 21600;
+
+      async function decryptSensor({
+        cipherObject,
+        userAgent,
+        timestamp = Date.now(),
+      }) {
+        const timeFrame = timestamp / 1000;
+        const timeFrameKey = Math.floor(
+          timeFrame - (timeFrame % TIME_CONSTANT_VALUE),
+        );
+
+        return decrypt({
+          cipherObject,
+          key: userAgent + timeFrameKey,
+        });
+      }
+
+      async function decrypt({ cipherObject, key, isObject = true }) {
+        if (
+          cipherObject === undefined ||
+          cipherObject.ct === undefined ||
+          cipherObject.s === undefined ||
+          cipherObject.iv === undefined
+        ) {
+          throw new TypeError("Malformed encryption data");
         }
 
-        code {
-            white-space: pre-wrap;
-
-            overflow-y: scroll;
-            min-height: 90%;
-            max-height: 90%;
-            /*min-height: 90vh;*/
-            /*max-height: 90vh;*/
+        if (!key) {
+          throw new TypeError("Invalid encryption key");
         }
 
-        .grid > div {
-            min-height: 100vh;
-            max-height: 100vh;
-            overflow: hidden;
+        const ciphertextBytes = fromBase64(cipherObject.ct);
+        const saltBytes = fromHex(cipherObject.s);
+        const iv = fromHex(cipherObject.iv);
+
+        const derivedKey = EVP_BytesToKey(key, saltBytes, 32, 16);
+        const importedKey = await crypto.subtle.importKey(
+          "raw",
+          derivedKey.key,
+          {
+            name: "AES-CBC",
+          },
+          false,
+          ["decrypt"],
+        );
+
+        const decrypted = await crypto.subtle.decrypt(
+          {
+            name: "AES-CBC",
+            iv: iv,
+          },
+          importedKey,
+          ciphertextBytes,
+        );
+
+        const plainText = new TextDecoder().decode(decrypted);
+
+        if (isObject) {
+          return JSON.parse(plainText);
         }
-	</style>
-</head>
-<body>
-	<div class="container">
-		<header>
-			<h1>BDA Decoder</h1>
-		</header>
 
-		<details open>
-			<summary role="button" class="secondary">BDA Encryption</summary>
-			<div class="grid">
-				<div>
-					<label>
-						x-ark-esync-value:
-						<input id="timestampInput" type="number" placeholder="1700000000" aria-label="max events">
-					</label>
+        return plainText;
+      }
 
-					<label>
-						User Agent:
-						<input id="userAgentInput" placeholder="Mozilla/5.0..." aria-label="user agent">
-					</label>
+      function EVP_BytesToKey(password, saltBuffer, keyLen, ivLen) {
+        const passwordBuffer = new TextEncoder().encode(password);
 
-					<label>
-						Encrypted Payload:
-						<textarea id="inputContent" rows="8" placeholder="eyJjdCI6I..." style="width: 100%"></textarea>
-					</label>
-				</div>
-				<div>
-					<label>
-						Decrypted Payload:
-						<code style="width: 100%" id="outputContent"></code>
-					</label>
-				</div>
-			</div>
-		</details>
+        if (saltBuffer.length !== 8) {
+          throw new RangeError("salt should be Buffer with 8 byte length");
+        }
 
-		<details open>
-			<summary role="button" class="secondary">Other Encryption</summary>
+        let keyIv = new Uint8Array(0);
+        while (keyIv.length < keyLen + ivLen) {
+          const data = new Uint8Array([
+            ...keyIv,
+            ...passwordBuffer,
+            ...saltBuffer,
+          ]);
+          const hash = md5.arrayBuffer(data);
+          keyIv = new Uint8Array([...keyIv, ...new Uint8Array(hash)]);
+        }
 
-			<label for="sessionGroup">
-				Session Token:
-			</label>
-			<fieldset role="group" id="sessionGroup">
-				<input id="sessionTokenInput" type="text" name="text" placeholder="00000000000000000.0000000000" aria-label="Session token">
-				<select id="encryptionTypeInput" aria-label="Default" required>
-					<option selected value="default_method">Default</option>
-					<option value="default_method">Guess</option>
-					<option value="default_method">TGuess</option>
-					<option value="requested_id_method">x-requested-id</option>
-				</select>
-			</fieldset>
+        const key = keyIv.slice(0, keyLen);
+        const iv = keyIv.slice(keyLen, keyLen + ivLen);
 
-			<div class="grid">
-				<div>
-					<label>
-						Encrypted Payload:
-						<textarea id="miscInput" rows="8" placeholder="&lcub;&quot;ct&quot;&colon; &quot;&period;&period;&period;&quot;&comma; &quot;s&quot;&colon; &quot;&period;&period;&period;&quot;&comma; &quot;iv&quot;&colon; &quot;&period;&period;&period;&quot;&rcub;" style="width: 100%"></textarea>
-					</label>
-				</div>
-				<div>
-					<label>
-						Decrypted Payload:
-						<code style="width: 100%" id="miscOutputContent"></code>
-					</label>
-				</div>
-			</div>
-		</details>
-	</div>
+        return { key, iv };
+      }
 
-	<script src="https://cdn.jsdelivr.net/npm/js-md5@0.8.3/build/md5.min.js" integrity="sha512-Vspwtv6dGEzathjxMiV7hNvO1ZSKSAho+dtQieeqCgsmepPEukPl6WBsLCho0OMu2UieR5OC4AsPT7bD+E3InA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script>
-		const timestampInputElement = document.getElementById("timestampInput");
-		const userAgentInputElement = document.getElementById("userAgentInput");
-		const inputContentElement = document.getElementById("inputContent");
-		const outputContentElement = document.getElementById("outputContent");
+      function fromBase64(base64String) {
+        const binaryString = atob(base64String);
+        const bytes = new Uint8Array(binaryString.length);
 
-		const sessionTokenElement = document.getElementById("sessionTokenInput");
-		const encryptionTypeElement = document.getElementById("encryptionTypeInput");
-		const miscInputElement = document.getElementById("miscInput");
-		const miscOutputContentElement = document.getElementById("miscOutputContent");
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
 
-		timestampInputElement.value = Date.now().toString();
-		userAgentInputElement.value = navigator.userAgent;
+        return bytes;
+      }
 
-		async function changeEventHandler() {
-			try {
-				const cipherObject = JSON.parse(atob(inputContentElement.value));
-				const userAgent = userAgentInputElement.value;
-				let timestamp = parseInt(timestampInputElement.value, 10);
-				timestamp = timestampInputElement.value.length > 10 ? timestamp : timestamp * 1000;
+      function fromHex(hexString) {
+        return Uint8Array.from(
+          hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)),
+        );
+      }
 
-				console.log("Attempting to decrypt with:", {
-					cipherObject,
-					userAgent,
-					timestamp,
-				});
+      async function pasteIntoInput(el) {
+        try {
+          const text = await navigator.clipboard.readText();
+          el.value = (text || "").trim();
+          el.dispatchEvent(new Event("input", { bubbles: true }));
+        } catch (err) {
+          console.error(err);
+          window.alert(
+            "Clipboard read failed. Use HTTPS, allow clipboard access, or paste manually.",
+          );
+        }
+      }
 
-				const decryptedBda = await decryptSensor({
-					cipherObject,
-					userAgent,
-					timestamp,
-				});
+      async function copyDecryptedOutput(el) {
+        const raw = (el.textContent || "").trim();
+        if (!raw) {
+          window.alert("Nothing to copy yet.");
+          return;
+        }
+        try {
+          await navigator.clipboard.writeText(raw);
+        } catch (err) {
+          try {
+            const ta = document.createElement("textarea");
+            ta.value = raw;
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            document.body.removeChild(ta);
+          } catch (e2) {
+            console.error(e2);
+            window.alert("Copy failed.");
+          }
+        }
+      }
 
-				outputContentElement.innerHTML = hljs.highlight(
-					JSON.stringify(decryptedBda, null, 4),
-					{language: "json"},
-				).value;
-			}
-			catch(err) {
-				console.error("Failed to decrypt with these values.");
-			}
-		}
-
-		timestampInputElement.addEventListener("input", changeEventHandler);
-		userAgentInputElement.addEventListener("input", changeEventHandler);
-		inputContentElement.addEventListener("input", changeEventHandler);
-
-		async function changeEventHandlerDecryptMisc() {
-			try {
-				const encryptionMethod = encryptionTypeElement.value;
-				const sessionToken = sessionTokenElement.value;
-
-				let key;
-				switch(encryptionMethod) {
-					case "default_method":
-						key = sessionToken;
-						break;
-					case "requested_id_method":
-						key = `REQUESTED${sessionToken}ID`;
-						break;
-					default:
-						console.error("Unsupported encryption method");
-						return;
-				}
-
-				const cipherObject = JSON.parse(miscInputElement.value);
-
-				const decryptedPayload = await decrypt({
-					cipherObject,
-					key,
-				});
-
-				miscOutputContentElement.innerHTML = hljs.highlight(
-					JSON.stringify(decryptedPayload, null, 4),
-					{language: "json"},
-				).value;
-			}
-			catch(err) {
-				console.error("Failed to decrypt with these values.");
-			}
-		}
-
-		sessionTokenElement.addEventListener("input", changeEventHandlerDecryptMisc);
-		encryptionTypeElement.addEventListener("input", changeEventHandlerDecryptMisc);
-		miscInputElement.addEventListener("input", changeEventHandlerDecryptMisc);
-
-		const TIME_CONSTANT_VALUE = 21600;
-
-		/**
-		 * @param {CipherObject} cipherObject
-		 * @param {string} userAgent
-		 * @param {number} timestamp
-		 * @returns {Promise<object>}
-		 */
-		async function decryptSensor({cipherObject, userAgent, timestamp = Date.now()}) {
-			const timeFrame = timestamp / 1000;
-			const timeFrameKey = Math.floor(timeFrame - (timeFrame % TIME_CONSTANT_VALUE));
-
-			return decrypt({
-				cipherObject,
-				key: userAgent + timeFrameKey,
-			});
-		}
-
-		/**
-		 * @typedef {object} CipherObject
-		 * @property {string} ct Encrypted content in base64.
-		 * @property {string} s Salt in hex.
-		 * @property {string} iv IV in hex.
-		 */
-
-		/**
-		 * @param {CipherObject} cipherObject
-		 * @param {string} key
-		 * @param {boolean} [isObject]
-		 * @returns {Promise<string|object>}
-		 */
-		async function decrypt({cipherObject, key, isObject = true}) {
-			if(cipherObject === undefined || cipherObject.ct === undefined || cipherObject.s === undefined || cipherObject.iv === undefined) {
-				throw new TypeError("Malformed encryption data");
-			}
-
-			if(!key) {
-				throw new TypeError("Invalid encryption key");
-			}
-
-			const ciphertextBytes = fromBase64(cipherObject.ct);
-			const saltBytes = fromHex(cipherObject.s);
-			const iv = fromHex(cipherObject.iv);
-
-			const derivedKey = EVP_BytesToKey(key, saltBytes, 32, 16);
-			const importedKey = await crypto.subtle.importKey(
-				"raw",
-				derivedKey.key,
-				{
-					name: "AES-CBC",
-				},
-				false,
-				["decrypt"],
-			);
-
-			const decrypted = await crypto.subtle.decrypt(
-				{
-					name: "AES-CBC",
-					iv: iv,
-				},
-				importedKey,
-				ciphertextBytes,
-			);
-
-			const plainText = new TextDecoder().decode(decrypted);
-
-			if(isObject) {
-				return JSON.parse(plainText);
-			}
-
-			return plainText;
-		}
-
-		/**
-		 * @param {string} password
-		 * @param {Uint8Array} saltBuffer
-		 * @param {number} keyLen
-		 * @param {number} ivLen
-		 * @returns {{iv: Uint8Array, key: Uint8Array}}
-		 */
-		function EVP_BytesToKey(password, saltBuffer, keyLen, ivLen) {
-			const passwordBuffer = new TextEncoder().encode(password);
-
-			if(saltBuffer.length !== 8) {
-				throw new RangeError("salt should be Buffer with 8 byte length");
-			}
-
-			let keyIv = new Uint8Array(0);
-			while(keyIv.length < (keyLen + ivLen)) {
-				const data = new Uint8Array([...keyIv, ...passwordBuffer, ...saltBuffer]);
-				// const hash = crypto.createHash("md5").update(data).digest();
-				const hash = md5.arrayBuffer(data);
-				keyIv = new Uint8Array([...keyIv, ...new Uint8Array(hash)]);
-			}
-
-			const key = keyIv.slice(0, keyLen);
-			const iv = keyIv.slice(keyLen, keyLen + ivLen);
-
-			return {key, iv};
-		}
-
-		/**
-		 * @param {string} base64String
-		 * @returns {Uint8Array}
-		 */
-		function fromBase64(base64String) {
-			const binaryString = atob(base64String);
-			const bytes = new Uint8Array(binaryString.length);
-
-			for(let i = 0; i < binaryString.length; i++) {
-				bytes[i] = binaryString.charCodeAt(i);
-			}
-
-			return bytes;
-		}
-
-		/**
-		 * @param {string} hexString
-		 * @returns {Uint8Array}
-		 */
-		function fromHex(hexString) {
-			return Uint8Array.from(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
-		}
-	</script>
-</body>
+      document
+        .getElementById("pasteBdaEncrypted")
+        .addEventListener("click", function () {
+          pasteIntoInput(inputContentElement);
+        });
+      document
+        .getElementById("copyBdaDecrypted")
+        .addEventListener("click", function () {
+          copyDecryptedOutput(outputContentElement);
+        });
+      document
+        .getElementById("pasteMiscEncrypted")
+        .addEventListener("click", function () {
+          pasteIntoInput(miscInputElement);
+        });
+      document
+        .getElementById("copyMiscDecrypted")
+        .addEventListener("click", function () {
+          copyDecryptedOutput(miscOutputContentElement);
+        });
+    </script>
+  </body>
 </html>

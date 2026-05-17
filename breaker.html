@@ -1,226 +1,381 @@
+<!doctype html>
 <html lang="en">
-<head>
-	<title>Arkose dapib</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Breaker v2 (tguess) | Arkose FP Docs</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twemoji/16.0.1/72x72/1f4d8.png"
+    />
+    <script src="./js/docs-theme.js" data-hljs="1"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/docs.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+      integrity="sha512-EBLzUL8XLl+va/zAsmXwS7Z2B1F9HUHkZwyS/VKwh3S7T/U0nF4BaU29EP/ZSf6zgiIxYAnKLu6bJ8dqpmX5uw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"
+      integrity="sha512-f2/ljYb/tG4fTHu6672tyNdoyhTIpt4N1bGrBE8ZjwIgrjDCd+rljLpWCZ2Vym9PBWQy2Tl9O22Pp2rMOMvH4g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-nav" aria-label="Site navigation">
+        <div class="nav-brand">Reference <strong>Arkose FP</strong></div>
+        <details class="nav-related-pages" open>
+          <summary
+            class="nav-related-summary"
+            title="Click to show or hide this list"
+          >
+            <span>Tools and pages</span>
+            <svg
+              class="nav-related-chevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <nav
+            class="nav-related-pages-body"
+            aria-label="Tools and other pages"
+          >
+            <ul class="nav-related-list">
+              <li>
+                <a href="./arkose_re_docs.html">Fingerprint signals</a>
+              </li>
+              <li><a href="./keys.html">Known public keys</a></li>
+              <li>
+                <a href="./decrypt.html">Payload decrypter (&lt;4.x.x)</a>
+              </li>
+              <li><a href="./mouse.html">Mouse data</a></li>
+              <li>
+                <a href="./breaker.html" class="nav-active"
+                  >Breaker v2 (tguess)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/AzureFlow/arkose-fp-docs/blob/main/breaker.html"
+                  target="_blank"
+                  rel="noopener"
+                  >This page on GitHub &#x1F517;</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </aside>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="UTF-8">
+      <div class="doc-page">
+        <div class="top-bar">
+          <div class="top-bar-start">
+            <a
+              class="gh-link"
+              href="https://github.com/AzureFlow/arkose-fp-docs"
+              target="_blank"
+              rel="noopener"
+              aria-label="View source on GitHub"
+            >
+              <svg
+                class="gh-icon"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                />
+              </svg>
+              <span>Star on GitHub</span>
+            </a>
+          </div>
+          <button
+            type="button"
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="Switch theme"
+          >
+            <svg
+              id="icon-moon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg
+              id="icon-sun"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          </button>
+        </div>
 
-	<link rel="icon" type="image/png" href="https://www.arkoselabs.com/favicon.ico"/>
+        <a class="donate-cta" href="https://ko-fi.com/azureflow">
+          <em class="donate-heart">❤️</em> Support this research on Ko-fi
+          &#9749;
+        </a>
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <header class="page-intro">
+          <h1>Arkose dapib (tguess)</h1>
+          <p class="lede">
+            Sandbox a breaker script the way the iframe does, then inspect the
+            JSON dapib posts back. Handy for checking that your guesses line up
+            with a known demo.
+          </p>
+        </header>
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/nord.min.css" integrity="sha512-U/cZqAAOThvb4J9UCt/DWkkjoJWHXvutFDS/nZmZlirci2ZMuH6qFokOQDuuKgE7pXD+FmhDNH2jT43x0GreCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" integrity="sha512-Tj35Q81ghoSFK84ee0H7qn2IjAyKwZQ9oYJDjtBmKOmlSz3MUqHrXxoMxIR9GrXzFakEiSV/VMrWwyAp45Bqjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <main class="tool-main">
+          <section aria-labelledby="h-dapib">
+            <h2 id="h-dapib">Sandbox</h2>
+            <p>
+              <strong>Note</strong>: This is a demo of
+              <em><strong>one</strong></em> deobfuscated script.
+            </p>
+            <p>
+              In reality, the embedded script changes for each session. The goal
+              of dapib is to make the challenge more dynamic and force solvers
+              to sandbox this and detect it. However, just like everything else
+              they do, they do it poorly. There appears to be about ~1200
+              challenges per day that rotate. Each script uses an access key to
+              help prevent scraping.
+            </p>
+            <p>
+              This tool can be used to help sanity check your implementation.
+            </p>
+            <p>View the DevTools console for more details (Ctrl+Shift+I).</p>
 
-	<style>
-        html {
-            scroll-behavior: smooth;
+            <div class="btn-row">
+              <button
+                class="tool-btn tool-btn-primary"
+                type="button"
+                id="runBtn"
+              >
+                Run
+              </button>
+              <button class="tool-btn" type="button" id="demoBtn">
+                Load demo breaker
+              </button>
+            </div>
+
+            <div class="tool-field">
+              <label class="tool-label" for="sessionToken">Session token</label>
+              <input
+                class="tool-input"
+                id="sessionToken"
+                type="text"
+                name="text"
+                placeholder="00000000000000000.0000000000"
+                aria-label="Session token"
+              />
+            </div>
+
+            <div class="tool-split">
+              <div class="tool-split-col">
+                <div class="tool-field">
+                  <label class="tool-label" for="breakerCode"
+                    >Breaker code</label
+                  >
+                  <textarea
+                    class="tool-textarea"
+                    id="breakerCode"
+                    rows="12"
+                    name="text"
+                    placeholder="(function () {..."
+                  ></textarea>
+                </div>
+              </div>
+              <div class="tool-split-col">
+                <div class="tool-field">
+                  <label class="tool-label" for="answersCode">Answers</label>
+                  <textarea
+                    class="tool-textarea"
+                    id="answersCode"
+                    rows="12"
+                    name="text"
+                    placeholder='[{"index": 0}]'
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-field">
+              <label class="tool-label" for="output">Output</label>
+              <code class="tool-code hljs language-json" id="output"></code>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const outputElement = document.getElementById("output");
+      const sessionTokenElement = document.getElementById("sessionToken");
+      const breakerCodeElement = document.getElementById("breakerCode");
+      const answersCodeElement = document.getElementById("answersCode");
+      const runButtonElement = document.getElementById("runBtn");
+      const demoButtonElement = document.getElementById("demoBtn");
+
+      const iframeTag = "REMOVE_ME";
+
+      runButtonElement.addEventListener("click", async (evt) => {
+        evt.preventDefault();
+
+        const sessionToken = sessionTokenElement.value;
+        if (!sessionToken.includes(".")) {
+          console.error("Invalid session token");
+          return;
         }
 
-        code {
-            white-space: pre-wrap;
+        runButtonElement.disabled = true;
 
-            overflow-y: auto;
-            min-width: 100%;
-            max-width: 100%;
-            max-height: 50vh;
-        }
-	</style>
-</head>
-<body>
-	<div class="container">
-		<header>
-			<h1>Arkose dapib (tguess)</h1>
-		</header>
+        loadBreaker(encodeJavaScriptString(breakerCodeElement.value));
+      });
 
-		<section>
-			<p><strong>Note</strong>: This is a demo of <em><strong>one</strong></em> deobfuscated script.</p>
-			<p> In reality, the embedded script changes for each session. The goal of dapib is to make the challenge more dynamic and force solvers to sandbox this and detect it. However, just like everything else they do, they do it poorly. There appears to be about ~1200 challenges per day that rotate. Each script uses an access key to help prevent scraping.</p>
-			<p>This tool be used to help sanity check your implementation.</p>
-			<p>View the DevTools console for more details (Ctrl+Shift+I).</p>
+      demoButtonElement.addEventListener("click", async (evt) => {
+        evt.preventDefault();
 
-			<button type="button" id="runBtn">Run</button>
-			<button type="button" id="demoBtn">Load Demo Breaker</button>
-
-			<div class="">
-				<label>
-					Session Token:
-					<input id="sessionToken" type="text" name="text" placeholder="00000000000000000.0000000000" aria-label="Session Token"/>
-				</label>
-				<div class="grid">
-					<label>
-						Breaker Code:
-						<textarea id="breakerCode" rows="10" name="text" placeholder="(function () {..."></textarea>
-					</label>
-					<label>
-						Answers:
-						<textarea id="answersCode" rows="10" name="text" placeholder="[{&quot;index&quot;: 0}]"></textarea>
-					</label>
-				</div>
-
-				<div class="grid">
-					<label>
-						Output:
-						<code style="min-height: 120px" id="output"></code>
-					</label>
-				</div>
-			</div>
-
-		</section>
-	</div>
-
-	<script>
-		const outputElement = document.getElementById("output");
-		const sessionTokenElement = document.getElementById("sessionToken");
-		const breakerCodeElement = document.getElementById("breakerCode");
-		const answersCodeElement = document.getElementById("answersCode");
-		const runButtonElement = document.getElementById("runBtn");
-		const demoButtonElement = document.getElementById("demoBtn");
-
-		const iframeTag = "REMOVE_ME";
-
-		runButtonElement.addEventListener("click", async(evt) => {
-			evt.preventDefault();
-
-			runButtonElement.disabled = true;
-
-			loadBreaker(encodeJavaScriptString(breakerCodeElement.value));
-		});
-
-		demoButtonElement.addEventListener("click", async(evt) => {
-			evt.preventDefault();
-
-			const demoResp = await fetch("breaker.js");
-			const demoContent = await demoResp.text();
-			const src = encodeJavaScriptString(demoContent);
-			breakerCodeElement.value = demoContent;
-			sessionTokenElement.value = "22017c375ff34b179.8720911701";
-			answersCodeElement.value = `[
+        const demoResp = await fetch("breaker.js");
+        const demoContent = await demoResp.text();
+        const src = encodeJavaScriptString(demoContent);
+        breakerCodeElement.value = demoContent;
+        sessionTokenElement.value = "22017c375ff34b179.8720911701";
+        answersCodeElement.value = `[
 	{"index": 0},
 	{"index": 0}
 ]`;
 
-			loadBreaker(src);
-		});
+        loadBreaker(src);
+      });
 
-		/**
-		 * @param {string} code
-		 */
-		function encodeJavaScriptString(code) {
-			return `data:application/x-javascript;base64,${btoa(code)}`;
-		}
+      function encodeJavaScriptString(code) {
+        return `data:application/x-javascript;base64,${btoa(code)}`;
+      }
 
-		window.ae = {
-			dapibReceive: function(msg) {
-				// Only for demo breaker
-				const expected = [
-					{
-						"index": "!",
-						"22017c375ff34b179": ")(#!*\"\"(!\"",
-						"_": "22017c375ff34b179",
-					},
-					{
-						"index": "!",
-						"22017c375ff34b179": ")(#!*\"\"(!\"",
-						"_": "22017c375ff34b179",
-					},
-				];
+      window.ae = {
+        dapibReceive: function (msg) {
+          const expected = [
+            {
+              index: "!",
+              "22017c375ff34b179": ')(#!*""(!"',
+              _: "22017c375ff34b179",
+            },
+            {
+              index: "!",
+              "22017c375ff34b179": ')(#!*""(!"',
+              _: "22017c375ff34b179",
+            },
+          ];
 
-				console.log("dapibReceive:", {
-					message: msg,
-					demoCompare: JSON.stringify(msg.tanswer) === JSON.stringify(expected),
-				});
+          console.log("dapibReceive:", {
+            message: msg,
+            demoCompare:
+              JSON.stringify(msg.tanswer) === JSON.stringify(expected),
+          });
 
-				document.getElementById(iframeTag).remove();
+          document.getElementById(iframeTag).remove();
 
-				runButtonElement.disabled = false;
+          runButtonElement.disabled = false;
 
-				outputElement.innerHTML = hljs.highlight(
-					JSON.stringify(msg, null, 4),
-					{language: "json"},
-				).value;
-			},
-			answer: [],
-		};
+          outputElement.innerHTML = hljs.highlight(
+            JSON.stringify(msg, null, 4),
+            { language: "json" },
+          ).value;
+        },
+        answer: [],
+      };
 
-		function loadBreaker(embedSource = "breaker.js") {
-			const sessionToken = sessionTokenElement.value;
-			if(!sessionToken.includes(".")) {
-				console.error("Invalid session token");
-				return;
-			}
+      function loadBreaker(embedSource = "breaker.js") {
+        const sessionToken = sessionTokenElement.value;
 
-			const guessesClone = JSON.parse(answersCodeElement.value);
-			const [t1, t2] = sessionToken.split(".");
-			for(const guess of guessesClone) {
-				guess[t1] = t2;
-			}
+        const guessesClone = JSON.parse(answersCodeElement.value);
+        const [t1, t2] = sessionToken.split(".");
+        for (const guess of guessesClone) {
+          guess[t1] = t2;
+        }
 
-			window.ae.answer = guessesClone;
+        window.ae.answer = guessesClone;
 
-			const iframe = document.createElement("iframe");
-			iframe.id = iframeTag;
-			iframe.setAttribute("height", "0");
-			iframe.setAttribute("width", "0");
-			iframe.setAttribute("frameborder", "0");
-			iframe.setAttribute("style", "display:none;");
-			if(iframe.sandbox && iframe.sandbox.add) {
-				iframe.sandbox.add("allow-same-origin");
-				iframe.sandbox.add("allow-scripts");
-			}
-			else {
-				iframe.setAttribute("sandbox", "allow-same-origin allow-scripts");
-			}
+        const iframe = document.createElement("iframe");
+        iframe.id = iframeTag;
+        iframe.setAttribute("height", "0");
+        iframe.setAttribute("width", "0");
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("style", "display:none;");
+        if (iframe.sandbox && iframe.sandbox.add) {
+          iframe.sandbox.add("allow-same-origin");
+          iframe.sandbox.add("allow-scripts");
+        } else {
+          iframe.setAttribute("sandbox", "allow-same-origin allow-scripts");
+        }
 
-			iframe.onload = function() {
-				let iframeContentDocument = iframe.contentDocument;
-				iframeContentDocument.open();
+        iframe.onload = function () {
+          let iframeContentDocument = iframe.contentDocument;
+          iframeContentDocument.open();
 
-				iframeContentDocument.write(`
+          iframeContentDocument.write(
+            `
           <!DOCTYPE html>
           <html>
             <head />
             <body>
-              <scr` + `ipt>
-                // let hasSentOnError = false;
+              <scr` +
+              `ipt>
                 const scriptSource = "${embedSource}";
 
                 const script = document.createElement("script");
                 script.setAttribute("src", scriptSource);
 
-                // const scriptIntegrity = "";
-                // if (scriptIntegrity) {
-                //   script.setAttribute("integrity", scriptIntegrity);
-                // }
-                // script.setAttribute("crossOrigin", "anonymous");
-
-                // script.onload = (function () {
-                //   if(hasSentOnError) {
-                //     return;
-                //   }
-                //   window.parent.postMessage({ message: "scriptloaded" }, "*");
-                // }).bind(this);
-
-                // script.onerror = (function (e) {
-                //   if (!script || !window || hasSentOnError) {
-                //     return;
-                //   }
-				//
-                //   hasSentOnError = true;
-                //   window.parent.postMessage({ message: "scripterror", data: e.message }, "*");
-                //   return true;
-                // }).bind(this);
-
                 document.body.appendChild(script);
-              </sc` + `ript>
+              </sc` +
+              `ript>
 			</body>
-			</html>`);
-				iframeContentDocument.close();
-			};
+			</html>`,
+          );
+          iframeContentDocument.close();
+        };
 
-			document.body.appendChild(iframe);
-		}
-	</script>
-</body>
+        document.body.appendChild(iframe);
+      }
+    </script>
+  </body>
 </html>

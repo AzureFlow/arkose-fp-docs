@@ -1,389 +1,647 @@
+<!doctype html>
 <html lang="en">
-<head>
-	<title>Arkose Biometrics Playground</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mouse data | Arkose FP Docs</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twemoji/16.0.1/72x72/1f4d8.png"
+    />
+    <script src="./js/docs-theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/docs.css" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-nav" aria-label="Site navigation">
+        <div class="nav-brand">Reference <strong>Arkose FP</strong></div>
+        <details class="nav-related-pages" open>
+          <summary
+            class="nav-related-summary"
+            title="Click to show or hide this list"
+          >
+            <span>Tools and pages</span>
+            <svg
+              class="nav-related-chevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <nav
+            class="nav-related-pages-body"
+            aria-label="Tools and other pages"
+          >
+            <ul class="nav-related-list">
+              <li>
+                <a href="./arkose_re_docs.html">Fingerprint signals</a>
+              </li>
+              <li><a href="./keys.html">Known public keys</a></li>
+              <li>
+                <a href="./decrypt.html">Payload decrypter (&lt;4.x.x)</a>
+              </li>
+              <li><a href="./mouse.html" class="nav-active">Mouse data</a></li>
+              <li><a href="./breaker.html">Breaker v2 (tguess)</a></li>
+              <li>
+                <a
+                  href="https://github.com/AzureFlow/arkose-fp-docs/blob/main/mouse.html"
+                  target="_blank"
+                  rel="noopener"
+                  >This page on GitHub &#x1F517;</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </aside>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="UTF-8">
+      <div class="doc-page">
+        <div class="top-bar">
+          <div class="top-bar-start">
+            <a
+              class="gh-link"
+              href="https://github.com/AzureFlow/arkose-fp-docs"
+              target="_blank"
+              rel="noopener"
+              aria-label="View source on GitHub"
+            >
+              <svg
+                class="gh-icon"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                />
+              </svg>
+              <span>Star on GitHub</span>
+            </a>
+          </div>
+          <button
+            type="button"
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="Switch theme"
+          >
+            <svg
+              id="icon-moon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg
+              id="icon-sun"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          </button>
+        </div>
 
-	<link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/ip3/arkoselabs.com.ico"/>
+        <a class="donate-cta" href="https://ko-fi.com/azureflow">
+          <em class="donate-heart">❤️</em> Support this research on Ko-fi
+          &#9749;
+        </a>
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.0.6/pico.min.css" integrity="sha512-UXfikgakSZBii5lkvmDCRO+IYWQhTtwMOJ+3EmGEA+oA82kvbSskgw3OI16Jx1kINgF8aqOkYE+c9h4m6muONg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <header class="page-intro">
+          <h1>Arkose biometrics collector</h1>
+          <p class="lede">
+            Capture mouse, keyboard, and touch streams in the same shapes used
+            for BDA and mbio. Presets match common caps.
+          </p>
+        </header>
 
-	<style>
-        code {
-            white-space: pre-wrap;
+        <main class="tool-main">
+          <section aria-labelledby="h-bio-intro">
+            <h2 id="h-bio-intro">Presets</h2>
+            <ol>
+              <li>
+                75 events will be collected as part of the bda (4ca87df3d1).
+              </li>
+              <li>
+                150<sup>*</sup> events will be collected for answer submission
+                as part of mbio.
+              </li>
+            </ol>
+            <div class="btn-row">
+              <button class="tool-btn" type="button" id="bdaBtn">
+                BDA preset
+              </button>
+              <button class="tool-btn" type="button" id="mbioBtn">
+                mbio preset
+              </button>
+              <button
+                class="tool-btn tool-btn-primary"
+                type="button"
+                id="resetBtn"
+              >
+                Reset
+              </button>
+            </div>
+          </section>
 
-            overflow-y: scroll;
-            min-height: 70vh;
-            max-height: 70vh;
-        }
+          <details class="tool-details" open>
+            <summary>Mouse</summary>
+            <div class="tool-details-body">
+              <div class="tool-field">
+                <label class="tool-label" for="maxMouseEvents"
+                  >Max events</label
+                >
+                <input
+                  class="tool-input"
+                  id="maxMouseEvents"
+                  type="number"
+                  placeholder="150"
+                  value="75"
+                  aria-label="Max mouse events"
+                />
+              </div>
+              <div class="tool-switch-row">
+                <input id="mouseEnabled" type="checkbox" checked />
+                <label for="mouseEnabled">Collect</label>
+              </div>
+              <div class="tool-grid-2">
+                <div class="tool-code-wrap">
+                  <code class="tool-code" id="outputMouse"></code>
+                  <button
+                    class="copyBtn tool-btn tool-copy"
+                    data-target="outputMouse"
+                    type="button"
+                  >
+                    Copy JSON
+                  </button>
+                </div>
+                <div class="tool-code-wrap">
+                  <code class="tool-code" id="outputMouseFormatted"></code>
+                  <button
+                    class="copyBtn tool-btn tool-copy"
+                    data-target="outputMouseFormatted"
+                    type="button"
+                  >
+                    Copy formatted stream
+                  </button>
+                </div>
+              </div>
+            </div>
+          </details>
 
-        .copyBtn {
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-            width: 100%;
-        }
-	</style>
-</head>
-<body>
-	<div class="container">
-		<header>
-			<h1>Arkose Biometrics Collector</h1>
-		</header>
+          <details class="tool-details">
+            <summary>Keyboard</summary>
+            <div class="tool-details-body">
+              <div class="tool-field">
+                <label class="tool-label" for="maxKeyEvents">Max events</label>
+                <input
+                  class="tool-input"
+                  id="maxKeyEvents"
+                  type="number"
+                  placeholder="50"
+                  value="75"
+                  aria-label="Max keyboard events"
+                />
+              </div>
+              <div class="tool-switch-row">
+                <input id="keyEnabled" type="checkbox" checked />
+                <label for="keyEnabled">Collect</label>
+              </div>
+              <div class="tool-grid-2">
+                <div class="tool-code-wrap">
+                  <code class="tool-code" id="outputKeyboard"></code>
+                  <button
+                    class="copyBtn tool-btn tool-copy"
+                    data-target="outputKeyboard"
+                    type="button"
+                  >
+                    Copy JSON
+                  </button>
+                </div>
+                <div class="tool-code-wrap">
+                  <code class="tool-code" id="outputKeyboardFormatted"></code>
+                  <button
+                    class="copyBtn tool-btn tool-copy"
+                    data-target="outputKeyboardFormatted"
+                    type="button"
+                  >
+                    Copy formatted stream
+                  </button>
+                </div>
+              </div>
+            </div>
+          </details>
 
-		<section>
-			<ol>
-				<li>75 events will be collected as part of the bda (4ca87df3d1).</li>
-				<li>150<sup>*</sup> events will be collected for answer submission as part of mbio.</li>
-			</ol>
+          <details class="tool-details">
+            <summary>Touch</summary>
+            <div class="tool-details-body">
+              <div class="tool-field">
+                <label class="tool-label" for="maxTouchEvents"
+                  >Max events</label
+                >
+                <input
+                  class="tool-input"
+                  id="maxTouchEvents"
+                  type="number"
+                  placeholder="150"
+                  value="75"
+                  aria-label="Max touch events"
+                />
+              </div>
+              <div class="tool-switch-row">
+                <input id="touchEnabled" type="checkbox" checked />
+                <label for="touchEnabled">Collect</label>
+              </div>
+              <div class="tool-grid-2">
+                <div class="tool-code-wrap">
+                  <code class="tool-code" id="outputTouch"></code>
+                  <button
+                    class="copyBtn tool-btn tool-copy"
+                    data-target="outputTouch"
+                    type="button"
+                  >
+                    Copy JSON
+                  </button>
+                </div>
+                <div class="tool-code-wrap">
+                  <code class="tool-code" id="outputTouchFormatted"></code>
+                  <button
+                    class="copyBtn tool-btn tool-copy"
+                    data-target="outputTouchFormatted"
+                    type="button"
+                  >
+                    Copy formatted stream
+                  </button>
+                </div>
+              </div>
+            </div>
+          </details>
+        </main>
+      </div>
+    </div>
 
+    <script>
+      const outputMouseElement = document.getElementById("outputMouse");
+      const outputMouseFormattedElement = document.getElementById(
+        "outputMouseFormatted",
+      );
+      const mouseEnabledElement = document.getElementById("mouseEnabled");
+      const maxMouseEventsElement = document.getElementById("maxMouseEvents");
 
-			<div role="group">
-				<button class="secondary" type="button" id="bdaBtn">BDA Preset</button>
-				<button class="secondary" type="button" id="mbioBtn">mbio Preset</button>
-				<button type="button" id="resetBtn">Reset</button>
-			</div>
-		</section>
+      const outputKeyElement = document.getElementById("outputKeyboard");
+      const outputKeyFormattedElement = document.getElementById(
+        "outputKeyboardFormatted",
+      );
+      const keyEnabledElement = document.getElementById("keyEnabled");
+      const maxKeyEventsElement = document.getElementById("maxKeyEvents");
 
-		<hr>
+      const outputTouchElement = document.getElementById("outputTouch");
+      const outputTouchFormattedElement = document.getElementById(
+        "outputTouchFormatted",
+      );
+      const touchEnabledElement = document.getElementById("touchEnabled");
+      const maxTouchEventsElement = document.getElementById("maxTouchEvents");
 
-		<details open>
-			<summary role="button" class="secondary">Mouse</summary>
-			<label>
-				Max Events:
-				<input id="maxMouseEvents" type="number" placeholder="150" value="75" aria-label="max events">
-			</label>
-			<label>
-				<input id="mouseEnabled" type="checkbox" role="switch" checked/>
-				Collect
-			</label>
-			<fieldset class="grid">
-				<div>
-					<code style="width: 100%" id="outputMouse"></code>
-					<button class="copyBtn" data-target="outputMouse" type="button">Copy to Clipboard 📋</button>
-				</div>
-				<div>
-					<code style="width: 100%" id="outputMouseFormatted"></code>
-					<button class="copyBtn" data-target="outputMouseFormatted" type="button">Copy to Clipboard 📋</button>
-				</div>
-			</fieldset>
-		</details>
+      const MouseEvents = Object.freeze({
+        Move: 0,
+        Down: 1,
+        Up: 2,
+      });
 
-		<details>
-			<summary role="button" class="secondary">Keyboard</summary>
-			<label>
-				Max Events:
-				<input id="maxKeyEvents" type="number" placeholder="50" value="75" aria-label="max events">
-			</label>
-			<label>
-				<input id="keyEnabled" type="checkbox" role="switch" checked/>
-				Collect
-			</label>
-			<fieldset class="grid">
-				<div>
-					<code style="width: 100%" id="outputKeyboard"></code>
-					<button class="copyBtn" data-target="outputKeyboard" type="button">Copy to Clipboard 📋</button>
-				</div>
-				<div>
-					<code style="width: 100%" id="outputKeyboardFormatted"></code>
-					<button class="copyBtn" data-target="outputKeyboardFormatted" type="button">Copy to Clipboard 📋</button>
-				</div>
-			</fieldset>
-		</details>
+      const KeyEvents = Object.freeze({
+        Down: 0,
+        Up: 1,
+      });
 
-		<details>
-			<summary role="button" class="secondary">Touch</summary>
-			<label>
-				Max Events:
-				<input id="maxTouchEvents" type="number" placeholder="150" value="75" aria-label="max events">
-			</label>
-			<label>
-				<input id="touchEnabled" type="checkbox" role="switch" checked/>
-				Collect
-			</label>
-			<fieldset class="grid">
-				<div>
-					<code style="width: 100%" id="outputTouch"></code>
-					<button class="copyBtn" data-target="outputTouch" type="button">Copy to Clipboard 📋</button>
-				</div>
-				<div>
-					<code style="width: 100%" id="outputTouchFormatted"></code>
-					<button class="copyBtn" data-target="outputTouchFormatted" type="button">Copy to Clipboard 📋</button>
-				</div>
-			</fieldset>
-		</details>
-	</div>
+      const TouchEvents = Object.freeze({
+        Start: 0,
+        End: 1,
+        Move: 2,
+        Cancel: 99,
+      });
 
-	<script>
-		const outputMouseElement = document.getElementById("outputMouse");
-		const outputMouseFormattedElement = document.getElementById("outputMouseFormatted");
-		const mouseEnabledElement = document.getElementById("mouseEnabled");
-		const maxMouseEventsElement = document.getElementById("maxMouseEvents");
+      const AllowedKeys = Object.freeze({
+        Tab: 0,
+        Enter: 1,
+        Space: 3,
+        ShiftLeft: 4,
+        ShiftRight: 5,
+        ControlLeft: 6,
+        ControlRight: 7,
+        MetaLeft: 8,
+        MetaRight: 9,
+        AltLeft: 10,
+        AltRight: 11,
+        Backspace: 12,
+        Escape: 13,
+        Default: 14,
+      });
 
-		const outputKeyElement = document.getElementById("outputKeyboard");
-		const outputKeyFormattedElement = document.getElementById("outputKeyboardFormatted");
-		const keyEnabledElement = document.getElementById("keyEnabled");
-		const maxKeyEventsElement = document.getElementById("maxKeyEvents");
+      let mouseEvents;
+      let touchEvents;
+      let keyPressEvents;
+      let startTimestamp;
+      let _lastMouseMove;
 
-		const outputTouchElement = document.getElementById("outputTouch");
-		const outputTouchFormattedElement = document.getElementById("outputTouchFormatted");
-		const touchEnabledElement = document.getElementById("touchEnabled");
-		const maxTouchEventsElement = document.getElementById("maxTouchEvents");
+      function reset() {
+        startTimestamp = Date.now();
 
+        mouseEvents = [];
+        _lastMouseMove = undefined;
+        outputMouseElement.textContent = "";
+        outputMouseFormattedElement.textContent = "";
+        mouseEnabledElement.checked = true;
+        mouseEnabledElement.disabled = false;
 
-		const MouseEvents = Object.freeze({
-			Move: 0,
-			Down: 1,
-			Up: 2,
-		});
+        keyPressEvents = [];
+        outputKeyElement.textContent = "";
+        outputKeyFormattedElement.textContent = "";
+        keyEnabledElement.checked = true;
+        keyEnabledElement.disabled = false;
 
-		const KeyEvents = Object.freeze({
-			Down: 0,
-			Up: 1,
-		});
+        touchEvents = [];
+        outputTouchElement.textContent = "";
+        outputTouchFormattedElement.textContent = "";
+        touchEnabledElement.checked = true;
+        touchEnabledElement.disabled = false;
+      }
 
-		const TouchEvents = Object.freeze({
-			Start: 0,
-			End: 1,
-			Move: 2,
-			Cancel: 99,
-		});
+      reset();
 
-		const AllowedKeys = Object.freeze({
-			Tab: 0,
-			Enter: 1,
-			Space: 3,
-			ShiftLeft: 4,
-			ShiftRight: 5,
-			ControlLeft: 6,
-			ControlRight: 7,
-			MetaLeft: 8,
-			MetaRight: 9,
-			AltLeft: 10,
-			AltRight: 11,
-			Backspace: 12,
-			Escape: 13,
-			Default: 14,
-		});
+      document.getElementById("resetBtn").addEventListener("click", (evt) => {
+        evt.preventDefault();
+        reset();
+      });
 
-		let mouseEvents;
-		let touchEvents;
-		let keyPressEvents;
-		let startTimestamp;
-		let _lastMouseMove;
+      const MOUSE_THRESHOLD = 5;
 
-		function reset() {
-			startTimestamp = Date.now();
+      document.addEventListener(
+        "mousemove",
+        recordMouseEventFactory(MouseEvents.Move),
+      );
+      document.addEventListener(
+        "mousedown",
+        recordMouseEventFactory(MouseEvents.Down),
+      );
+      document.addEventListener(
+        "mouseup",
+        recordMouseEventFactory(MouseEvents.Up),
+      );
 
-			mouseEvents = [];
-			_lastMouseMove = undefined;
-			outputMouseElement.textContent = "";
-			outputMouseFormattedElement.textContent = "";
-			mouseEnabledElement.checked = true;
-			mouseEnabledElement.disabled = false;
+      document.addEventListener(
+        "keydown",
+        recordKeyPressEventFactory(KeyEvents.Down),
+      );
+      document.addEventListener(
+        "keyup",
+        recordKeyPressEventFactory(KeyEvents.Up),
+      );
 
-			keyPressEvents = [];
-			outputKeyElement.textContent = "";
-			outputKeyFormattedElement.textContent = "";
-			keyEnabledElement.checked = true;
-			keyEnabledElement.disabled = false;
+      document.addEventListener(
+        "touchstart",
+        recordTouchEventFactory(TouchEvents.Start),
+        {
+          passive: false,
+        },
+      );
+      document.addEventListener(
+        "touchend",
+        recordTouchEventFactory(TouchEvents.End),
+        {
+          passive: false,
+        },
+      );
+      document.addEventListener(
+        "touchmove",
+        recordTouchEventFactory(TouchEvents.Move),
+        {
+          passive: false,
+        },
+      );
+      document.addEventListener(
+        "touchcancel",
+        recordTouchEventFactory(TouchEvents.Cancel),
+        {
+          passive: false,
+        },
+      );
 
-			touchEvents = [];
-			outputTouchElement.textContent = "";
-			outputTouchFormattedElement.textContent = "";
-			touchEnabledElement.checked = true;
-			touchEnabledElement.disabled = false;
-		}
+      function recordMouseEventFactory(mouseEventType) {
+        return function (mouseEvent) {
+          if (!mouseEnabledElement.checked) {
+            return;
+          }
 
-		reset();
+          const MAX_MOUSE_EVENTS = parseInt(maxMouseEventsElement.value, 10);
 
-		document.getElementById("resetBtn").addEventListener("click", (evt) => {
-			evt.preventDefault();
-			reset();
-		});
+          if (mouseEvents.length >= MAX_MOUSE_EVENTS) {
+            mouseEnabledElement.checked = false;
+            mouseEnabledElement.disabled = true;
+            return;
+          }
 
-		const MOUSE_THRESHOLD = 5;
+          function insertEvent() {
+            const eventObject = {
+              timestamp: Date.now() - startTimestamp,
+              type: mouseEventType,
+              x: mouseEvent.pageX,
+              y: mouseEvent.pageY,
+            };
+            mouseEvents.push(eventObject);
+            _lastMouseMove = eventObject;
 
-		document.addEventListener("mousemove", recordMouseEventFactory(MouseEvents.Move));
-		document.addEventListener("mousedown", recordMouseEventFactory(MouseEvents.Down));
-		document.addEventListener("mouseup", recordMouseEventFactory(MouseEvents.Up));
+            updateDisplay(
+              outputMouseElement,
+              outputMouseFormattedElement,
+              mouseEvents,
+              `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};`,
+            );
+          }
 
-		document.addEventListener("keydown", recordKeyPressEventFactory(KeyEvents.Down));
-		document.addEventListener("keyup", recordKeyPressEventFactory(KeyEvents.Up));
+          if (mouseEvents.length <= MAX_MOUSE_EVENTS) {
+            if (mouseEventType === MouseEvents.Move) {
+              if (_lastMouseMove) {
+                const magnitude = Math.sqrt(
+                  (mouseEvent.pageX - _lastMouseMove.x) *
+                    (mouseEvent.pageX - _lastMouseMove.x) +
+                    (mouseEvent.pageY - _lastMouseMove.y) *
+                      (mouseEvent.pageY - _lastMouseMove.y),
+                );
+                if (magnitude > MOUSE_THRESHOLD) {
+                  insertEvent();
+                }
 
-		document.addEventListener("touchstart", recordTouchEventFactory(TouchEvents.Start), {
-			passive: false,
-		});
-		document.addEventListener("touchend", recordTouchEventFactory(TouchEvents.End), {
-			passive: false,
-		});
-		document.addEventListener("touchmove", recordTouchEventFactory(TouchEvents.Move), {
-			passive: false,
-		});
-		document.addEventListener("touchcancel", recordTouchEventFactory(TouchEvents.Cancel), {
-			passive: false,
-		});
+                return;
+              } else {
+                insertEvent();
+                return;
+              }
+            }
 
-		function recordMouseEventFactory(mouseEventType) {
-			return function(mouseEvent) {
-				if(!mouseEnabledElement.checked) {
-					return;
-				}
+            const eventObject = {
+              timestamp: Date.now() - startTimestamp,
+              type: mouseEventType,
+              x: mouseEvent.pageX,
+              y: mouseEvent.pageY,
+            };
+            mouseEvents.push(eventObject);
+            updateDisplay(
+              outputMouseElement,
+              outputMouseFormattedElement,
+              mouseEvents,
+              `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};`,
+            );
+          }
+        };
+      }
 
-				const MAX_MOUSE_EVENTS = parseInt(maxMouseEventsElement.value, 10);
+      function recordKeyPressEventFactory(keyEventType) {
+        return function (keyEvent) {
+          if (!keyEnabledElement.checked) {
+            return;
+          }
 
-				if(mouseEvents.length >= MAX_MOUSE_EVENTS) {
-					mouseEnabledElement.checked = false;
-					mouseEnabledElement.disabled = true;
-					return;
-				}
+          const MAX_KEY_EVENTS = parseInt(maxKeyEventsElement.value, 10);
 
-				function insertEvent() {
-					const eventObject = {
-						timestamp: Date.now() - startTimestamp,
-						type: mouseEventType,
-						x: mouseEvent.pageX,
-						y: mouseEvent.pageY,
-					};
-					mouseEvents.push(eventObject);
-					_lastMouseMove = eventObject;
+          if (keyPressEvents.length >= MAX_KEY_EVENTS) {
+            keyEnabledElement.checked = false;
+            keyEnabledElement.disabled = true;
+            return;
+          }
 
-					updateDisplay(outputMouseElement, outputMouseFormattedElement, mouseEvents, `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};`);
-				}
+          if (keyPressEvents.length < MAX_KEY_EVENTS) {
+            const eventObject = {
+              timestamp: Date.now() - startTimestamp,
+              type: keyEventType,
+              code: AllowedKeys[keyEvent.code] ?? AllowedKeys.Default,
+            };
+            keyPressEvents.push(eventObject);
 
-				if(mouseEvents.length <= MAX_MOUSE_EVENTS) {
-					if(mouseEventType === MouseEvents.Move) {
-						if(_lastMouseMove) {
-							// magnitude = sqrt(x*x + y*y)
-							// if magnitude > MOUSE_THRESHOLD (5)
-							const magnitude = Math.sqrt((mouseEvent.pageX - _lastMouseMove.x) * (mouseEvent.pageX - _lastMouseMove.x) + (mouseEvent.pageY - _lastMouseMove.y) * (mouseEvent.pageY - _lastMouseMove.y));
-							if(magnitude > MOUSE_THRESHOLD) {
-								insertEvent();
-							}
+            updateDisplay(
+              outputKeyElement,
+              outputKeyFormattedElement,
+              keyPressEvents,
+              `${eventObject.timestamp},${eventObject.type},${eventObject.code};`,
+            );
+          }
+        };
+      }
 
-							return;
-						}
-						else {
-							insertEvent();
-							return;
-						}
-					}
+      function recordTouchEventFactory(touchEventType) {
+        return function (touchEvent) {
+          if (!touchEnabledElement.checked) {
+            return;
+          }
 
-					const eventObject = {
-						timestamp: Date.now() - startTimestamp,
-						type: mouseEventType,
-						x: mouseEvent.pageX,
-						y: mouseEvent.pageY,
-					};
-					mouseEvents.push(eventObject);
-					updateDisplay(outputMouseElement, outputMouseFormattedElement, mouseEvents, `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};`);
-				}
-			};
-		}
+          const MAX_TOUCH_EVENTS = parseInt(maxTouchEventsElement.value, 10);
 
-		function recordKeyPressEventFactory(keyEventType) {
-			return function(keyEvent) {
-				if(!keyEnabledElement.checked) {
-					return;
-				}
+          if (touchEvents.length >= MAX_TOUCH_EVENTS) {
+            touchEnabledElement.checked = false;
+            touchEnabledElement.disabled = true;
+            return;
+          }
 
-				// 75 on bda, 50 on mbio
-				const MAX_KEY_EVENTS = parseInt(maxKeyEventsElement.value, 10);
+          for (let i = 0; i < touchEvent.touches.length; i++) {
+            if (touchEvents.length < MAX_TOUCH_EVENTS) {
+              const eventObject = {
+                timestamp: Date.now() - startTimestamp,
+                type: touchEventType,
+                x: Math.floor(touchEvent.touches[i].pageX),
+                y: Math.floor(touchEvent.touches[i].pageY),
+              };
+              touchEvents.push(eventObject);
 
-				if(keyPressEvents.length >= MAX_KEY_EVENTS) {
-					keyEnabledElement.checked = false;
-					keyEnabledElement.disabled = true;
-					return;
-				}
+              updateDisplay(
+                outputTouchElement,
+                outputTouchFormattedElement,
+                touchEvents,
+                `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};`,
+              );
+            }
+          }
+        };
+      }
 
-				if(keyPressEvents.length < MAX_KEY_EVENTS) {
-					const eventObject = {
-						timestamp: Date.now() - startTimestamp,
-						type: keyEventType,
-						code: AllowedKeys[keyEvent.code] ?? AllowedKeys.Default,
-					};
-					keyPressEvents.push(eventObject);
+      function updateDisplay(
+        outputElement,
+        outputFormattedElement,
+        allEvents,
+        stringify,
+      ) {
+        outputElement.textContent = JSON.stringify(allEvents, null, 4);
+        outputElement.scrollTop = 900000;
 
-					updateDisplay(outputKeyElement, outputKeyFormattedElement, keyPressEvents, `${eventObject.timestamp},${eventObject.type},${eventObject.code};`);
-				}
-			};
-		}
+        outputFormattedElement.textContent += `${stringify}\n`;
+        outputFormattedElement.scrollTop = 900000;
+      }
 
-		function recordTouchEventFactory(touchEventType) {
-			return function(touchEvent) {
-				if(!touchEnabledElement.checked) {
-					return;
-				}
+      document.getElementById("bdaBtn").addEventListener("click", (evt) => {
+        evt.preventDefault();
+        maxMouseEventsElement.value = "75";
+        maxKeyEventsElement.value = "75";
+        maxTouchEventsElement.value = "75";
+      });
+      document.getElementById("mbioBtn").addEventListener("click", (evt) => {
+        evt.preventDefault();
+        maxMouseEventsElement.value = "150";
+        maxKeyEventsElement.value = "50";
+        maxTouchEventsElement.value = "150";
+      });
 
-				// 75 on bda, 150 on mbio
-				const MAX_TOUCH_EVENTS = parseInt(maxTouchEventsElement.value, 10);
+      const copyButtons = document.getElementsByClassName("copyBtn");
+      for (const copyButton of copyButtons) {
+        copyButton.addEventListener("click", (evt) => {
+          evt.preventDefault();
+          const targetId = copyButton.getAttribute("data-target");
+          const text = document.getElementById(targetId).textContent;
+          copyToClipboard(text);
+        });
+      }
 
-				if(touchEvents.length >= MAX_TOUCH_EVENTS) {
-					touchEnabledElement.checked = false;
-					touchEnabledElement.disabled = true;
-					return;
-				}
+      function copyToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
 
-				for(let i = 0; i < touchEvent.touches.length; i++) {
-					if(touchEvents.length < MAX_TOUCH_EVENTS) {
-						const eventObject = {
-							timestamp: Date.now() - startTimestamp,
-							type: touchEventType,
-							x: Math.floor(touchEvent.touches[i].pageX),
-							y: Math.floor(touchEvent.touches[i].pageY),
-						};
-						touchEvents.push(eventObject);
+        document.execCommand("copy");
 
-						updateDisplay(outputTouchElement, outputTouchFormattedElement, touchEvents, `${eventObject.timestamp},${eventObject.type},${eventObject.x},${eventObject.y};`);
-					}
-				}
-			};
-		}
-
-		function updateDisplay(outputElement, outputFormattedElement, allEvents, stringify) {
-			outputElement.textContent = JSON.stringify(allEvents, null, 4);
-			outputElement.scrollTop = 900000;
-
-			outputFormattedElement.textContent += `${stringify}\n`;
-			outputFormattedElement.scrollTop = 900000;
-		}
-
-		document.getElementById("bdaBtn").addEventListener("click", (evt) => {
-			evt.preventDefault();
-			maxMouseEventsElement.value = "75";
-			maxKeyEventsElement.value = "75";
-			maxTouchEventsElement.value = "75";
-		});
-		document.getElementById("mbioBtn").addEventListener("click", (evt) => {
-			evt.preventDefault();
-			maxMouseEventsElement.value = "150";
-			maxKeyEventsElement.value = "50";
-			maxTouchEventsElement.value = "150";
-		});
-
-		const copyButtons = document.getElementsByClassName("copyBtn");
-		for(const copyButton of copyButtons) {
-			copyButton.addEventListener("click", (evt) => {
-				evt.preventDefault();
-				const targetId = copyButton.getAttribute("data-target");
-				const text = document.getElementById(targetId).textContent;
-				copyToClipboard(text);
-			});
-		}
-
-		function copyToClipboard(text) {
-			const textArea = document.createElement("textarea");
-			textArea.value = text;
-			textArea.style.position = "fixed";
-			document.body.appendChild(textArea);
-			textArea.focus();
-			textArea.select();
-
-			// noinspection JSDeprecatedSymbols
-			document.execCommand("copy");
-
-			document.body.removeChild(textArea);
-		}
-	</script>
-</body>
+        document.body.removeChild(textArea);
+      }
+    </script>
+  </body>
 </html>
