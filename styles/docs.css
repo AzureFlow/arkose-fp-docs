@@ -1051,6 +1051,7 @@ html[data-theme="dark"] #icon-sun {
 .tool-code {
   display: block;
   box-sizing: border-box;
+  contain: inline-size;
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -1058,27 +1059,35 @@ html[data-theme="dark"] #icon-sun {
   font-size: 0.75rem;
   line-height: 1.45;
   white-space: pre-wrap;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: auto;
   overflow-wrap: anywhere;
-  word-break: break-word;
-  min-height: 12rem;
-  max-height: min(55vh, 420px);
+  word-break: break-all;
+  min-height: clamp(16rem, 38vh, 24rem);
+  max-height: min(60vh, 520px);
   margin: 0;
   padding: 0.65rem 0.75rem;
   border: 1px solid var(--line);
-  border-radius: var(--radius) var(--radius) 0 0;
+  border-radius: var(--radius);
   background: var(--hljs-bg);
   color: var(--ink);
 }
 
 .tool-code.hljs {
+  display: block !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 0.65rem 0.75rem !important;
+  border-radius: var(--radius) !important;
+  font-size: 0.75rem !important;
+  line-height: 1.45 !important;
   background: var(--hljs-bg) !important;
   white-space: pre-wrap !important;
 }
 
 .tool-code.hljs * {
-  word-break: break-word;
+  white-space: inherit !important;
+  word-break: break-all;
   overflow-wrap: anywhere;
 }
 
@@ -1116,6 +1125,14 @@ html[data-theme="dark"] #icon-sun {
 .decrypt-grid > * {
   min-width: 0;
   width: 100%;
+}
+
+.decrypt-grid .tool-field {
+  min-height: 0;
+}
+
+.decrypt-grid .tool-code {
+  height: clamp(18rem, 46vh, 32rem);
 }
 
 .tabulator-host {
