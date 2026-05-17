@@ -3398,10 +3398,14 @@ const keyboardEventTypes = {
             runTest(sandboxCheck, (r) => {
               return unicodeEscape(r);
             }),
-            runTest(getAudio),
-            runTest(audio_codecs_extended_hash),
-            runTest(getVideo),
-            runTest(video_codecs_extended_hash),
+            runTest(getAudio, (r) => {
+              setOutputBox("audio_codecs_extended_hash", r.audio_codecs_extended_hash);
+              return r;
+            }),
+            runTest(getVideo, (r) => {
+              setOutputBox("video_codecs_extended_hash", r.video_codecs_extended_hash);
+              return r;
+            }),
             runTest(media_query_dark_mode),
             runTest(css_media_queries), // f9bf2db
             runTest(headless_browser_phantom),
@@ -6294,14 +6298,6 @@ const keyboardEventTypes = {
 
       function wait_for_settings() {
         return false;
-      }
-
-      function audio_codecs_extended_hash() {
-        return getAudio().audio_codecs_extended_hash;
-      }
-
-      function video_codecs_extended_hash() {
-        return getVideo().video_codecs_extended_hash;
       }
 
       function collectFeRaw() {
