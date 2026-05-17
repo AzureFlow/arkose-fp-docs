@@ -267,7 +267,7 @@
               <code>[1, false, false]</code> becomes
               <code>"1,false,false"</code>.
             </p>
-            <code class="language-json" id="f"></code>
+            <code class="language-json" id="fHash"></code>
           </section>
 
           <section class="doc-group" aria-labelledby="h_n">
@@ -3358,7 +3358,7 @@ const keyboardEventTypes = {
         {
           await Promise.all([
             // [api_type]
-            runTest(f),
+            runTest(fHash),
             runTest(getN),
             runTest(collectWh),
             runTest(
@@ -6304,8 +6304,8 @@ const keyboardEventTypes = {
         return getVideo().video_codecs_extended_hash;
       }
 
-      function collectFePackaged() {
-        const raw = {
+      function collectFeRaw() {
+        return {
           DNT: feDoNotTrack(),
           L: feLanguage(),
           D: feColorDepth(),
@@ -6330,11 +6330,14 @@ const keyboardEventTypes = {
           H: feHardwareConcurrency(),
           SWF: feSwfObject(),
         };
+      }
 
+      function collectFePackaged() {
+        const raw = collectFeRaw();
         return Object.keys(raw).map((key) => feFormat(key, raw[key]));
       }
 
-      function f() {
+      function fHash() {
         return murmurHash3.x64.hash128(Object.values(collectFeRaw()).join(";"));
       }
 
