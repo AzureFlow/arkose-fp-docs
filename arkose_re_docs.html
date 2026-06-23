@@ -1630,6 +1630,22 @@
             <section class="doc-leaf">
               <h4
                 class="signal-heading toc-target"
+                id="h_enhanced_fp_z87b89t5"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.z87b89t5"
+              >
+                <code>enhanced_fp.z87b89t5</code>
+              </h4>
+              <p>
+                Returns <code>null</code> normally on web. On mobile, when any
+                <code>mobile_sdk__</code> field is present, it equals
+                <code>100302</code>.
+              </p>
+              <code class="language-json" id="mobile_sdk__z87b89t5"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
                 id="h_enhanced_fp_audio_fingerprint"
                 data-toc-depth="3"
                 data-toc-label="enhanced_fp.audio_fingerprint"
@@ -3404,11 +3420,17 @@ const keyboardEventTypes = {
               return unicodeEscape(r);
             }),
             runTest(getAudio, (r) => {
-              setOutputBox("audio_codecs_extended_hash", r.audio_codecs_extended_hash);
+              setOutputBox(
+                "audio_codecs_extended_hash",
+                r.audio_codecs_extended_hash,
+              );
               return r;
             }),
             runTest(getVideo, (r) => {
-              setOutputBox("video_codecs_extended_hash", r.video_codecs_extended_hash);
+              setOutputBox(
+                "video_codecs_extended_hash",
+                r.video_codecs_extended_hash,
+              );
               return r;
             }),
             runTest(media_query_dark_mode),
@@ -3432,6 +3454,7 @@ const keyboardEventTypes = {
             // [c8480e29a]
             runTest(client_config__triggered_inline),
             runTest(mobile_sdk__is_sdk),
+            runTest(mobile_sdk__z87b89t5),
             runTest(audio_fingerprint),
             runTest(navigator_battery_charging),
             runTest(media_devices), // 7541c2s
@@ -6299,6 +6322,10 @@ const keyboardEventTypes = {
 
       function mobile_sdk__is_sdk() {
         return false;
+      }
+
+      function mobile_sdk__z87b89t5() {
+        return null;
       }
 
       function wait_for_settings() {
