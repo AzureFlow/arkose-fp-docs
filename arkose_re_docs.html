@@ -971,8 +971,13 @@
               <p>
                 Detects Perplexity's
                 <a href="https://www.perplexity.ai/comet">Comet Browser</a> by
-                checking the document's theme. This is similar to an old
-                approach demonstrated by
+                appending a hidden <code>div</code> with id
+                <code>pplx-agent-0_0-overlay</code>
+                to the document and checking whether Comet-injected CSS custom
+                properties are present:
+                <code>--dark-super-color</code>, <code>--base-shadow</code>, and
+                <code>--color-base</code>. This is similar to an approach
+                demonstrated by
                 <a
                   href="https://blog.castle.io/from-detection-to-trust-the-evolving-challenge-of-ai-bot-authentication/#comet-also-overrides-styling"
                   >Castle's Research Team</a
@@ -4634,15 +4639,30 @@ const keyboardEventTypes = {
       // https://www.perplexity.ai/comet
       // https://blog.castle.io/from-detection-to-trust-the-evolving-challenge-of-ai-bot-authentication/
       function browser_detection_comet() {
-        try {
-          return (
-            window
-              .getComputedStyle(document.documentElement)
-              .getPropertyValue("--costa-300")
-              .trim() !== ""
-          );
-        } catch (err) {
+        const doc = document;
+        if (doc === null || doc === undefined || !doc.body) {
           return false;
+        }
+
+        const divElement = document.createElement("div");
+        divElement.style.display = "none";
+        divElement.id = "pplx-agent-0_0-overlay";
+        document.body.appendChild(divElement);
+
+        try {
+          const styles = getComputedStyle(divElement);
+          const color1 =
+            styles.getPropertyValue("--dark-super-color").trim() !== "";
+          const color2 = styles.getPropertyValue("--base-shadow").trim() !== "";
+          const color3 = styles.getPropertyValue("--color-base").trim() !== "";
+
+          return color1 && color2 && color3;
+        } catch {
+          return false;
+        } finally {
+          if (divElement.parentNode) {
+            divElement.parentNode.removeChild(divElement);
+          }
         }
       }
 
