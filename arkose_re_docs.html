@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&display=swap"
       rel="stylesheet"
     />
     <script
@@ -52,13 +52,35 @@
   <body>
     <div class="doc-shell">
       <aside class="doc-nav" aria-label="Section navigation">
-        <div class="nav-brand">Reference <strong>Arkose FP</strong></div>
-        <details class="nav-related-pages" open>
+        <a class="nav-brand" href="./arkose_re_docs.html">
+          <svg
+            class="nav-brand-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4" />
+            <path d="M14 13.12c0 2.38 0 6.38-1 8.88" />
+            <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02" />
+            <path d="M2 12a10 10 0 0 1 18-6" />
+            <path d="M2 16h.01" />
+            <path d="M21.8 16c.2-2 .131-5.354 0-6" />
+            <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2" />
+            <path d="M8.65 22c.21-.66.45-1.32.57-2" />
+            <path d="M9 6.8a6 6 0 0 1 9 5.2v2" />
+          </svg>
+          <strong>Arkose FP</strong>
+        </a>
+        <details class="nav-related-pages">
           <summary
             class="nav-related-summary"
             title="Click to show or hide this list"
           >
-            <span>Tools and pages</span>
+            <span>Pages</span>
             <svg
               class="nav-related-chevron"
               width="14"
@@ -102,7 +124,7 @@
           </nav>
         </details>
         <div class="toc-tools">
-          <label for="toc-filter">Jump to signal</label>
+          <label for="toc-filter">Signals</label>
           <input
             type="search"
             id="toc-filter"
@@ -1039,8 +1061,8 @@
                 <code>enhanced_fp.a9e2b4c</code>
               </h4>
               <p>
-                <span class="notice-label">Info</span> Skipped if collection
-                exceeds the default <code>100</code> ms timeout.
+                <span class="notice-label" data-kind="info">Info</span> Skipped
+                if collection exceeds the default <code>100</code> ms timeout.
               </p>
               <p>
                 Detects installed AI browser extensions on desktop Chrome by
@@ -1064,8 +1086,8 @@
                 <code>enhanced_fp.f58835f</code>
               </h4>
               <p>
-                <span class="notice-label">Notice</span> "f58835f" is now MD5
-                hashed as of 2.16.0.
+                <span class="notice-label" data-kind="notice">Notice</span>
+                "f58835f" is now MD5 hashed as of 2.16.0.
               </p>
               <p>
                 A hash of supported browser APIs. Collects the availability of
@@ -1207,8 +1229,9 @@
                 <code>enhanced_fp.audio_codecs</code>
               </h4>
               <p>
-                <span class="notice-label">Notice</span> "audio_codecs_extended"
-                is no longer included in the payload to reduce payload size.
+                <span class="notice-label" data-kind="notice">Notice</span>
+                "audio_codecs_extended" is no longer included in the payload to
+                reduce payload size.
               </p>
               <p>
                 Creates an <code>&lt;audio&gt;</code> element and checks with
@@ -1254,8 +1277,9 @@
                 <code>enhanced_fp.video_codecs</code>
               </h4>
               <p>
-                <span class="notice-label">Notice</span> "video_codecs_extended"
-                is no longer included in the payload to reduce payload size.
+                <span class="notice-label" data-kind="notice">Notice</span>
+                "video_codecs_extended" is no longer included in the payload to
+                reduce payload size.
               </p>
               <p>
                 Small video codec probe. Creates a
@@ -1472,8 +1496,8 @@
                 <code>enhanced_fp.1l2l5234ar2</code>
               </h4>
               <p>
-                <span class="notice-label">Notice</span> "1l2l5234ar2" is no
-                longer included in the payload.
+                <span class="notice-label" data-kind="notice">Notice</span>
+                "1l2l5234ar2" is no longer included in the payload.
               </p>
               <p>Checks if you have DevTools open or are using Puppeteer.</p>
               <code class="language-json" id="cdpCheck"></code>
@@ -1687,8 +1711,8 @@
                 <code>enhanced_fp.audio_fingerprint</code>
               </h4>
               <p>
-                <span class="notice-label">Info</span> Skipped if collection
-                exceeds the default <code>100</code> ms timeout.
+                <span class="notice-label" data-kind="info">Info</span> Skipped
+                if collection exceeds the default <code>100</code> ms timeout.
               </p>
               <p>Checks the audio fingerprint using the Web Audio API.</p>
               <p>
@@ -1721,8 +1745,8 @@
                 <code>enhanced_fp.navigator_battery_charging</code>
               </h4>
               <p>
-                <span class="notice-label">Info</span> Skipped if collection
-                exceeds the default <code>100</code> ms timeout.
+                <span class="notice-label" data-kind="info">Info</span> Skipped
+                if collection exceeds the default <code>100</code> ms timeout.
               </p>
               <p>Checks the charging status of the device's battery.</p>
               <code class="language-javascript"
@@ -1744,12 +1768,12 @@
                 <code>enhanced_fp.7541c2s</code>
               </h4>
               <p>
-                <span class="notice-label">Info</span> Skipped if collection
-                exceeds the default <code>100</code> ms timeout.
+                <span class="notice-label" data-kind="info">Info</span> Skipped
+                if collection exceeds the default <code>100</code> ms timeout.
               </p>
               <p>
-                <span class="notice-label">Notice</span> "media_device_kinds" is
-                no longer included in the payload.
+                <span class="notice-label" data-kind="notice">Notice</span>
+                "media_device_kinds" is no longer included in the payload.
               </p>
               <p>Checks which media devices are available.</p>
               <code class="language-json" id="media_devices"></code>
@@ -1765,11 +1789,11 @@
                 <code>enhanced_fp.1f220c9</code>
               </h4>
               <p>
-                <span class="notice-label">Info</span> Skipped if collection
-                exceeds the default <code>100</code> ms timeout.
+                <span class="notice-label" data-kind="info">Info</span> Skipped
+                if collection exceeds the default <code>100</code> ms timeout.
               </p>
               <p>
-                <span class="notice-label">Notice</span> Not
+                <span class="notice-label" data-kind="notice">Notice</span> Not
                 <em>currently</em> part of 4.x.x
               </p>
               <ul>
@@ -1942,10 +1966,10 @@
               </p>
               <p>Obtained from the filename of the enforcement script:</p>
               <code
-                >"<span style="color: #b1a79a">enforcement.</span
+                >"<span style="color: var(--muted)">enforcement.</span
                 ><strong style="color: var(--accent)"
                   >6c9d6e9be9aa044cc5ce9548b4abe1b0</strong
-                ><span style="color: #b1a79a">.js</span>";</code
+                ><span style="color: var(--muted)">.js</span>";</code
               >
             </section>
             <section class="doc-leaf">
@@ -1979,7 +2003,8 @@
                 <code>enhanced_fp.wait_for_settings</code>
               </h4>
               <p>
-                <span class="notice-label">Notice</span> Some versions name this
+                <span class="notice-label" data-kind="notice">Notice</span> Some
+                versions name this
                 <code>client_config__wait_for_settings</code>
                 instead of <code>wait_for_settings</code>.
               </p>
@@ -2237,8 +2262,8 @@
                 <code>enhanced_fp.speech_default_voice</code>
               </h4>
               <p>
-                <span class="notice-label">Info</span> Skipped if collection
-                exceeds the default <code>100</code> ms timeout.
+                <span class="notice-label" data-kind="info">Info</span> Skipped
+                if collection exceeds the default <code>100</code> ms timeout.
               </p>
               <p>System text-to-speech information.</p>
               <p>For the hash:</p>
@@ -2259,8 +2284,8 @@
                 <code>enhanced_fp.speech_voices_hash</code>
               </h4>
               <p>
-                <span class="notice-label">Info</span> Skipped if collection
-                exceeds the default <code>100</code> ms timeout.
+                <span class="notice-label" data-kind="info">Info</span> Skipped
+                if collection exceeds the default <code>100</code> ms timeout.
               </p>
               <p class="doc-note">
                 See:
@@ -2285,8 +2310,8 @@
                 <code>enhanced_fp.83eb055</code>
               </h4>
               <p>
-                <span class="notice-label">Info</span> Skipped if collection
-                exceeds the default <code>100</code> ms timeout.
+                <span class="notice-label" data-kind="info">Info</span> Skipped
+                if collection exceeds the default <code>100</code> ms timeout.
               </p>
               <p>
                 Gets the keyboard layout language. Returns <code>false</code> in
@@ -3306,15 +3331,16 @@ const keyboardEventTypes = {
             }
 
             const label = tocLinkText(heading);
+            const depth =
+              Number.parseInt(heading.dataset.tocDepth || "2", 10) - 1;
+
             const link = document.createElement("a");
             link.href = "#" + heading.id;
             link.textContent = label;
 
             const row = document.createElement("li");
             row.className = "toc-row";
-            row.dataset.tocDepth = String(
-              Number.parseInt(heading.dataset.tocDepth || "2", 10) - 1,
-            );
+            row.dataset.tocDepth = String(depth);
             row.appendChild(link);
             fragment.appendChild(row);
 
@@ -3322,20 +3348,110 @@ const keyboardEventTypes = {
               id: heading.id,
               link,
               row,
+              depth,
               searchText: (label + " " + headingText(heading)).toLowerCase(),
+              children: [],
+              collapsed: false,
             });
 
             addHeadingAnchor(heading);
           });
 
           toc.replaceChildren(fragment);
+          wireTocCollapse();
+        }
+
+        function wireTocCollapse() {
+          let currentTop = null;
+
+          tocItems.forEach((item) => {
+            if (item.depth === 0) {
+              currentTop = item;
+              item.children = [];
+            } else if (currentTop) {
+              item.parent = currentTop;
+              currentTop.children.push(item);
+            }
+          });
+
+          tocItems.forEach((item) => {
+            if (item.depth !== 0 || !item.children.length) {
+              return;
+            }
+
+            item.row.classList.add("toc-branch");
+
+            const toggle = document.createElement("button");
+            toggle.type = "button";
+            toggle.className = "toc-toggle";
+            toggle.setAttribute("aria-expanded", "true");
+            toggle.setAttribute(
+              "aria-label",
+              "Collapse " + (item.link.textContent || "section"),
+            );
+            toggle.innerHTML =
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+
+            item.row.insertBefore(toggle, item.link);
+            item.toggle = toggle;
+
+            toggle.addEventListener("click", (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              setBranchCollapsed(item, !item.collapsed);
+            });
+          });
+        }
+
+        function setBranchCollapsed(item, collapsed) {
+          item.collapsed = collapsed;
+          item.row.classList.toggle("is-collapsed", collapsed);
+          if (item.toggle) {
+            item.toggle.setAttribute(
+              "aria-expanded",
+              collapsed ? "false" : "true",
+            );
+            item.toggle.setAttribute(
+              "aria-label",
+              (collapsed ? "Expand " : "Collapse ") +
+                (item.link.textContent || "section"),
+            );
+          }
+          applyVisibility();
+        }
+
+        function applyVisibility() {
+          const needle = filter.value.trim().toLowerCase();
+          const filtering = !!needle;
+
+          if (filtering) {
+            const matched = new Set();
+            tocItems.forEach((item) => {
+              if (item.searchText.includes(needle)) {
+                matched.add(item.id);
+                if (item.parent) {
+                  matched.add(item.parent.id);
+                }
+                item.children.forEach((child) => matched.add(child.id));
+              }
+            });
+            tocItems.forEach((item) => {
+              item.row.hidden = !matched.has(item.id);
+            });
+            return;
+          }
+
+          tocItems.forEach((item) => {
+            if (item.parent && item.parent.collapsed) {
+              item.row.hidden = true;
+            } else {
+              item.row.hidden = false;
+            }
+          });
         }
 
         function applyFilter(value) {
-          const needle = value.trim().toLowerCase();
-          tocItems.forEach((item) => {
-            item.row.hidden = !!needle && !item.searchText.includes(needle);
-          });
+          applyVisibility();
         }
 
         function setActive(id) {
