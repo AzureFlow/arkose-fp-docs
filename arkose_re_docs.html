@@ -1031,6 +1031,31 @@
             <section class="doc-leaf">
               <h4
                 class="signal-heading toc-target"
+                id="h_enhanced_fp_a9e2b4c"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.a9e2b4c"
+                data-toc-nickname="agent_extensions"
+              >
+                <code>enhanced_fp.a9e2b4c</code>
+              </h4>
+              <p>
+                <span class="notice-label">Info</span> Skipped if collection
+                exceeds the default <code>100</code> ms timeout.
+              </p>
+              <p>
+                Detects installed AI browser extensions on desktop Chrome by
+                probing <code>chrome-extension://</code> asset URLs. Returns an
+                array of matched extension identifiers:
+                <code>claude-for-chrome</code>,
+                <code>manus-ai-browser-operator</code>, and
+                <code>chatgpt</code>. Normally skipped unless enabled by
+                <code>/settings</code> or if it's not desktop Chrome.
+              </p>
+              <code class="language-json" id="agent_extensions"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
                 id="h_enhanced_fp_f58835f"
                 data-toc-depth="3"
                 data-toc-label="enhanced_fp.f58835f"
@@ -1446,6 +1471,10 @@
               >
                 <code>enhanced_fp.1l2l5234ar2</code>
               </h4>
+              <p>
+                <span class="notice-label">Notice</span> "1l2l5234ar2" is no
+                longer included in the payload.
+              </p>
               <p>Checks if you have DevTools open or are using Puppeteer.</p>
               <code class="language-json" id="cdpCheck"></code>
             </section>
@@ -1657,6 +1686,10 @@
               >
                 <code>enhanced_fp.audio_fingerprint</code>
               </h4>
+              <p>
+                <span class="notice-label">Info</span> Skipped if collection
+                exceeds the default <code>100</code> ms timeout.
+              </p>
               <p>Checks the audio fingerprint using the Web Audio API.</p>
               <p>
                 More details about audio fingerprinting can be found in the
@@ -1687,6 +1720,10 @@
               >
                 <code>enhanced_fp.navigator_battery_charging</code>
               </h4>
+              <p>
+                <span class="notice-label">Info</span> Skipped if collection
+                exceeds the default <code>100</code> ms timeout.
+              </p>
               <p>Checks the charging status of the device's battery.</p>
               <code class="language-javascript"
                 >(await navigator.getBattery()).charging;</code
@@ -1707,6 +1744,10 @@
                 <code>enhanced_fp.7541c2s</code>
               </h4>
               <p>
+                <span class="notice-label">Info</span> Skipped if collection
+                exceeds the default <code>100</code> ms timeout.
+              </p>
+              <p>
                 <span class="notice-label">Notice</span> "media_device_kinds" is
                 no longer included in the payload.
               </p>
@@ -1723,6 +1764,10 @@
               >
                 <code>enhanced_fp.1f220c9</code>
               </h4>
+              <p>
+                <span class="notice-label">Info</span> Skipped if collection
+                exceeds the default <code>100</code> ms timeout.
+              </p>
               <p>
                 <span class="notice-label">Notice</span> Not
                 <em>currently</em> part of 4.x.x
@@ -2191,6 +2236,10 @@
               >
                 <code>enhanced_fp.speech_default_voice</code>
               </h4>
+              <p>
+                <span class="notice-label">Info</span> Skipped if collection
+                exceeds the default <code>100</code> ms timeout.
+              </p>
               <p>System text-to-speech information.</p>
               <p>For the hash:</p>
               <ul>
@@ -2209,6 +2258,10 @@
               >
                 <code>enhanced_fp.speech_voices_hash</code>
               </h4>
+              <p>
+                <span class="notice-label">Info</span> Skipped if collection
+                exceeds the default <code>100</code> ms timeout.
+              </p>
               <p class="doc-note">
                 See:
                 <a href="#h_enhanced_fp_speech_default_voice"
@@ -2231,6 +2284,10 @@
               >
                 <code>enhanced_fp.83eb055</code>
               </h4>
+              <p>
+                <span class="notice-label">Info</span> Skipped if collection
+                exceeds the default <code>100</code> ms timeout.
+              </p>
               <p>
                 Gets the keyboard layout language. Returns <code>false</code> in
                 2.13.0 because of
@@ -3034,6 +3091,8 @@ const keyboardEventTypes = {
           "browser_detection_comet",
           "browser_detection_genspark",
           "browser_detection_sigma",
+          "agent_extensions",
+          "a9e2b4c",
           "9f41a2c",
           "5c273b3",
           "ce4046e",
@@ -3071,6 +3130,7 @@ const keyboardEventTypes = {
           browser_detection_comet: "9f41a2c",
           browser_detection_genspark: "5c273b3",
           browser_detection_sigma: "ce4046e",
+          agent_extensions: "a9e2b4c",
           rtc_peer_connection: "5dd48ca0",
           web3Check: "43f2d94",
           applePay: "4f59ca8",
@@ -3418,6 +3478,7 @@ const keyboardEventTypes = {
             runTest(browser_detection_comet), // 9f41a2c
             runTest(browser_detection_genspark), // 5c273b3
             runTest(browser_detection_sigma), // ce4046e
+            runTest(agent_extensions), // a9e2b4c
             runTest(browser_api_checks), // f58835f
             runTest(browser_object_checks),
             // 29s83ih9
@@ -4639,31 +4700,110 @@ const keyboardEventTypes = {
       // https://www.perplexity.ai/comet
       // https://blog.castle.io/from-detection-to-trust-the-evolving-challenge-of-ai-bot-authentication/
       function browser_detection_comet() {
+        const COMET_CSS_PROPERTY_GROUPS = [
+          ["--dark-super-color", "--base-shadow", "--color-base"],
+        ];
+
         const doc = document;
         if (doc === null || doc === undefined || !doc.body) {
           return false;
         }
 
-        const divElement = document.createElement("div");
-        divElement.style.display = "none";
-        divElement.id = "pplx-agent-0_0-overlay";
-        document.body.appendChild(divElement);
+        const overlay = document.createElement("div");
+        overlay.style.display = "none";
+        overlay.id = "pplx-agent-0_0-overlay";
+        document.body.appendChild(overlay);
 
         try {
-          const styles = getComputedStyle(divElement);
-          const color1 =
-            styles.getPropertyValue("--dark-super-color").trim() !== "";
-          const color2 = styles.getPropertyValue("--base-shadow").trim() !== "";
-          const color3 = styles.getPropertyValue("--color-base").trim() !== "";
-
-          return color1 && color2 && color3;
+          const styles = getComputedStyle(overlay);
+          return COMET_CSS_PROPERTY_GROUPS.some(function (propertyGroup) {
+            return propertyGroup.every(function (propertyName) {
+              return styles.getPropertyValue(propertyName).trim() !== "";
+            });
+          });
         } catch {
           return false;
         } finally {
-          if (divElement.parentNode) {
-            divElement.parentNode.removeChild(divElement);
+          if (overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
           }
         }
+      }
+
+      // a9e2b4c
+      const AGENT_EXTENSION_IDS = {
+        CLAUDE_FOR_CHROME: "claude-for-chrome",
+        MANUS_AI_BROWSER_OPERATOR: "manus-ai-browser-operator",
+        CHATGPT: "chatgpt",
+      };
+
+      const AGENT_EXTENSION_DATA = [
+        {
+          constant: AGENT_EXTENSION_IDS.CLAUDE_FOR_CHROME,
+          id: "fcoeoabgfenejglbffodgkkbkcdhcgfn",
+          paths: ["assets/accessibility-tree.js-B-oUarrX.js"],
+        },
+        {
+          constant: AGENT_EXTENSION_IDS.MANUS_AI_BROWSER_OPERATOR,
+          id: "cecngibhkljoiafhjfmcgbmikfogdiko",
+          paths: ["assets/CXkZCsXj.js"],
+        },
+        {
+          constant: AGENT_EXTENSION_IDS.CHATGPT,
+          id: "hehggadaopoacecdllhhajmbjkdcmajg",
+          paths: ["images/cursor-chat.png"],
+        },
+      ];
+
+      function isDesktopChrome() {
+        const uaData = navigator.userAgentData;
+        const isNotMobile = !uaData?.mobile;
+        const hasChrome =
+          typeof window.chrome === "object" && window.chrome !== null;
+
+        return isNotMobile && hasChrome;
+      }
+
+      async function checkAgentExtensionUrl(url, timeoutMs) {
+        try {
+          const response = await fetch(url, {
+            timeout: timeoutMs,
+          });
+
+          return response.ok;
+        } catch {
+          return false;
+        }
+      }
+
+      async function agent_extensions(enabled = true, timeoutMs = 100) {
+        const KEY = "a9e2b4c";
+
+        if (!enabled || !isDesktopChrome()) {
+          return {
+            key: KEY,
+            value: [],
+          };
+        }
+
+        const results = await Promise.all(
+          AGENT_EXTENSION_DATA.map(async (ext) => {
+            const checks = await Promise.all(
+              ext.paths.map((path) =>
+                checkAgentExtensionUrl(
+                  `chrome-extension://${ext.id}/${path}`,
+                  timeoutMs,
+                ),
+              ),
+            );
+            return checks.some(Boolean) ? ext.constant : null;
+          }),
+        );
+
+        return {
+          key: KEY,
+          value: results.filter((r) => r !== null),
+        };
       }
 
       // 5c273b3
