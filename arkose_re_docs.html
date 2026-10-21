@@ -702,7 +702,11 @@
               </h4>
               <p>
                 Checks the <code>brands</code> property of
-                <code>navigator.userAgentData</code>.
+                <code>navigator.userAgentData</code>. 4.6.1 also collects
+                high-entropy Client Hints after
+                <a href="#h_enhanced_fp_83eb055"><code>83eb055</code></a>
+                (<a href="#h_enhanced_fp_ecb474c"><code>ecb474c</code></a>
+                and siblings).
               </p>
               <code class="language-json" id="user_agent_data_brands"></code>
             </section>
@@ -944,6 +948,33 @@
                 UI).
               </p>
               <code class="language-json" id="window_outer_height"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_3f38662"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.3f38662"
+                data-toc-nickname="Device Pixel Ratio"
+              >
+                <code>enhanced_fp.3f38662</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="notice">Notice</span>
+                Added in 4.6.1.
+              </p>
+              <p>
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"
+                  ><code>window.devicePixelRatio</code></a
+                >
+                when it is a number, otherwise
+                <code>null</code>. The helper is only
+                <code>typeof value === "number"</code> (not a hash). The legacy
+                <a href="#h_fe_pr"><code>fe</code> <code>PR</code></a> field
+                still uses <code>window.devicePixelRatio || ""</code>.
+              </p>
+              <code class="language-json" id="device_pixel_ratio"></code>
             </section>
             <section class="doc-leaf">
               <h4
@@ -1961,14 +1992,14 @@
                 <code>enhanced_fp.6a62b2a558</code>
               </h4>
               <p>
-                Script version hash. Example:
-                <code>6c9d6e9be9aa044cc5ce9548b4abe1b0</code>.
+                Script version hash. Example (4.6.1):
+                <code>b6d08df074ef9b7482f9393e1dd96997</code>.
               </p>
               <p>Obtained from the filename of the enforcement script:</p>
               <code
                 >"<span style="color: var(--muted)">enforcement.</span
                 ><strong style="color: var(--accent)"
-                  >6c9d6e9be9aa044cc5ce9548b4abe1b0</strong
+                  >b6d08df074ef9b7482f9393e1dd96997</strong
                 ><span style="color: var(--muted)">.js</span>";</code
               >
             </section>
@@ -2324,6 +2355,187 @@
               </p>
               <code class="language-json" id="keyboard_layout"></code>
             </section>
+            <p class="doc-note">
+              4.6.1 merges seven high-entropy User-Agent Client Hint keys after
+              <a href="#h_enhanced_fp_83eb055"><code>83eb055</code></a>. They
+              come from one
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUAData/getHighEntropyValues"
+                ><code>navigator.userAgentData.getHighEntropyValues</code></a
+              >
+              call requesting
+              <code
+                >architecture, bitness, model, platformVersion,
+                fullVersionList, formFactors, wow64</code
+              >. Firefox and other browsers without that API omit the whole
+              group (the collector returns an empty list). The same 100&nbsp;ms
+              async timeout as the other collectors applies.
+            </p>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_ecb474c"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.ecb474c"
+                data-toc-nickname="UA-CH architecture"
+              >
+                <code>enhanced_fp.ecb474c</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="info">Info</span> Added in
+                4.6.1. Skipped if collection exceeds the default
+                <code>100</code> ms timeout.
+              </p>
+              <p>
+                High-entropy
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUAData/getHighEntropyValues"
+                  ><code>architecture</code></a
+                >
+                (<code>"x86"</code>, <code>"arm"</code>), or
+                <code>null</code> when the hint is missing.
+              </p>
+              <code class="language-json" id="ecb474c"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_93835f9"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.93835f9"
+                data-toc-nickname="UA-CH bitness"
+              >
+                <code>enhanced_fp.93835f9</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="info">Info</span> Added in
+                4.6.1. Skipped if collection exceeds the default
+                <code>100</code> ms timeout.
+              </p>
+              <p>
+                High-entropy
+                <code>bitness</code> string (typically
+                <code>"64"</code> or <code>"32"</code>), or
+                <code>null</code> when the hint is missing.
+              </p>
+              <code class="language-json" id="93835f9"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_9318abc"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.9318abc"
+                data-toc-nickname="UA-CH model"
+              >
+                <code>enhanced_fp.9318abc</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="info">Info</span> Added in
+                4.6.1. Skipped if collection exceeds the default
+                <code>100</code> ms timeout.
+              </p>
+              <p>
+                High-entropy device
+                <code>model</code>. Desktop Chromium usually sends an empty
+                string; the collector stores <code>null</code> only when the
+                hint is absent.
+              </p>
+              <code class="language-json" id="9318abc"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_45b6f33"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.45b6f33"
+                data-toc-nickname="UA-CH platformVersion"
+              >
+                <code>enhanced_fp.45b6f33</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="info">Info</span> Added in
+                4.6.1. Skipped if collection exceeds the default
+                <code>100</code> ms timeout.
+              </p>
+              <p>
+                High-entropy
+                <code>platformVersion</code> (for example
+                <code>"15.0.0"</code> on Windows), or
+                <code>null</code> when the hint is missing.
+              </p>
+              <code class="language-json" id="45b6f33"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_804b033"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.804b033"
+                data-toc-nickname="UA-CH fullVersionList"
+              >
+                <code>enhanced_fp.804b033</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="info">Info</span> Added in
+                4.6.1. Skipped if collection exceeds the default
+                <code>100</code> ms timeout.
+              </p>
+              <p>
+                High-entropy
+                <code>fullVersionList</code> formatted as
+                <code>brand;version</code> pairs joined with
+                <code>","</code>. Empty or missing lists become
+                <code>null</code>.
+              </p>
+              <code class="language-json" id="804b033"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_b88d7d5"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.b88d7d5"
+                data-toc-nickname="UA-CH formFactors"
+              >
+                <code>enhanced_fp.b88d7d5</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="info">Info</span> Added in
+                4.6.1. Skipped if collection exceeds the default
+                <code>100</code> ms timeout.
+              </p>
+              <p>
+                High-entropy
+                <code>formFactors</code> joined with
+                <code>","</code> (for example <code>"Desktop"</code> or
+                <code>"Mobile"</code>). Empty arrays become
+                <code>null</code>.
+              </p>
+              <code class="language-json" id="b88d7d5"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_81ebcd9"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.81ebcd9"
+                data-toc-nickname="UA-CH wow64"
+              >
+                <code>enhanced_fp.81ebcd9</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="info">Info</span> Added in
+                4.6.1. Skipped if collection exceeds the default
+                <code>100</code> ms timeout.
+              </p>
+              <p>
+                High-entropy
+                <code>wow64</code> boolean. Non-boolean values become
+                <code>null</code>.
+              </p>
+              <code class="language-json" id="81ebcd9"></code>
+            </section>
             <section class="doc-leaf">
               <h4
                 class="signal-heading toc-target"
@@ -2501,7 +2713,8 @@ const keyboardEventTypes = {
               <p>
                 Client build id from the enforcement bootstrap (header
                 <code>ark-build-id</code>): <code>window.arkl.cbid</code> when
-                present.
+                present. Example (4.6.1):
+                <code>6617415b-88e1-40fc-a7e6-23a61f2dc819</code>.
               </p>
               <code class="language-json" id="build_id"></code>
             </section>
@@ -2593,7 +2806,11 @@ const keyboardEventTypes = {
               </h3>
               <p>
                 <code>window.devicePixelRatio</code> when defined, else empty
-                string. Example: <code>PR:1</code>.
+                string. Example: <code>PR:1</code>. 4.6.1 also stores the
+                numeric value on
+                <a href="#h_enhanced_fp_3f38662"
+                  ><code>enhanced_fp.3f38662</code></a
+                >.
               </p>
               <code class="language-json" id="fePixelRatio"></code>
             </section>
@@ -3123,6 +3340,14 @@ const keyboardEventTypes = {
           "ce4046e",
           "user_agent_data_brands",
           "user_agent_data_mobile",
+          "ecb474c",
+          "93835f9",
+          "9318abc",
+          "45b6f33",
+          "804b033",
+          "b88d7d5",
+          "81ebcd9",
+          "3f38662",
           "3f76dd27",
           "862f2c1",
           "f58835f",
@@ -3165,6 +3390,7 @@ const keyboardEventTypes = {
           css_media_queries: "f9bf2db",
           css_media_queries_extended: "05d3d24",
           keyboard_layout: "83eb055",
+          device_pixel_ratio: "3f38662",
           navigation_entries: "vsadsa",
           heap_size_limit: "basfas",
           build_id: "lfasdgs",
@@ -3512,7 +3738,7 @@ const keyboardEventTypes = {
     ></script>
 
     <script type="module">
-      const UPDATE_TIME = 1779009496576;
+      const UPDATE_TIME = 1792545683837;
 
       document.getElementById("updateTime").textContent = new Date(
         UPDATE_TIME,
@@ -3589,6 +3815,7 @@ const keyboardEventTypes = {
             runTest(window_inner_height),
             runTest(window_outer_width),
             runTest(window_outer_height),
+            runTest(device_pixel_ratio), // 3f38662
             runTest(browser_detection_firefox),
             runTest(browser_detection_brave),
             runTest(browser_detection_comet), // 9f41a2c
@@ -3664,6 +3891,33 @@ const keyboardEventTypes = {
               return rows;
             }),
             runTest(keyboard_layout),
+            runTest(
+              user_agent_data_high_entropy,
+              (rows) => {
+                const keys = [
+                  "ecb474c",
+                  "93835f9",
+                  "9318abc",
+                  "45b6f33",
+                  "804b033",
+                  "b88d7d5",
+                  "81ebcd9",
+                ];
+                const byKey = Object.fromEntries(
+                  (rows || []).map((row) => [row.key, row.value]),
+                );
+                for (const key of keys) {
+                  setOutputBox(
+                    key,
+                    Object.prototype.hasOwnProperty.call(byKey, key)
+                      ? byKey[key]
+                      : null,
+                  );
+                }
+                return rows;
+              },
+              false,
+            ),
             // [4ca87df3d1]
             // [867e25e5d4]
             // [d4a306884c]
@@ -4800,6 +5054,70 @@ const keyboardEventTypes = {
               })
               .join(",")
           : null;
+      }
+
+      const HIGH_ENTROPY_HINTS = [
+        "architecture",
+        "bitness",
+        "model",
+        "platformVersion",
+        "fullVersionList",
+        "formFactors",
+        "wow64",
+      ];
+
+      function formatFullVersionList(list) {
+        if (!list || !list.length) {
+          return null;
+        }
+
+        const parts = [];
+        for (const entry of list) {
+          parts.push(`${entry.brand};${entry.version}`);
+        }
+
+        return parts.join(",");
+      }
+
+      // 4.6.1: navigator.userAgentData.getHighEntropyValues. Omitted from
+      // enhanced_fp when the API is missing or the response has none of the
+      // requested hints.
+      async function user_agent_data_high_entropy() {
+        const uaData = navigator.userAgentData;
+        if (!(uaData && typeof uaData.getHighEntropyValues === "function")) {
+          return [];
+        }
+
+        try {
+          const values = await uaData.getHighEntropyValues(HIGH_ENTROPY_HINTS);
+          if (!HIGH_ENTROPY_HINTS.some((hint) => values[hint] !== undefined)) {
+            return [];
+          }
+
+          return [
+            { key: "ecb474c", value: values.architecture ?? null },
+            { key: "93835f9", value: values.bitness ?? null },
+            { key: "9318abc", value: values.model ?? null },
+            { key: "45b6f33", value: values.platformVersion ?? null },
+            {
+              key: "804b033",
+              value: formatFullVersionList(values.fullVersionList),
+            },
+            {
+              key: "b88d7d5",
+              value:
+                values.formFactors && values.formFactors.length
+                  ? values.formFactors.join(",")
+                  : null,
+            },
+            {
+              key: "81ebcd9",
+              value: typeof values.wow64 === "boolean" ? values.wow64 : null,
+            },
+          ];
+        } catch {
+          return [];
+        }
       }
 
       function browser_detection_brave() {
@@ -6495,6 +6813,10 @@ const keyboardEventTypes = {
 
       function window_outer_height() {
         return emitterGuardNumber(window.outerHeight);
+      }
+
+      function device_pixel_ratio() {
+        return emitterGuardNumber(window.devicePixelRatio);
       }
 
       function headless_browser_phantom() {
