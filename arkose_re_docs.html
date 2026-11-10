@@ -979,6 +979,108 @@
             <section class="doc-leaf">
               <h4
                 class="signal-heading toc-target"
+                id="h_enhanced_fp_634b407"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.634b407"
+                data-toc-nickname="Screen X"
+              >
+                <code>enhanced_fp.634b407</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="notice">Notice</span>
+                Added in 4.7.0.
+              </p>
+              <p>
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/API/Window/screenX"
+                  ><code>window.screenX</code></a
+                >
+                when it is a number, otherwise
+                <code>null</code>. Uses the shared
+                <code>typeof value === "number"</code> normalizer.
+              </p>
+              <code class="language-json" id="screen_x"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_df8fe38"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.df8fe38"
+                data-toc-nickname="Screen Y"
+              >
+                <code>enhanced_fp.df8fe38</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="notice">Notice</span>
+                Added in 4.7.0.
+              </p>
+              <p>
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/API/Window/screenY"
+                  ><code>window.screenY</code></a
+                >
+                when it is a number, otherwise
+                <code>null</code>. Uses the shared
+                <code>typeof value === "number"</code> normalizer.
+              </p>
+              <code class="language-json" id="screen_y"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_74a6af7"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.74a6af7"
+                data-toc-nickname="Avail Left"
+              >
+                <code>enhanced_fp.74a6af7</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="notice">Notice</span>
+                Added in 4.7.0.
+              </p>
+              <p>
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/API/Screen/availLeft"
+                  ><code>window.screen.availLeft</code></a
+                >
+                when it is a number, otherwise
+                <code>null</code>. Reads via optional
+                <code>window.screen</code> access, then the shared
+                <code>typeof value === "number"</code> normalizer.
+              </p>
+              <code class="language-json" id="avail_left"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
+                id="h_enhanced_fp_e5ad472"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.e5ad472"
+                data-toc-nickname="Avail Top"
+              >
+                <code>enhanced_fp.e5ad472</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="notice">Notice</span>
+                Added in 4.7.0.
+              </p>
+              <p>
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/API/Screen/availTop"
+                  ><code>window.screen.availTop</code></a
+                >
+                when it is a number, otherwise
+                <code>null</code>. Reads via optional
+                <code>window.screen</code> access, then the shared
+                <code>typeof value === "number"</code> normalizer.
+              </p>
+              <code class="language-json" id="avail_top"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
                 id="h_enhanced_fp_browser_detection_firefox"
                 data-toc-depth="3"
                 data-toc-label="enhanced_fp.browser_detection_firefox"
@@ -3348,6 +3450,10 @@ const keyboardEventTypes = {
           "b88d7d5",
           "81ebcd9",
           "3f38662",
+          "634b407",
+          "df8fe38",
+          "74a6af7",
+          "e5ad472",
           "3f76dd27",
           "862f2c1",
           "f58835f",
@@ -3391,6 +3497,10 @@ const keyboardEventTypes = {
           css_media_queries_extended: "05d3d24",
           keyboard_layout: "83eb055",
           device_pixel_ratio: "3f38662",
+          screen_x: "634b407",
+          screen_y: "df8fe38",
+          avail_left: "74a6af7",
+          avail_top: "e5ad472",
           navigation_entries: "vsadsa",
           heap_size_limit: "basfas",
           build_id: "lfasdgs",
@@ -3816,6 +3926,10 @@ const keyboardEventTypes = {
             runTest(window_outer_width),
             runTest(window_outer_height),
             runTest(device_pixel_ratio), // 3f38662
+            runTest(screen_x), // 634b407
+            runTest(screen_y), // df8fe38
+            runTest(avail_left), // 74a6af7
+            runTest(avail_top), // e5ad472
             runTest(browser_detection_firefox),
             runTest(browser_detection_brave),
             runTest(browser_detection_comet), // 9f41a2c
@@ -6817,6 +6931,22 @@ const keyboardEventTypes = {
 
       function device_pixel_ratio() {
         return emitterGuardNumber(window.devicePixelRatio);
+      }
+
+      function screen_x() {
+        return emitterGuardNumber(window.screenX);
+      }
+
+      function screen_y() {
+        return emitterGuardNumber(window.screenY);
+      }
+
+      function avail_left() {
+        return emitterGuardNumber(window.screen?.availLeft);
+      }
+
+      function avail_top() {
+        return emitterGuardNumber(window.screen?.availTop);
       }
 
       function headless_browser_phantom() {
