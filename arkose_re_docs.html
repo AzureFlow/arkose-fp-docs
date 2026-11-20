@@ -1560,7 +1560,9 @@
               </h4>
               <p>
                 Checks the various objects on the document and window related to
-                browser automation frameworks. Including:
+                browser automation frameworks. Result is an integer bitmask
+                (each hit sets <code>1 &lt;&lt; index</code>), not a joined
+                string. Including:
               </p>
               <ul>
                 <li>
@@ -1607,6 +1609,20 @@
                   Unknown: <code>window.OSMJIF</code> and
                   <code>document.hidden</code>.
                 </li>
+                <li>
+                  <a href="https://playwright.dev/">Playwright</a>: own
+                  <code>__playwright__binding__</code>,
+                  <code>__playwright__binding__controller__</code> (4.8.0+).
+                </li>
+                <li>
+                  <a href="https://pptr.dev/">Puppeteer</a>: any own
+                  <code>window</code> property prefixed
+                  <code>puppeteer_</code> (4.8.0+).
+                </li>
+                <li>
+                  <a href="https://www.cypress.io/">Cypress</a>: own
+                  <code>Cypress</code> (4.8.0+).
+                </li>
               </ul>
               <p>
                 Same function also ORs bits for
@@ -1615,6 +1631,25 @@
                 <code>window.external</code> mentioning Sequentum, and
                 Electron-style <code>process</code> /
                 <code>window.close</code> signatures.
+              </p>
+              <p>
+                <span class="notice-label" data-kind="notice">Notice</span>
+                Added in 4.8.0: bits
+                <code>24</code>–<code>27</code> are appended after the existing
+                <code>0</code>–<code>23</code> checks (<code
+                  >domAutomation</code
+                >
+                stays at bit <code>21</code>, Sequentum at <code>22</code>,
+                Electron at <code>23</code>). Legacy bits <code>0</code>–<code
+                  >20</code
+                >
+                still use <code>in</code> (<code>name in document</code> /
+                <code>name in window</code>). The new checks use
+                <code>Object.prototype.hasOwnProperty.call(window, name)</code>
+                and ignore values that look DOM-like (<code
+                  >typeof nodeType === "number"</code
+                >, <code>typeof namedItem == "function"</code>, or
+                <code>t.window === t</code>).
               </p>
               <code class="language-json" id="headless_browser_generic"></code>
             </section>
@@ -2459,16 +2494,16 @@
             </section>
             <p class="doc-note">
               4.6.1 merges seven high-entropy User-Agent Client Hint keys after
-              <a href="#h_enhanced_fp_83eb055"><code>83eb055</code></a>. They
-              come from one
+              <a href="#h_enhanced_fp_83eb055"><code>83eb055</code></a
+              >. They come from one
               <a
                 href="https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUAData/getHighEntropyValues"
                 ><code>navigator.userAgentData.getHighEntropyValues</code></a
               >
               call requesting
               <code
-                >architecture, bitness, model, platformVersion,
-                fullVersionList, formFactors, wow64</code
+                >architecture, bitness, model, platformVersion, fullVersionList,
+                formFactors, wow64</code
               >. Firefox and other browsers without that API omit the whole
               group (the collector returns an empty list). The same 100&nbsp;ms
               async timeout as the other collectors applies.
@@ -2516,9 +2551,9 @@
               </p>
               <p>
                 High-entropy
-                <code>bitness</code> string (typically
-                <code>"64"</code> or <code>"32"</code>), or
-                <code>null</code> when the hint is missing.
+                <code>bitness</code> string (typically <code>"64"</code> or
+                <code>"32"</code>), or <code>null</code> when the hint is
+                missing.
               </p>
               <code class="language-json" id="93835f9"></code>
             </section>
@@ -2563,8 +2598,8 @@
               <p>
                 High-entropy
                 <code>platformVersion</code> (for example
-                <code>"15.0.0"</code> on Windows), or
-                <code>null</code> when the hint is missing.
+                <code>"15.0.0"</code> on Windows), or <code>null</code> when the
+                hint is missing.
               </p>
               <code class="language-json" id="45b6f33"></code>
             </section>
@@ -2586,9 +2621,8 @@
               <p>
                 High-entropy
                 <code>fullVersionList</code> formatted as
-                <code>brand;version</code> pairs joined with
-                <code>","</code>. Empty or missing lists become
-                <code>null</code>.
+                <code>brand;version</code> pairs joined with <code>","</code>.
+                Empty or missing lists become <code>null</code>.
               </p>
               <code class="language-json" id="804b033"></code>
             </section>
@@ -2609,10 +2643,9 @@
               </p>
               <p>
                 High-entropy
-                <code>formFactors</code> joined with
-                <code>","</code> (for example <code>"Desktop"</code> or
-                <code>"Mobile"</code>). Empty arrays become
-                <code>null</code>.
+                <code>formFactors</code> joined with <code>","</code> (for
+                example <code>"Desktop"</code> or <code>"Mobile"</code>). Empty
+                arrays become <code>null</code>.
               </p>
               <code class="language-json" id="b88d7d5"></code>
             </section>
@@ -2763,6 +2796,86 @@ const keyboardEventTypes = {
             <section class="doc-leaf">
               <h4
                 class="signal-heading toc-target"
+                id="h_enhanced_fp_d3f7a91"
+                data-toc-depth="3"
+                data-toc-label="enhanced_fp.d3f7a91"
+                data-toc-nickname="agent_globals"
+              >
+                <code>enhanced_fp.d3f7a91</code>
+              </h4>
+              <p>
+                <span class="notice-label" data-kind="notice">Notice</span>
+                Added in 4.8.0.
+              </p>
+              <p>
+                Scans <code>window</code> for AI-agent / browser-automation
+                globals and returns a comma-joined, sorted list of matched
+                category indices (or <code>""</code> when none match). Unlike
+                most <code>enhanced_fp</code> keys, this is applied after
+                biometrics merge and before BDA encrypt, not inside the main
+                collector table. Sibling of
+                <a href="#h_enhanced_fp_a9e2b4c"
+                  ><code>enhanced_fp.a9e2b4c</code></a
+                >; both coexist.
+              </p>
+              <p>
+                Wildcard keys ending in <code>*</code> match any own property
+                name with that prefix (<code>__skyvern_*</code>). Exact names
+                use
+                <code>Object.prototype.hasOwnProperty.call(window, name)</code>.
+                Matches whose value looks DOM-like (<code
+                  >typeof nodeType === "number"</code
+                >
+                or <code>typeof namedItem == "function"</code>) are ignored.
+                Categories are deduped; multiple names mapping to the same index
+                count once. Scanner throw → <code>null</code>.
+              </p>
+              <ul>
+                <li>
+                  <code>0</code>: <code>__skyvern_*</code>,
+                  <code>getDOMElementBySkyvenElement</code>
+                </li>
+                <li>
+                  <code>1</code>: <code>__RTRVR_MAIN_WORLD_INITIALIZED__</code>,
+                  <code>__RTRVR_MAIN_WORLD_LOCAL_BRIDGE_INSTALLED__</code>
+                </li>
+                <li><code>2</code>: <code>__RTRVR_INTERNAL__</code></li>
+                <li>
+                  <code>3</code>: <code>__harkClipboard</code>,
+                  <code>__harkClipboardInstalled</code>
+                </li>
+                <li>
+                  <code>4</code>: <code>__manusFindElementByClickId</code>,
+                  <code>__manusGetTopFrameRect</code>
+                </li>
+                <li>
+                  <code>5</code>:
+                  <code>__hyperagent_getScrollableElementXpaths</code>
+                </li>
+                <li>
+                  <code>6</code>: <code>__codexPlaywrightInjected</code>,
+                  <code>__codexCloudWebMcpChanged</code>
+                </li>
+                <li>
+                  <code>7</code>:
+                  <code>steelAmazonWafInterceptorInitialized</code>,
+                  <code>steelFunCaptchaInterceptorInitialized</code>
+                </li>
+                <li>
+                  <code>8</code>:
+                  <code>__dynamo_suppress_conditional_ui_installed</code>,
+                  <code>ret_nodes</code>
+                </li>
+                <li><code>9</code>: <code>_sentryDebugIds</code></li>
+                <li>
+                  <code>10</code>: <code>__buObs</code>, <code>__buN</code>
+                </li>
+              </ul>
+              <code class="language-json" id="agent_globals"></code>
+            </section>
+            <section class="doc-leaf">
+              <h4
+                class="signal-heading toc-target"
                 id="h_enhanced_fp_vsadsa"
                 data-toc-depth="3"
                 data-toc-label="enhanced_fp.vsadsa"
@@ -2815,8 +2928,8 @@ const keyboardEventTypes = {
               <p>
                 Client build id from the enforcement bootstrap (header
                 <code>ark-build-id</code>): <code>window.arkl.cbid</code> when
-                present. Example (4.6.1):
-                <code>6617415b-88e1-40fc-a7e6-23a61f2dc819</code>.
+                present. Example (4.8.0):
+                <code>6144c5f6-0b23-419e-8a4a-399fc31cf51e</code>.
               </p>
               <code class="language-json" id="build_id"></code>
             </section>
@@ -3437,6 +3550,8 @@ const keyboardEventTypes = {
           "browser_detection_sigma",
           "agent_extensions",
           "a9e2b4c",
+          "agent_globals",
+          "d3f7a91",
           "9f41a2c",
           "5c273b3",
           "ce4046e",
@@ -3487,6 +3602,7 @@ const keyboardEventTypes = {
           browser_detection_genspark: "5c273b3",
           browser_detection_sigma: "ce4046e",
           agent_extensions: "a9e2b4c",
+          agent_globals: "d3f7a91",
           rtc_peer_connection: "5dd48ca0",
           web3Check: "43f2d94",
           applePay: "4f59ca8",
@@ -4035,6 +4151,7 @@ const keyboardEventTypes = {
             // [4ca87df3d1]
             // [867e25e5d4]
             // [d4a306884c]
+            runTest(agent_globals), // d3f7a91
             runTest(navigation_entries),
             runTest(heap_size_limit),
             runTest(build_id),
@@ -5083,6 +5200,27 @@ const keyboardEventTypes = {
             return item in window;
           };
         };
+        // 4.8.0+: own-property checks ignore DOM/window-like values.
+        const isDomOrWindowLike = function (value) {
+          return (
+            !!value &&
+            (typeof value.nodeType === "number" ||
+              typeof value.namedItem == "function" ||
+              value.window === value)
+          );
+        };
+        const checkOwnWindow = function (item) {
+          return function () {
+            try {
+              return (
+                Object.prototype.hasOwnProperty.call(window, item) &&
+                !isDomOrWindowLike(window[item])
+              );
+            } catch {
+              return false;
+            }
+          };
+        };
 
         const documentChecks = [
           checkDocument("$cdc_asdjflasutopfhvcZLmcfl"),
@@ -5109,32 +5247,58 @@ const keyboardEventTypes = {
           checkWindow("geb"),
           checkWindow("blender"),
         ];
+        const ownWindowChecks = [
+          checkOwnWindow("__playwright__binding__"),
+          checkOwnWindow("__playwright__binding__controller__"),
+          function () {
+            try {
+              const names = Object.getOwnPropertyNames(window);
+              for (let i = 0; i < names.length; i++) {
+                if (
+                  names[i].indexOf("puppeteer_") === 0 &&
+                  !isDomOrWindowLike(window[names[i]])
+                ) {
+                  return true;
+                }
+              }
+              return false;
+            } catch {
+              return false;
+            }
+          },
+          checkOwnWindow("Cypress"),
+        ];
 
-        const checkFuncs = [].concat(documentChecks, windowChecks, [
-          function () {
-            return (
-              "domAutomation" in window || "domAutomationController" in window
-            );
-          },
-          function () {
-            return (
-              window.external &&
-              window.external.toString &&
-              window.external.toString().indexOf("Sequentum") > -1
-            );
-          },
-          function () {
-            return (
-              (typeof window.process === "object" &&
-                "type" in window.process &&
-                window.process.type === "renderer") ||
-              (typeof process !== "undefined" &&
-                typeof process.versions === "object" &&
-                process.versions.electron) ||
-              window.close.toString().indexOf("ELECTRON") > -1
-            );
-          },
-        ]);
+        const checkFuncs = [].concat(
+          documentChecks,
+          windowChecks,
+          [
+            function () {
+              return (
+                "domAutomation" in window || "domAutomationController" in window
+              );
+            },
+            function () {
+              return (
+                window.external &&
+                window.external.toString &&
+                window.external.toString().indexOf("Sequentum") > -1
+              );
+            },
+            function () {
+              return (
+                (typeof window.process === "object" &&
+                  "type" in window.process &&
+                  window.process.type === "renderer") ||
+                (typeof process !== "undefined" &&
+                  typeof process.versions === "object" &&
+                  process.versions.electron) ||
+                window.close.toString().indexOf("ELECTRON") > -1
+              );
+            },
+          ],
+          ownWindowChecks,
+        );
 
         let result = 0;
         for (let i = 0; i < checkFuncs.length; i++) {
@@ -5352,6 +5516,70 @@ const keyboardEventTypes = {
           key: KEY,
           value: results.filter((r) => r !== null),
         };
+      }
+
+      // d3f7a91 — applied after biometrics merge / before BDA encrypt in 4.8.0+
+      const AGENT_GLOBAL_CATEGORIES = {
+        "__skyvern_*": 0,
+        getDOMElementBySkyvenElement: 0,
+        __RTRVR_MAIN_WORLD_INITIALIZED__: 1,
+        __RTRVR_MAIN_WORLD_LOCAL_BRIDGE_INSTALLED__: 1,
+        __RTRVR_INTERNAL__: 2,
+        __harkClipboard: 3,
+        __harkClipboardInstalled: 3,
+        __manusFindElementByClickId: 4,
+        __manusGetTopFrameRect: 4,
+        __hyperagent_getScrollableElementXpaths: 5,
+        __codexPlaywrightInjected: 6,
+        __codexCloudWebMcpChanged: 6,
+        steelAmazonWafInterceptorInitialized: 7,
+        steelFunCaptchaInterceptorInitialized: 7,
+        __dynamo_suppress_conditional_ui_installed: 8,
+        ret_nodes: 8,
+        _sentryDebugIds: 9,
+        __buObs: 10,
+        __buN: 10,
+      };
+
+      function agent_globals() {
+        try {
+          const isDomLike = function (value) {
+            return (
+              !!value &&
+              (typeof value.nodeType === "number" ||
+                typeof value.namedItem == "function")
+            );
+          };
+          const names = Object.getOwnPropertyNames(window);
+          const matched = {};
+          Object.keys(AGENT_GLOBAL_CATEGORIES).forEach(function (key) {
+            const index = AGENT_GLOBAL_CATEGORIES[key];
+            if (matched[index]) {
+              return;
+            }
+
+            const isPrefix = key.charAt(key.length - 1) === "*";
+            const prefix = key.slice(0, -1);
+            const hit = isPrefix
+              ? names.some(function (name) {
+                  return name.indexOf(prefix) === 0 && !isDomLike(window[name]);
+                })
+              : Object.prototype.hasOwnProperty.call(window, key) &&
+                !isDomLike(window[key]);
+            if (hit) {
+              matched[index] = true;
+            }
+          });
+
+          return Object.keys(matched)
+            .map(Number)
+            .sort(function (a, b) {
+              return a - b;
+            })
+            .join(",");
+        } catch {
+          return null;
+        }
       }
 
       // 5c273b3
